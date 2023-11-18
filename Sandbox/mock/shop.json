@@ -1,0 +1,21 @@
+[ 
+     {
+        "uid": "GUHf5vZMkJhfVzQlfTx1vv6Dwvj1",
+        "name": "好吃水餃",
+        "principal": "賴泓瑋",
+        "email": "lai09150915@gmail.com",
+        "contact": "0987516972",
+        "campus_name": "建功校區",
+        "open_time": "02:26:00",
+        "close_time": "03:26:00",
+        "rest_open_time": null,
+        "rest_close_time": null,
+        "vendor_img_url": "/static/vendor/GUHf5vZMkJhfVzQlfTx1vv6Dwvj1/vendor.jpg",
+        "desc": null,
+        "promotions": null,
+        "shop_url": null,
+        "ig_url": null,
+        "fd_url": null,
+        "preorder_qty": null
+    }
+]

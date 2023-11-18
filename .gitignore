@@ -1,0 +1,11 @@
+
+*.pyc
+# logs
+*.log
+
+
+# edit files
+.venv
+.vscode/*
+.DS_Store
+!.vscode/extensions.json

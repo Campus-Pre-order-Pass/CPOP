@@ -1,0 +1,13 @@
+[
+    {
+        "product_id": "4f9c1ffc-b8b5-41cf-8405-ab89fd69da32",
+        "category": "staples",
+        "title": "水餃",
+        "price": "5.00",
+        "unit": "份",
+        "hot": false,
+        "menu_img_url": "/static/vendor/GUHf5vZMkJhfVzQlfTx1vv6Dwvj1/4f9c1ffc-b8b5-41cf-8405-ab89fd69da32.jpg",
+        "desc": "好吃水餃",
+        "promotions": ""
+    }
+]

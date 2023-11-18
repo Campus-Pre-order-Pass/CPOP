@@ -1,0 +1,56 @@
+[
+    {
+        "vendor": {
+            "uid": "GUHf5vZMkJhfVzQlfTx1vv6Dwvj1",
+            "name": "好吃水餃",
+            "principal": "賴泓瑋",
+            "email": "lai09150915@gmail.com",
+            "contact": "0987516972",
+            "campus_name": "建功校區",
+            "open_time": "02:26:00",
+            "close_time": "03:26:00",
+            "rest_open_time": null,
+            "rest_close_time": null,
+            "vendor_img_url": "/static/vendor/GUHf5vZMkJhfVzQlfTx1vv6Dwvj1/vendor.jpg",
+            "desc": null,
+            "promotions": null,
+            "shop_url": null,
+            "ig_url": null,
+            "fd_url": null,
+            "preorder_qty": null
+        },
+        "current": {
+            "current_number": 0,
+            "wait_number": 0,
+            "is_closed": true,
+            "is_delivery_available": true
+        }
+    },
+    {
+        "vendor": {
+            "uid": "CFrwnEMFl1dM1RfleSsmLXLmNbR2",
+            "name": "三明治",
+            "principal": "資訊工程系賴泓瑋",
+            "email": "c111151125@nkust.edu.tw",
+            "contact": "0987516972",
+            "campus_name": "建功校區",
+            "open_time": "04:51:00",
+            "close_time": "01:55:00",
+            "rest_open_time": null,
+            "rest_close_time": null,
+            "vendor_img_url": "/static/vendor/CFrwnEMFl1dM1RfleSsmLXLmNbR2/vendor.jpg",
+            "desc": null,
+            "promotions": null,
+            "shop_url": null,
+            "ig_url": null,
+            "fd_url": null,
+            "preorder_qty": 100
+        },
+        "current": {
+            "current_number": 0,
+            "wait_number": 0,
+            "is_closed": true,
+            "is_delivery_available": true
+        }
+    }
+]

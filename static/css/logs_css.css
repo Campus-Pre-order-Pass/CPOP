@@ -1,0 +1,42 @@
+/* 在 my-custom.css 文件中定义自定义样式 */
+
+/* 修改表格背景颜色 */
+.log-table {
+  background-color: #262525;
+}
+
+/* 修改表头背景颜色 */
+.log-table thead {
+  background-color: #333;
+  color: rgb(86, 81, 81);
+}
+
+td {
+  color: #333;
+}
+
+/* 在 my-custom.css 文件中定义自定义样式 */
+
+/* 根据日志消息的文本内容来设置样式 */
+/* 这里假设您的日志消息包含 [INFO]、[DEBUG]、[WARNING]、[ERROR] 等前缀 */
+
+/* 根据日志消息的前缀来设置样式 */
+td:contains("[INFO]") {
+  /* 为 INFO 日志消息设置样式 */
+  color: green;
+}
+
+td:contains("[DEBUG]") {
+  /* 为 DEBUG 日志消息设置样式 */
+  color: blue;
+}
+
+td:contains("[WARNING]") {
+  /* 为 WARNING 日志消息设置样式 */
+  color: orange;
+}
+
+td:contains("[ERROR]") {
+  /* 为 ERROR 日志消息设置样式 */
+  color: red;
+}

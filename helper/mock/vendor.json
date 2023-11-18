@@ -1,0 +1,33 @@
+[
+    {
+        "uid": "d1a5f55f-d7db-4d61-9a7e-085f31515871",
+        "name": "Vendor 1",
+        "contact": "1234567890",
+        "campus_name": "建功校區",
+        "open_time": "08:00:00",
+        "close_time": "18:00:00",
+        "preorder_qty": 50,
+        "vendor_img_url": "/static/vendor/d1a5f55f-d7db-4d61-9a7e-085f31515871/vendor.jpg" 
+    },
+    {
+        "uid": "a3b2e1c9-f4d0-4e65-8a2f-79c214ee8693",
+        "name": "Vendor 2",
+        "contact": "9876543210",
+        "campus_name": "第一校區",
+        "open_time": "07:30:00",
+        "close_time": "17:30:00",
+        "preorder_qty": 40,
+        "vendor_img_url": "/static/vendor/d1a5f55f-d7db-4d61-9a7e-085f31515871/vendor.jpg" 
+
+    },
+    {
+        "uid": "c0e1d2b3-a4f5-4e6d-8c7b-9a0f1e2d3c4e",
+        "name": "Vendor 3",
+        "contact": "5555555555",
+        "campus_name": "燕巢校區",
+        "open_time": "09:00:00",
+        "close_time": "19:00:00",
+        "preorder_qty": 60,
+        "vendor_img_url": "/static/vendor/d1a5f55f-d7db-4d61-9a7e-085f31515871/vendor.jpg" 
+    }
+]
