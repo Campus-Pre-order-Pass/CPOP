@@ -1,0 +1,16 @@
+# .gitattributes
+
+# Python files
+*.py linguist-language=Python
+
+# JavaScript files
+*.js linguist-language=JavaScript
+
+# TypeScript files
+*.ts linguist-language=TypeScript
+
+# Docker files
+Dockerfile linguist-language=Docker
+
+# HTML files
+*.html linguist-language=HTML
