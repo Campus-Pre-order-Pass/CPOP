@@ -8,7 +8,8 @@ app_name = "Shop"
 urlpatterns = [
 
     # current
-    path('current/<str:uid>', views.CurrentStateAPIView.as_view(), name="current"),
+    path('current/<str:vendor_id>',
+         views.CurrentStateAPIView.as_view(), name="current"),
 
     # file
     path('file/<str:uid>', views.update_image, name="update_image"),

@@ -22,9 +22,6 @@ from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseT
 from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuItem
 
-# models
-
-
 # serializers
 from Shop.serializers import CurrentStateSerializer, VendorSerializer
 from MenuItem.serializers import MenuItemSerializer
@@ -40,19 +37,7 @@ from helper.vaidate import convert_to_bool
 # cache
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
-
-
-def check_redis_connection():
-    try:
-        # 嘗試從 Redis 中獲取一個不存在的鍵，此操作不會修改 Redis 中的數據
-        cache.get('nonexistent_key_for_connection_check')
-        print("Redis connection is active.")
-    except Exception as e:
-        print(f"Error connecting to Redis: {e}")
-
-
-# 執行檢查
-check_redis_connection()
+from django.views.decorators.cache import cache_control
 
 
 # shop =================================================================
@@ -62,9 +47,19 @@ check_redis_connection()
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class ShopAPIView(APIView):
+    renderer_classes = [JSONRenderer]
 
-    @cache_page(settings.CACHE_TIMEOUT_LONG)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 在这里进行条件判断并设置属性
+        if not settings.DEBUG:
+            self.authentication_classes = [FirebaseTokenAuthentication]
+
+    # @cache_page(settings.CACHE_TIMEOUT_LONG)
+    @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, shop_id=None):
+        """主要進入點"""
 
         # TODO: 要加入校區判斷
         shop_list = []
@@ -129,17 +124,23 @@ def update_image(request, uid):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class CurrentStateAPIView(APIView):
-    if not settings.DEBUG:
-        authentication_classes = [FirebaseTokenAuthentication]
     renderer_classes = [JSONRenderer]
 
-    def get(self, request, uid):
-        v = Vendor.objects.get(uid=uid)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 在这里进行条件判断并设置属性
+        if not settings.DEBUG:
+            self.authentication_classes = [FirebaseTokenAuthentication]
+
+    @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
+    def get(self, request, vendor_id):
+        v = Vendor.objects.get(id=int(vendor_id))
         serializer = CurrentStateSerializer(CurrentState.objects.get(vendor=v))
         return Response(serializer.data)
 
-    def put(self, request, uid):
-        v = Vendor.objects.get(uid=uid)
+    def put(self, request, vendor_id):
+        v = Vendor.objects.get(id=int(vendor_id))
         c = CurrentState.objects.get(vendor=v)
         serializer = CurrentStateSerializer(
             c, data=request.data, partial=True)
@@ -150,6 +151,7 @@ class CurrentStateAPIView(APIView):
 
 
 def upload_vendor_image(request, vendor_id):
+    """已停用"""
     if request.method == 'POST':
         vendor = Vendor.objects.get(pk=vendor_id)
         image = request.FILES['image']  # 从表单中获取图像文件

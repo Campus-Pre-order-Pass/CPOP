@@ -7,8 +7,6 @@ app_name = "MenuItem"
 
 urlpatterns = [
     # menu
-    path('extra/<str:menu_id>', views.ExtraOptionPIView.as_view(),
-         name="ExtraOptionPIView"),
 
 
     path('options/<str:menu_id>', views.OptionPIView.as_view(),

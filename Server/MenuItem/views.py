@@ -26,7 +26,7 @@ from Shop.models import Vendor
 
 
 # serializers
-from MenuItem.serializers import MenuItemExtraOptionSerializer, MenuItemSerializer, ExtraOptionSerializer, RequiredOptionSerializer
+from MenuItem.serializers import MenuItemExtraOptionSerializer, MenuItemRequiredOptionSerializer, MenuItemSerializer, ExtraOptionSerializer, RequiredOptionSerializer
 
 # helpers
 from helper.fileupload import upload_file
@@ -38,21 +38,27 @@ from helper.vaidate import convert_to_bool
 
 # cache
 from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_control
 
 # MenuItem =================================================================
 
 
-@handle_exceptions(MenuItem)
+# @handle_exceptions(MenuItem)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class MenuItemAPIView(APIView):
-    # TODO: 是 DEBUG
-    if not settings.DEBUG:
-        authentication_classes = [FirebaseTokenAuthentication]
     renderer_classes = [JSONRenderer]
 
-    # @cache_page(settings.CACHE_TIMEOUT_LONG)
+    # TODO: 是 DEBUG
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 在这里进行条件判断并设置属性
+        if not settings.DEBUG:
+            self.authentication_classes = [FirebaseTokenAuthentication]
+
+    @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, uid):
         vendor = Vendor.objects.get(id=uid)
 
@@ -105,37 +111,45 @@ class MenuItemAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-@handle_exceptions(ExtraOption)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-class ExtraOptionPIView(APIView):
-    # TODO: 是 DEBUG
-    if not settings.DEBUG:
-        authentication_classes = [FirebaseTokenAuthentication]
-    renderer_classes = [JSONRenderer]
+# @handle_exceptions(ExtraOption)
+# # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+# # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
+# # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+# class ExtraOptionPIView(APIView):
 
-    def get(self, request, menu_id):
-        """改 int str統一口徑"""
-        menuItem = MenuItem.objects.get(id=int(menu_id))
+#     # TODO: 是 DEBUG
+#     if not settings.DEBUG:
+#         authentication_classes = [FirebaseTokenAuthentication]
+#     renderer_classes = [JSONRenderer]
 
-        serializer = MenuItemExtraOptionSerializer(menuItem)
-        return Response(serializer.data)
+#     def get(self, request, menu_id):
+#         """改 int str統一口徑"""
+#         menuItem = MenuItem.objects.get(id=int(menu_id))
 
+#         serializer = MenuItemExtraOptionSerializer(menuItem)
+#         return Response(serializer.data)
 
+@handle_exceptions(MenuItem)
 class OptionPIView(APIView):
-    # TODO: 是 DEBUG
-    if not settings.DEBUG:
-        authentication_classes = [FirebaseTokenAuthentication]
     renderer_classes = [JSONRenderer]
 
+    # TODO: 是 DEBUG
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 在这里进行条件判断并设置属性
+        if not settings.DEBUG:
+            self.authentication_classes = [FirebaseTokenAuthentication]
+
+    # @cache_page(settings.CACHE_TIMEOUT_LONG)
+    @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, menu_id):
         """改 int str統一口徑"""
         menuItem = MenuItem.objects.get(id=int(menu_id))
 
         data = {
             "extra": MenuItemExtraOptionSerializer(menuItem).data,
-            "required":  RequiredOptionSerializer(menuItem).data
+            "required":  MenuItemRequiredOptionSerializer(menuItem).data
         }
 
         return Response(data)

@@ -29,6 +29,8 @@ from Customer.serializers import CustomerSerializerSerializer
 
 
 # serializers
+from Shop.serializers import VendorSerializer
+
 
 # helpers
 from helper.fileupload import upload_file
@@ -38,61 +40,6 @@ from helper.handle_exceptions import handle_exceptions
 
 
 # ----------------------------------------------------------------
-
-
-@handle_exceptions(Vendor)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-class VendorAPIView(APIView):
-    if not settings.DEBUG:
-        authentication_classes = [FirebaseTokenAuthentication]
-    renderer_classes = [JSONRenderer]  # 设置渲染器
-
-    def get(self, request, uid):
-        vendor = Vendor.objects.get(uid=uid)
-        serializer = VendorSerializer(vendor)
-
-        return Response(serializer.data)
-
-    def post(self, request, uid):
-        parser_classes = (MultiPartParser, FormParser)
-        data = request.data
-
-        vendor = Vendor.objects.create(
-            uid=uid,
-            email=data['email'],
-            principal=data['principal'],
-            name=data['name'],
-            contact=data['contact'],
-            campus_name=data['campus_name'],
-            open_time=data['open_time'],
-            close_time=data['close_time'],
-            vendor_img_url=f"/static/vendor/{uid}/vendor.jpg",
-        )
-        if upload_file(request=request, vendor_id=uid, filename="vendor.jpg"):
-            vendor.save()
-            # 新增狀態
-            CurrentState.objects.create(vendor=vendor)
-        else:
-            return Response("upload_file errors", status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def put(self, request, uid):
-        cleaned_uid = uid.replace("-", "")
-        vendor = Vendor.objects.get(uid=cleaned_uid)
-        serializer = VendorSerializer(vendor, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, uid):
-        vendor = Vendor.objects.get(uid=uid)
-        vendor.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @handle_exceptions(Customer)

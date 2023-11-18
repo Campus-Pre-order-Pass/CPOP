@@ -40,8 +40,11 @@ urlpatterns = [
     path('v0/sandbox/api/', include('Sandbox.urls', namespace='Sandbox')),
 
 
-    # auth
-    path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
+    # # auth
+    # path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
+
+    # customer
+    path('v0/api/customer/', include('Customer.urls', namespace='Customer')),
 
 
     # shop

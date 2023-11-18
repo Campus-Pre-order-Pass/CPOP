@@ -4,7 +4,6 @@ from django.dispatch import receiver
 from MenuItem.admin import MenuItemCategoryAdmin
 from MenuItem.models import MenuItem, MenuItemCategory, MenuStatus
 from Shop.models import CurrentState, Vendor
-from Auth.views import VendorAPIView
 
 
 @receiver(post_save, sender=Vendor)

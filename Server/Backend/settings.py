@@ -78,6 +78,12 @@ CORS_ORIGIN_WHITELIST = [
 
 
 MIDDLEWARE = [
+    # cache
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
+
+    # application
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,15 +91,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
     # core
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 
-
-    'django.middleware.cache.UpdateCacheMiddleware',
-
-    # redius
-    'django.middleware.cache.FetchFromCacheMiddleware',
 
 ]
 

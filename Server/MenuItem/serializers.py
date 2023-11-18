@@ -17,6 +17,14 @@ class ExtraOptionSerializer(serializers.ModelSerializer):
         exclude = ["vendor"]
 
 
+class MenuItemRequiredOptionSerializer(serializers.ModelSerializer):
+    required_option = RequiredOptionSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = MenuItem
+        fields = ["required_option"]
+
+
 class MenuItemExtraOptionSerializer(serializers.ModelSerializer):
     extra_option = ExtraOptionSerializer(many=True, read_only=True)
 
