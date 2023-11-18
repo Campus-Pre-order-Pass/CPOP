@@ -7,3 +7,9 @@
 ```bash
 docker pull redis
 ```
+
+```bash
+docker run --name redis-lab -p 6379:6379 -d redis
+```
+
+# https://marcus116.blogspot.com/2019/02/how-to-run-redis-in-docker.html
