@@ -9,8 +9,16 @@
 # TypeScript files
 *.ts linguist-language=TypeScript
 
+# TypeScript JSX files
+*.tsx linguist-language=TypeScript
+
 # Docker files
 Dockerfile linguist-language=Docker
 
 # HTML files
 *.html linguist-language=HTML
+
+
+
+# Exclude roff files
+*.roff linguist-language=roff
