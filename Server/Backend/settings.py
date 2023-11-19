@@ -103,7 +103,7 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = ['cpop.iside.shop']
+CSRF_TRUSTED_ORIGINS = ['https://cpop.iside.shop']
 
 
 INTERNAL_IPS = [
