@@ -106,7 +106,7 @@ class MenuItemAdmin(BaseVendorKeyAdmin):
     search_fields = ('vendor__name',)
 
     # 顯示五個物件
-    list_per_page = 50
+    list_per_page = 25
 
     def display_categories(self, obj):
         return ", ".join([category.name for category in obj.category.all()])

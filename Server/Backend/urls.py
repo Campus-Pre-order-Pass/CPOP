@@ -20,13 +20,19 @@ from django.http import FileResponse
 from django.conf import settings
 import os
 from django.conf.urls.static import static
+from CSP.views import handle_csp_report
 
 from helper.file import upload_vendor_image
+import debug_toolbar   # 必要的导入
 
 
 def serve_robots_txt(request):
     robots_txt_path = os.path.join(settings.BASE_DIR, 'robots.txt')
     return FileResponse(open(robots_txt_path, 'rb'))
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
 
 
 urlpatterns = [
@@ -61,8 +67,15 @@ urlpatterns = [
     # robots
     path('robots.txt', serve_robots_txt, name='robots_txt'),
 
+    # debug
+    path('sentry-debug/', trigger_error),
+
+    # csp report
+    path('csp-report-endpoint/', handle_csp_report, name='csp-report-endpoint'),
 ]
 
+# GET MEDIA_URL
+# urlpatterns += static(settings.MEDIA_URL,
+#                       document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)),)

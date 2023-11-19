@@ -10,8 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import sentry_sdk
 import os
 from pathlib import Path
+import sys
+from decouple import config
+from django.core.management.utils import get_random_secret_key
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k=^(!mg80*&)4$cbw8whm!q0%62%n3#w%p#ox5o_k08il&1m@2'
+# SECRET_KEY = 'django-insecure-k=^(!mg80*&)4$cbw8whm!q0%62%n3#w%p#ox5o_k08il&1m@2'
 
 """
 name:  hungwei
@@ -29,9 +34,17 @@ pas:   Ws7tscypC2VrpQpwbsQdURUe97nuRF3p
 """
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+# SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = get_random_secret_key()
+
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
+
+# ssl support/
+SECURE_SSL_REDIRECT = config(
+    'SECURE_SSL_REDIRECT', default=False, cast=bool)
 
 
 # Application definition
@@ -50,11 +63,14 @@ INSTALLED_APPS = [
     # log
     "log_viewer",
     # django-axes
-    # 'axes',
-
+    'axes',
+    # 'djangosecure',
+    'csp',
 
     # mail
     # 'django_mail_admin',
+
+    'debug_toolbar',
 
     # AP
     "Auth",
@@ -67,10 +83,13 @@ INSTALLED_APPS = [
     "MenuItem",
     "Customer",
     "Order",
+
+    'CSP'
 ]
 
 
 CORS_ORIGIN_ALLOW_ALL = True
+
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ORIGIN_WHITELIST = [
@@ -80,12 +99,29 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
+
+
+# axes
+AUTHENTICATION_BACKENDS = [
+    # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesStandaloneBackend',
+
+    # Django ModelBackend is the default authentication backend.
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 MIDDLEWARE = [
+
+    # axes
+    # 'axes.middleware.AxesMiddleware',
     # cache
     'django.middleware.common.CommonMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
-
     # application
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,8 +135,20 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 
-    # axes
-    # 'axes.middleware.AxesMiddleware',
+
+    # DebugToolbarMiddleware
+    'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # SecurityMiddleware
+    # 'djangosecure.middleware.SecurityMiddleware',
+
+
+    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
+    # It only formats user lockout messages and renders Axes lockout responses
+    # on failed user authentication attempts from login views.
+    # If you do not want Axes to override the authentication response
+    # you can skip installing the middleware and use your own views.
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'Backend.urls'
@@ -187,8 +235,10 @@ LANGUAGE_CODE = 'zh-hans'  # 或者 'zh-hant'，根据需要选择简体或繁�
 TIME_ZONE = 'Asia/Taipei'
 
 USE_I18N = True
+# 禁用时区支持
 
-USE_TZ = True
+# USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -436,8 +486,44 @@ CACHE_TIMEOUT_LONG = 60 * 60  # 1 小時
 
 
 # django-axes
-AXES_FAILURE_LIMIT = 5  # 允许失败尝试的最大次数
-AXES_COOLOFF_TIME = 1  # 封锁用户的时间（分钟），在此时间内用户将无法登录
+# 進用
+AXES_ENABLED = config(
+    'AXES_ENABLED', default=False, cast=bool)
+
+AXES_FAILURE_LIMIT = 20  # 允许失败尝试的最大次数
+AXES_COOLOFF_TIME = 60  # 封锁用户的时间（分钟），在此时间内用户将无法登录
 AXES_LOCKOUT_TEMPLATE = 'axes/lockout.html'  # 封锁时显示的模板
-AXES_USE_USER_AGENT = True  # 是否使用用户代理信息进行封锁
-AXES_LOCKOUT_BY_COMBINATION = True  # 是否使用 IP 和用户代理的组合进行封锁
+# AXES_USE_USER_AGENT = True  # 是否使用用户代理信息进行封锁
+# AXES_LOCKOUT_BY_COMBINATION = True  # 是否使用 IP 和用户代理的组合进行封锁
+
+
+# csp
+
+# CSP = {
+#     'default-src': "'self'",
+#     'script-src': ["'self'", 'https://cpop.iside.shop'],
+#     'style-src': ["'self'", 'https://cpop.iside.shop'],
+# }
+
+
+CSP = {
+    'default-src': "'self'",
+    'script-src': ["'self'"],
+    'style-src': ["'self'"],
+}
+CSP_REPORT_ONLY = config('CSP_REPORT_ONLY', default=False, cast=bool)
+CSP_REPORT_URI = '/csp-report-endpoint/'
+
+# sentry_sdk
+
+
+sentry_sdk.init(
+    dsn="https://1dc3016976dc850d2a3db9674b970f9c@o4506253256491008.ingest.sentry.io/4506253257998336",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)

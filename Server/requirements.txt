@@ -16,14 +16,19 @@ decorator==5.1.1
 Django==4.2.3
 django-admin-logs==1.0.2
 django-apscheduler==0.6.2
+django-axes==6.1.1
 django-chartjs==2.3.0
 django-cors-headers==4.1.0
 django-csp==3.7
+django-debug-toolbar==4.2.0
+django-decouple==2.1
 django-log-viewer==1.1.7
 django-mail-admin==0.3.2
 django-ratelimit==4.1.0
 django-redis==5.4.0
 django-rest-framework-async==0.1.0
+django-secure==1.0.2
+django-simple-history==3.4.0
 django-sslserver==0.22
 django-user-agents==0.4.0
 djangorestframework==3.14.0
@@ -75,6 +80,7 @@ PyJWT==2.8.0
 PyMySQL==1.1.0
 pyparsing==3.1.1
 python-dateutil==2.8.2
+python-decouple==3.8
 pytz==2023.3.post1
 pyzmq==25.1.1
 redis==5.0.1
