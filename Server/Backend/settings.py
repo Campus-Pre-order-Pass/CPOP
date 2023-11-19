@@ -35,6 +35,9 @@ pas:   Ws7tscypC2VrpQpwbsQdURUe97nuRF3p
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+
+config.encodeing = 'utf-8'
+
 # SECRET_KEY = config('SECRET_KEY')
 SECRET_KEY = get_random_secret_key()
 
