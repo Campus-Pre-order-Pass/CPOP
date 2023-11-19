@@ -99,6 +99,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://0.0.0.0:3000',
     'http://0.0.0.0:3001',
     'http://0.0.0.0:3002',
+    'https://cpop.iside.shop',
 ]
 
 
@@ -502,18 +503,18 @@ AXES_LOCKOUT_TEMPLATE = 'axes/lockout.html'  # 封锁时显示的模板
 
 # csp
 
-# CSP = {
-#     'default-src': "'self'",
-#     'script-src': ["'self'", 'https://cpop.iside.shop'],
-#     'style-src': ["'self'", 'https://cpop.iside.shop'],
-# }
-
-
 CSP = {
     'default-src': "'self'",
-    'script-src': ["'self'"],
-    'style-src': ["'self'"],
+    'script-src': ["'self'", 'https://cpop.iside.shop'],
+    'style-src': ["'self'", 'https://cpop.iside.shop'],
 }
+
+
+# CSP = {
+#     'default-src': "'self'",
+#     'script-src': ["'self'"],
+#     'style-src': ["'self'"],
+# }
 CSP_REPORT_ONLY = config('CSP_REPORT_ONLY', default=False, cast=bool)
 CSP_REPORT_URI = '/csp-report-endpoint/'
 
