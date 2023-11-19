@@ -99,7 +99,7 @@ class RequiredOptionAdmin(BaseVendorKeyAdmin):
 
 @admin.register(MenuItem)
 class MenuItemAdmin(BaseVendorKeyAdmin):
-    list_display = ('title',
+    list_display = ('title', 'menu_img_url_preview',
                     'display_categories', 'extra_options', 'required_option_display', 'price', 'display_vendor')
     list_filter = ('vendor__name',)  # 注意這裡的修改
 
@@ -133,15 +133,15 @@ class MenuItemAdmin(BaseVendorKeyAdmin):
 
     display_vendor.short_description = '供應商'
 
-    # def menu_img_url_preview(self, obj):
-    #     try:
-    #         image_url = obj.menu_img_url.url
-    #         return mark_safe(f'<div style="border-radius: 20%; overflow: hidden; width: 100px; height: 100px;"><img src="{image_url}" style="width: 100%; height: 100%;" /></div>')
-    #     except:
-    #         return '<span style="color:red;">沒有圖片</span>'
+    def menu_img_url_preview(self, obj):
+        try:
+            image_url = obj.menu_img_url.url
+            return mark_safe(f'<div style="border-radius: 20%; overflow: hidden; width: 100px; height: 100px;"><img src="{image_url}" style="width: 100%; height: 100%;" /></div>')
+        except:
+            return '<span style="color:red;">沒有圖片</span>'
 
-    # menu_img_url_preview.allow_tags = True
-    # menu_img_url_preview.short_description = '菜單預覽圖'
+    menu_img_url_preview.allow_tags = True
+    menu_img_url_preview.short_description = '菜單預覽圖'
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "category":
