@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.conf import settings
 from Shop.models import CurrentState, DayOfWeek, Vendor
-from helper.admin.vendor_class_base import BaseVendorAdmin
+from helper.admin.vendor_class_base import BaseVendorAdmin, BaseVendorKeyAdmin
 
 
 # =================================================================
 
 @admin.register(CurrentState)
-class CurrentStateAdmin(BaseVendorAdmin):
+class CurrentStateAdmin(BaseVendorKeyAdmin):
 
     list_display = ('vendor', 'current_number', 'is_start')
     list_filter = ('vendor__name',)
@@ -17,7 +17,7 @@ class CurrentStateAdmin(BaseVendorAdmin):
 
 
 @admin.register(DayOfWeek)
-class DayOfWeekAdmin(BaseVendorAdmin):
+class DayOfWeekAdmin(BaseVendorKeyAdmin):
     list_display = ('vendor', 'day', 'open_time', 'close_time')
     list_filter = ('vendor__name',)
 
