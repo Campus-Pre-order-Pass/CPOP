@@ -79,7 +79,7 @@ class MenuItem(models.Model):
     required_option = models.ManyToManyField(
         RequiredOption, verbose_name="必選選項")
 
-    title = models.CharField(max_length=100, unique=True, verbose_name="標題")
+    title = models.CharField(max_length=100, verbose_name="標題")
     price = models.DecimalField(
         max_digits=6, decimal_places=2, validators=[validate_count], verbose_name="價格")
     unit = models.CharField(max_length=100, default="份", verbose_name="單位")
