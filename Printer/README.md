@@ -5,6 +5,13 @@
 用於生成、顯示和列印訂單發票。   
 可以根據不同店家的配置生成相應的發票。
 
+### 環境
+```
+pip install escpos
+pip install pywin32
+pip install Pillow
+```
+
 ### 範例
 初始化 OrderInvoiceGenerator 時需提供印表機的 IP 地址。    
 請根據實際情況修改 order_details_example 和 IP 變數。    
@@ -21,6 +28,7 @@ order_details_example = [
 invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
 invoice_generator.generate_invoice(shop="A", order_details=order_details_example, print_invoice=False, show_invoice=True)
 ```
+
 ## 解釋
 - **generate_invoice**: 生成發票，可選擇是否顯示或列印。
 - **show_invoice**: 顯示發票。
@@ -33,13 +41,13 @@ invoice_generator.generate_invoice(shop="A", order_details=order_details_example
 ```
 def set_shop_configuration(self, shop):
     if shop == "A":
-        print("好吃A!")
+        print("唯美食棧")
         self.printer_port = 1000
-        self.logo_path = os.path.join(self.logo_folder, '666.png')
+        self.logo_path = os.path.join(self.logo_folder, 'A001.jpg')
     elif shop == "B":
-        print("好吃B!")
+        print("茶壹")
         self.printer_port = 1001
-        self.logo_path = os.path.join(self.logo_folder, '666.png')
+        self.logo_path = os.path.join(self.logo_folder, 'B001.jpg')
     else:
         # 可以添加其他店家的配置
         print("#####未知的店家#####")
