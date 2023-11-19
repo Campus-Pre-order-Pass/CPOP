@@ -49,6 +49,9 @@ INSTALLED_APPS = [
 
     # log
     "log_viewer",
+    # django-axes
+    # 'axes',
+
 
     # mail
     # 'django_mail_admin',
@@ -96,7 +99,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 
-
+    # axes
+    # 'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'Backend.urls'
@@ -429,3 +433,11 @@ SESSION_CACHE_ALIAS = 'default'
 
 CACHE_TIMEOUT_SHORT = 60 * 5  # 5 分鐘
 CACHE_TIMEOUT_LONG = 60 * 60  # 1 小時
+
+
+# django-axes
+AXES_FAILURE_LIMIT = 5  # 允许失败尝试的最大次数
+AXES_COOLOFF_TIME = 1  # 封锁用户的时间（分钟），在此时间内用户将无法登录
+AXES_LOCKOUT_TEMPLATE = 'axes/lockout.html'  # 封锁时显示的模板
+AXES_USE_USER_AGENT = True  # 是否使用用户代理信息进行封锁
+AXES_LOCKOUT_BY_COMBINATION = True  # 是否使用 IP 和用户代理的组合进行封锁

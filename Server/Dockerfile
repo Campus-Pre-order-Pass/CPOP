@@ -1,5 +1,5 @@
 # 使用官方的 Python 基本映像作為基礎
-FROM python:latest
+FROM python:latest AS builder
 
 # 將工作目錄設置為 Django 項目目錄
 WORKDIR /app
@@ -10,9 +10,6 @@ RUN pip install virtualenv
 # 創建一個名為 venv 的虛擬環境
 RUN python -m venv venv
 
-# 啟用虛擬環境
-RUN . venv/bin/activate
-
 # 複製 Django 項目代碼到容器中
 COPY . /app
 
@@ -20,10 +17,19 @@ COPY . /app
 COPY requirements.txt /app/
 
 # 安裝 Django 和其他所需的依賴
-RUN pip3 install -r requirements.txt
+RUN . venv/bin/activate && pip install -r requirements.txt
 
-# 運行 Django 應用程序
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# 第二阶段：最终镜像
+FROM python:latest
 
+# 将工作目录设置为 Django 项目目录
+WORKDIR /app
 
-# docker build -t cpop-server-image .
+# 从构建阶段复制虚拟环境
+COPY --from=builder /app/venv /app/venv
+
+# 复制 Django 项目代码到容器中
+COPY . /app
+
+# 运行 Django 应用程序
+CMD ["venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
