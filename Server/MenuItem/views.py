@@ -148,8 +148,7 @@ class OptionPIView(APIView):
         menuItem = MenuItem.objects.get(id=int(menu_id))
 
         data = {
-            "extra": MenuItemExtraOptionSerializer(menuItem).data,
-            "required":  MenuItemRequiredOptionSerializer(menuItem).data
+            "extra": (MenuItemExtraOptionSerializer(menuItem).data),
+            "required":  (MenuItemRequiredOptionSerializer(menuItem).data)
         }
-
         return Response(data)

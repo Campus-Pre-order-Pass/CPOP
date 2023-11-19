@@ -66,21 +66,19 @@ class ShopAPIView(APIView):
 
         if shop_id:
             # 处理特定shop_id的情况
-            try:
-                vendor = Vendor.objects.get(id=shop_id)
-                current_state = CurrentState.objects.get(vendor=vendor)
 
-                vendor_serializer = VendorSerializer(vendor)
-                current_state_serializer = CurrentStateSerializer(
-                    current_state)
+            vendor = Vendor.objects.get(id=shop_id)
+            current_state = CurrentState.objects.get(vendor=vendor)
 
-                shop_list = {
-                    "vendor": vendor_serializer.data,
-                    "current": current_state_serializer.data
-                }
-            except (Vendor.DoesNotExist, CurrentState.DoesNotExist):
-                # 处理未找到供应商或当前状态的情况
-                shop_list = {}
+            vendor_serializer = VendorSerializer(vendor)
+            current_state_serializer = CurrentStateSerializer(
+                current_state)
+
+            shop_list = {
+                "vendor": vendor_serializer.data,
+                "current": current_state_serializer.data
+            }
+
         else:
             # 处理没有提供shop_id的情况
             vendor_list = Vendor.objects.all()

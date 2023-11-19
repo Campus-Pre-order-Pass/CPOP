@@ -5,10 +5,10 @@ FROM python:latest
 WORKDIR /app
 
 # 安裝虛擬環境的依賴
-RUN pip3 install virtualenv
+RUN pip install virtualenv
 
 # 創建一個名為 venv 的虛擬環境
-RUN python3 -m venv venv
+RUN python -m venv venv
 
 # 啟用虛擬環境
 RUN . venv/bin/activate
@@ -20,7 +20,7 @@ COPY . /app
 COPY requirements.txt /app/
 
 # 安裝 Django 和其他所需的依賴
-RUN pip3 install -r requirements.txt
+RUN pip install -r requirements.txt
 
 # 運行 Django 應用程序
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
