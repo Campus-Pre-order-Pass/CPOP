@@ -20,7 +20,7 @@ COPY . /app
 COPY requirements.txt /app/
 
 # 安裝 Django 和其他所需的依賴
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # 運行 Django 應用程序
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

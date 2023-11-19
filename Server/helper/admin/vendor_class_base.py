@@ -9,6 +9,7 @@ def apply_vendor_filter(qs, user):
     if not user.is_superuser:
         try:
             vendor = Vendor.objects.get(name=user.username)
+            print(user.username)
             qs = qs.filter(name=vendor.name)
         except Vendor.DoesNotExist:
             # TODO: 需要做報錯！！！

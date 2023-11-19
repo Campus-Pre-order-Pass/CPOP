@@ -43,7 +43,7 @@ from django.views.decorators.cache import cache_control
 # MenuItem =================================================================
 
 
-# @handle_exceptions(MenuItem)
+@handle_exceptions(MenuItem)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
