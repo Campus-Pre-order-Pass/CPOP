@@ -162,10 +162,10 @@ class MenuItemAdmin(BaseVendorKeyAdmin):
         if db_field.name == "required_option":
             vendor_id = request.POST.get('vendor', None)
             if vendor_id:
-                kwargs["queryset"] = ExtraOption.objects.filter(
+                kwargs["queryset"] = RequiredOption.objects.filter(
                     vendor__id=vendor_id)
             else:
-                kwargs["queryset"] = ExtraOption.objects.none()
+                kwargs["queryset"] = RequiredOption.objects.none()
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
