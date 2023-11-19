@@ -1,10 +1,7 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # models
-from MenuItem.admin import MenuItemCategoryAdmin
 from MenuItem.models import MenuItem, MenuStatus
-from Shop.models import CurrentState
-from Auth.views import VendorAPIView
 
 
 @receiver(post_save, sender=MenuItem)

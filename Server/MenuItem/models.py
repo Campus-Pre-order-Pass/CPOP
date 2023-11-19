@@ -108,7 +108,7 @@ class MenuItem(models.Model):
 
 class MenuStatus(models.Model):
     menu_item = models.ForeignKey(
-        MenuItem, on_delete=models.CASCADE, verbose_name="廠商")  # 菜單項目關聯
+        MenuItem, on_delete=models.CASCADE, verbose_name="菜單")  # 菜單項目關聯
 
     remaining_quantity = models.PositiveIntegerField(
         default=0, verbose_name="剩餘數量")  # 添加剩餘數量字段

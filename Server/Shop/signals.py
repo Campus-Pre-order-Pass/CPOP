@@ -1,7 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 # models
-from MenuItem.admin import MenuItemCategoryAdmin
 from MenuItem.models import MenuItem, MenuItemCategory, MenuStatus
 from Shop.models import CurrentState, Vendor
 

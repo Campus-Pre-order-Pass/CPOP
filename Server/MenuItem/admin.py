@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib.admin import AdminSite
+from helper.admin.vendor_class_base import BaseMenuItemAdmin, BaseVendorKeyAdmin
 
 from MenuItem.models import ExtraOption, MenuItem, MenuItemCategory, MenuStatus, RequiredOption
 from Shop.models import Vendor
@@ -9,18 +10,24 @@ from Shop.models import Vendor
 # =================================================================
 
 @admin.register(MenuItemCategory)
-class MenuItemCategoryAdmin(admin.ModelAdmin):
+class MenuItemCategoryAdmin(BaseVendorKeyAdmin):
     list_display = ('vendor', 'name')
     list_filter = ('vendor',)  # 在管理员页面上添加供应商过滤器
     search_fields = ('vendor',)
     list_per_page = 30
     list_max_show_all = 200
 
+    # def get_queryset(self, request):
+    #     qs = super().get_queryset(request)
+    #     if not request.user.is_superuser:
+    #         qs = qs.filter(vendor__name=request.user.first_name)
+    #     return qs
+
 
 @admin.register(MenuStatus)
-class MenuStatusAdmin(admin.ModelAdmin):
+class MenuStatusAdmin(BaseMenuItemAdmin):
     list_display = ('menu_item', 'remaining_quantity', 'is_available')
-    list_filter = ('menu_item',)  # 使用外键关联的供应商进行过滤
+    list_filter = ('menu_item__vendor__name',)  # 使用外键关联的供应商进行过滤
     search_fields = ('menu_item__vendor__name',)  # 允许通过供应商名称搜索
 
     def vendor(self, obj):
@@ -34,8 +41,9 @@ class MenuStatusAdmin(admin.ModelAdmin):
     list_max_show_all = 200
 
 
+# 選項 =================================================================
 @admin.register(ExtraOption)
-class ExtraOptionAdmin(admin.ModelAdmin):
+class ExtraOptionAdmin(BaseVendorKeyAdmin):
     list_display = ('name', 'description', 'price',)
 
     list_filter = ('vendor__name',)  # 注意這裡的修改
@@ -60,7 +68,7 @@ class ExtraOptionAdmin(admin.ModelAdmin):
 
 
 @admin.register(RequiredOption)
-class ExtraOptionAdmin(admin.ModelAdmin):
+class RequiredOptionAdmin(BaseVendorKeyAdmin):
     list_display = ('name', 'description', 'price',)
 
     list_filter = ('vendor__name',)  # 注意這裡的修改
@@ -82,9 +90,15 @@ class ExtraOptionAdmin(admin.ModelAdmin):
     # default
     list_max_show_all = 200
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            qs = qs.filter(vendor__name=request.user.first_name)
+        return qs
+
 
 @admin.register(MenuItem)
-class MenuItemAdmin(admin.ModelAdmin):
+class MenuItemAdmin(BaseVendorKeyAdmin):
     list_display = ('title', 'menu_img_url_preview',
                     'display_categories', 'extra_options', 'required_option_display', 'price', 'display_vendor')
     list_filter = ('vendor__name',)  # 注意這裡的修改
