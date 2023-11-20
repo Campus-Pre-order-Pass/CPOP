@@ -605,7 +605,7 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         {"name": "GA4 Dashboard",
             "url": "https://analytics.google.com/analytics/web/", "permissions": [], "new_window": True},
-        {"name": "Swagger Documentation", "url": "/swagger/",
+        {"name": "Swagger Documentation", "url": "http://49.213.238.75:8000/swagger/",
             "permissions": [], "new_window": True},
     ],
     #############
