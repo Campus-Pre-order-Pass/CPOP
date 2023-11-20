@@ -562,8 +562,8 @@ Q_CLUSTER = {
 }
 
 JAZZMIN_SETTINGS = {
-    "site_title": "Your Admin Title",
-    "site_header": "Your Admin Header",
+    "site_title": "CPOP",
+    "site_header": "CPOP",
     "site_logo": "logo.png",
     "show_sidebar": True,
 }
