@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'csp',
     'simple_history',
     'django_q',
-
+    'analytical',
     # mail
     # 'django_mail_admin',
 
@@ -570,10 +570,61 @@ Q_CLUSTER = {
 }
 
 JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+
     "site_title": "CPOP",
+
+    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+
     "site_header": "CPOP",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "CPOP",
+
+    # logo
     "site_logo": "logo.png",
+
+    # CSS classes that are applied to the logo above
+    "site_logo_classes": "img-circle",
+
     "show_sidebar": True,
+
+    # Welcome text on the login screen
+    "welcome_sign": "歡迎使用CPOP管理台!!",
+
+
+    # Copyright on the footer
+    "copyright": "CPOP團隊",
+
+    ############
+    # Top Menu #
+    ############
+
+    # Links to put along the top menu
+    "topmenu_links": [
+        {"name": "GA4 Dashboard",
+            "url": "https://analytics.google.com/analytics/web/", "permissions": [], "new_window": True},
+        # Add more menu items as needed
+    ],
+
+
+    #################
+    # Related Modal #
+    #################
+    # Use modals instead of popups
+    "related_modal_active": False,
+
+    #############
+    # UI Tweaks #
+    #############
+    # Relative paths to custom CSS/JS scripts (must be present in static files)
+    "custom_css": None,
+    "custom_js": None,
+    # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
+    "use_google_fonts_cdn": True,
+    # Whether to show the UI customizer on the sidebar
+    "show_ui_builder": False,
+
 }
 
 
@@ -586,5 +637,15 @@ SWAGGER_SETTINGS = {
         'basic': {
             'type': 'basic',
         },
+    },
+}
+
+
+ANALYTICAL_INTERNAL_IPS = ['127.0.0.1']  # 用于本地开发
+ANALYTICAL_AUTO_IDENTIFY = True
+
+ANALYTICAL_PROVIDERS = {
+    'ga4': {
+        'GOOGLE_ANALYTICS_MEASUREMENT_ID': 'Your-GA4-Measurement-ID',
     },
 }

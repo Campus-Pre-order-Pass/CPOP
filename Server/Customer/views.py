@@ -47,6 +47,7 @@ from helper.handle_exceptions import handle_exceptions
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class CustomerAPIView(APIView):
+    """有關顧客的api view"""
     if not settings.DEBUG:
         authentication_classes = [FirebaseTokenAuthentication]
     renderer_classes = [JSONRenderer]  # 设置渲染器
