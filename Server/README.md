@@ -10,7 +10,7 @@ CPOP Backend is the backend part of the CPOP project.
 
 To install the required packages, follow the steps below:
 
-```bash
+````bash
 # Create a virtual environment
 python3 -m venv .venv
 # Activate the virtual environment (Windows)
@@ -21,6 +21,10 @@ source .venv/bin/activate
 cd Backend
 # Install Python dependencies
 pip install -r requirements.txt
+
+# q
+python manage.py qcluster
+
 # Run the development server
 python manage.py runserver 0.0.0.0:8000
 
@@ -31,8 +35,7 @@ docker build -t cpop-server-image .
 # Run the Docker container
 docker run -p 8000:8000 cpop-server-image
 
-
 ### Contributor
 
-- Project Manager: [LAIHUNGWEI](https://github.com/s990093)
-```
+- Project Manager: [LAIHUNGWEI](https://github.com/s990093)```
+````

@@ -36,6 +36,7 @@ def trigger_error(request):
 
 
 urlpatterns = [
+
     # admin
     path('admin/', admin.site.urls),
 
@@ -72,6 +73,8 @@ urlpatterns = [
 
     # csp report
     path('csp-report-endpoint/', handle_csp_report, name='csp-report-endpoint'),
+
+
 ]
 
 # GET MEDIA_URL

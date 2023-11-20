@@ -43,7 +43,7 @@ SECRET_KEY = get_random_secret_key()
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*', ]
 
 # ssl support/
 SECURE_SSL_REDIRECT = config(
@@ -53,6 +53,8 @@ SECURE_SSL_REDIRECT = config(
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,11 +71,14 @@ INSTALLED_APPS = [
     'axes',
     # 'djangosecure',
     'csp',
+    'simple_history',
+    'django_q',
 
     # mail
     # 'django_mail_admin',
 
     'debug_toolbar',
+
 
     # AP
     "Auth",
@@ -86,8 +91,8 @@ INSTALLED_APPS = [
     "MenuItem",
     "Customer",
     "Order",
-
-    'CSP'
+    'CSP',
+    "Track"
 ]
 
 
@@ -148,6 +153,9 @@ MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     # SecurityMiddleware
     # 'djangosecure.middleware.SecurityMiddleware',
+
+
+
 
 
     # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
@@ -501,7 +509,7 @@ AXES_FAILURE_LIMIT = 20  # 允许失败尝试的最大次数
 AXES_COOLOFF_TIME = 60  # 封锁用户的时间（分钟），在此时间内用户将无法登录
 AXES_LOCKOUT_TEMPLATE = 'axes/lockout.html'  # 封锁时显示的模板
 # AXES_USE_USER_AGENT = True  # 是否使用用户代理信息进行封锁
-# AXES_LOCKOUT_BY_COMBINATION = True  # 是否使用 IP 和用户代理的组合进行封锁
+AXES_LOCKOUT_BY_COMBINATION = True  # 是否使用 IP 和用户代理的组合进行封锁
 
 
 # csp
@@ -524,13 +532,38 @@ CSP_REPORT_URI = '/csp-report-endpoint/'
 # sentry_sdk
 
 
-sentry_sdk.init(
-    dsn="https://1dc3016976dc850d2a3db9674b970f9c@o4506253256491008.ingest.sentry.io/4506253257998336",
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    traces_sample_rate=1.0,
-    # Set profiles_sample_rate to 1.0 to profile 100%
-    # of sampled transactions.
-    # We recommend adjusting this value in production.
-    profiles_sample_rate=1.0,
-)
+# sentry_sdk.init(
+#     dsn="https://1dc3016976dc850d2a3db9674b970f9c@o4506253256491008.ingest.sentry.io/4506253257998336",
+#     # Set traces_sample_rate to 1.0 to capture 100%
+#     # of transactions for performance monitoring.
+#     traces_sample_rate=1.0,
+#     # Set profiles_sample_rate to 1.0 to profile 100%
+#     # of sampled transactions.
+#     # We recommend adjusting this value in production.
+#     profiles_sample_rate=1.0,
+# )
+
+
+#
+Q_CLUSTER = {
+    'name': 'django_q',
+    'workers': 8,
+    'recycle': 500,
+    'timeout': 60,
+    'compress': True,
+    'save_limit': 250,
+    'queue_limit': 500,
+    'cpu_affinity': 1,
+    'label': 'Django Q',
+    'redis': {
+        'host': '127.0.0.1',
+        'port': 6379,
+        'db': 0, }
+}
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Your Admin Title",
+    "site_header": "Your Admin Header",
+    "site_logo": "logo.png",
+    "show_sidebar": True,
+}
