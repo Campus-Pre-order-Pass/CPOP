@@ -78,7 +78,8 @@ INSTALLED_APPS = [
     # 'django_mail_admin',
 
     'debug_toolbar',
-
+    'rest_framework',
+    'drf_yasg',
 
     # AP
     "Auth",
@@ -125,6 +126,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 MIDDLEWARE = [
 
@@ -566,4 +574,17 @@ JAZZMIN_SETTINGS = {
     "site_header": "CPOP",
     "site_logo": "logo.png",
     "show_sidebar": True,
+}
+
+
+# drf-yasg 配置
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'api_version': '1.0',
+    'enabled_methods': ['get', 'post', 'put', 'patch', 'delete'],
+    'SECURITY_DEFINITIONS': {
+        'basic': {
+            'type': 'basic',
+        },
+    },
 }

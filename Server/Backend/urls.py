@@ -25,6 +25,12 @@ from CSP.views import handle_csp_report
 from helper.file import upload_vendor_image
 import debug_toolbar   # 必要的导入
 
+#
+from rest_framework import permissions
+# drf_yasg
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 def serve_robots_txt(request):
     robots_txt_path = os.path.join(settings.BASE_DIR, 'robots.txt')
@@ -33,6 +39,20 @@ def serve_robots_txt(request):
 
 def trigger_error(request):
     division_by_zero = 1 / 0
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 
 urlpatterns = [
@@ -74,7 +94,15 @@ urlpatterns = [
     # csp report
     path('csp-report-endpoint/', handle_csp_report, name='csp-report-endpoint'),
 
+    # rest_framework
+    path('api-auth/', include('rest_framework.urls')),
 
+
+    # 添加 drf-yasg 自动生成的 API 文档 URL
+    path('swagger/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc',
+         cache_timeout=0), name='schema-redoc'),
 ]
 
 # GET MEDIA_URL
