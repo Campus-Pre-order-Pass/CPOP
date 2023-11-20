@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib.admin import AdminSite
-from helper.admin.vendor_class_base import BaseMenuItemAdmin, BaseVendorKeyAdmin
+from helper.admin.vendor_class_base import BaseMenuItemAdmin, BaseVendorKeyAdmin, BaseVendorAdmin
 
 from MenuItem.models import ExtraOption, MenuItem, MenuItemCategory, MenuStatus, RequiredOption
 from Shop.models import Vendor
@@ -170,11 +170,11 @@ class MenuItemAdmin(BaseVendorKeyAdmin):
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "vendor" and not request.user.is_superuser:
-            kwargs["queryset"] = Vendor.objects.filter(
-                id=request.user.vendor.id)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    # def formfield_for_foreignkey(self, db_field, request, **kwargs):
+    #     if db_field.name == "vendor" and not request.user.is_superuser:
+    #         kwargs["queryset"] = Vendor.objects.filter(
+    #             id=request.user.vendor.id)
+    #     return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 # =================================================================
