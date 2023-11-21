@@ -53,6 +53,7 @@ SECURE_SSL_REDIRECT = config(
 # Application definition
 
 INSTALLED_APPS = [
+    # admin
     'jazzmin',
 
     'django.contrib.admin',
@@ -630,6 +631,7 @@ JAZZMIN_SETTINGS = {
     #################
     # Related Modal #
     #################
+
     # Use modals instead of popups
     "related_modal_active": False,
 

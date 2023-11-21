@@ -64,7 +64,7 @@ urlpatterns = [
     path('logs/', include('log_viewer.urls')),
 
     # snadbax
-    path('v0/sandbox/api/', include('Sandbox.urls', namespace='Sandbox')),
+    # path('v0/sandbox/api/', include('Sandbox.urls', namespace='Sandbox')),
 
 
     # # auth
