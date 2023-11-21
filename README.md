@@ -68,4 +68,8 @@ CPOP 高科美食通是一個使用多種技術堆疊的專案，旨在提供高
 
 現在，你可以通過訪問 [http://localhost:8000](http://localhost:8000) 來查看你的應用程式。
 
+### nwgsi
+
+[https://github.com/twtrubiks/docker-django-nginx-uwsgi-postgres-tutorial]
+
 請確保安裝了 Docker、Node.js 和相關套件，並按照上述步驟進行設置和運行。
