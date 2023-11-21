@@ -17,6 +17,7 @@ from helper.task.current_state import update_current_state_action
 
 
 class Command(BaseCommand):
+    # ./manage.py order
     help = "Test the printer functionality"
 
     def handle(self, *args, **options):
