@@ -26,8 +26,11 @@ pip install -r requirements.txt
 python manage.py qcluster
 
 # Run the development server
+# generate
 python manage.py runserver 0.0.0.0:8000
 
+# wsgi server
+gunicorn Backend.wsgi:application
 
 # Build the Docker image
 docker build -t cpop-server-image .

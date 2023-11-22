@@ -106,7 +106,10 @@ CORS_ORIGIN_WHITELIST = [
     'http://0.0.0.0:3000',
     'http://0.0.0.0:3001',
     'http://0.0.0.0:3002',
-    'https://cpop.iside.shop',
+    # site
+    # 'https://cpop.iside.shop',
+    # api and admin sites
+    'https://cpop.api.iside.shop',
 ]
 
 
@@ -272,14 +275,20 @@ USE_TZ = False
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    # BASE_DIR / "myapp/static/css",
+    os.path.join(BASE_DIR, 'static'),
 ]
 
-# settings.py
+# TODO: 需要改
+STATIC_ROOT = '/Users/hungwei/Desktop/CPOP/CPOP/static/'
+
 
 MEDIA_URL = '/media/'
+
+# TODO: 需要改
+
+# MEDIA_ROOT = '/Users/hungwei/Desktop/CPOP/CPOP/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

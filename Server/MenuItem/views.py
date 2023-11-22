@@ -130,6 +130,9 @@ class MenuItemAPIView(APIView):
 #         return Response(serializer.data)
 
 @handle_exceptions(MenuItem)
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class OptionPIView(APIView):
     renderer_classes = [JSONRenderer]
 
