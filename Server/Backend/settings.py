@@ -113,7 +113,10 @@ CORS_ORIGIN_WHITELIST = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = ['https://cpop.iside.shop',  'http://127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [
+    # 'https://cpop.iside.shop',
+    'https://cpop.api.iside.shop',
+    'http://127.0.0.1', ]
 
 
 INTERNAL_IPS = [
