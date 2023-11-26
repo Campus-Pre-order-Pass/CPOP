@@ -1,5 +1,51 @@
 <!-- templates/axes/lockout.html -->
 
-<h2>封锁通知</h2>
-<p>对不起，由于连续登录失败尝试，您的帐户已被封锁。</p>
-<p>请稍后再试，或者联系支持团队获取帮助。</p>
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>封锁通知</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #d9534f;
+      }
+
+      p {
+        margin-bottom: 20px;
+      }
+
+      .logo {
+        max-width: 100px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>封锁通知</h2>
+      <p>对不起，由于连续登录失败尝试，您的帐户已被封锁。</p>
+      <p>请稍后再试，或者联系支持团队获取帮助。</p>
+      <img src="{% load static 'logo.png' %}" alt="Logo" class="logo" />
+    </div>
+  </body>
+</html>

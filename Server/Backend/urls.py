@@ -56,10 +56,6 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
-
-    # admin
-    path('admin/', admin.site.urls),
-
     # log
     path('logs/', include('log_viewer.urls')),
 
@@ -105,7 +101,7 @@ urlpatterns = [
          cache_timeout=0), name='schema-redoc'),
 
     # TODO: default url is admin site
-    path('', admin.site.urls),
+    path('/admin', admin.site.urls),
 
 ]
 
