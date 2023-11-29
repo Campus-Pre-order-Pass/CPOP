@@ -32,6 +32,10 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
+# 版本
+V = settings.v
+
+
 def serve_robots_txt(request):
     robots_txt_path = os.path.join(settings.BASE_DIR, 'robots.txt')
     return FileResponse(open(robots_txt_path, 'rb'))
@@ -56,6 +60,12 @@ schema_view = get_schema_view(
 
 
 urlpatterns = [
+
+
+    # TODO: default url is admin site
+    path('admin/', admin.site.urls),
+
+
     # log
     path('logs/', include('log_viewer.urls')),
 
@@ -67,22 +77,21 @@ urlpatterns = [
     # path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
 
     # customer
-    path('v0/api/customer/', include('Customer.urls', namespace='Customer')),
+    path(f'{V}/api/customer/',
+         include('Customer.urls', namespace='Customer')),
 
 
     # shop
-    path('v0/api/s/', include('Shop.urls', namespace='Shop')),
+    path(f'{V}/api/s/', include('Shop.urls', namespace='Shop')),
 
     # menuItem
-    path('v0/api/m/', include('MenuItem.urls', namespace='MenuItem')),
+    path(f'{V}/api/m/', include('MenuItem.urls', namespace='MenuItem')),
 
 
     # # file
     # path('vendor/<int:vendor_id>/upload_image/',
     #      upload_vendor_image, name='upload_vendor_image'),
 
-    # robots
-    path('robots.txt', serve_robots_txt, name='robots_txt'),
 
     # debug
     path('sentry-debug/', trigger_error),
@@ -97,16 +106,22 @@ urlpatterns = [
     # 添加 drf-yasg 自动生成的 API 文档 URL
     path('swagger/', schema_view.with_ui('swagger',
          cache_timeout=0), name='schema-swagger-ui'),
+
     path('redoc/', schema_view.with_ui('redoc',
          cache_timeout=0), name='schema-redoc'),
 
-    # TODO: default url is admin site
-    path('/admin', admin.site.urls),
+
+
+    # robots
+    path('robots.txt', serve_robots_txt, name='robots_txt'),
+
 
 ]
 
 # GET MEDIA_URL
 urlpatterns += static(settings.MEDIA_URL,
                       document_root=settings.MEDIA_ROOT)
+
+
 if settings.DEBUG:
     urlpatterns.append(path('__debug__/', include(debug_toolbar.urls)),)

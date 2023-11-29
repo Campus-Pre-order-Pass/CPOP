@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  django:
+    image: your-django-image:latest
+    container_name: django-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./your-django-project:/app
+    environment:
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=5432
+      - DJANGO_DB_NAME=mydatabase
+      - DJANGO_DB_USER=myuser
+      - DJANGO_DB_PASSWORD=mypassword

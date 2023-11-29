@@ -116,7 +116,8 @@ CORS_ORIGIN_WHITELIST = [
 CSRF_TRUSTED_ORIGINS = [
     # 'https://cpop.iside.shop',
     'https://cpop.api.iside.shop',
-    'http://127.0.0.1', ]
+    'http://127.0.0.1',
+]
 
 
 INTERNAL_IPS = [
@@ -682,3 +683,7 @@ ANALYTICAL_PROVIDERS = {
         'GOOGLE_ANALYTICS_MEASUREMENT_ID': 'Your-GA4-Measurement-ID',
     },
 }
+
+
+# 版本
+V = "V0"

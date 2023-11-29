@@ -14,5 +14,4 @@ class CurrentStateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CurrentState
         exclude = ["id", "vendor"]
-
         # fields = '__all__'

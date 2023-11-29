@@ -16,5 +16,6 @@ urlpatterns = [
 
     # shop
     path('<str:shop_id>', views.ShopAPIView.as_view(), name="shop"),
+
     path('', views.ShopAPIView.as_view(), name="shop"),
 ]
