@@ -33,7 +33,7 @@ from drf_yasg import openapi
 
 
 # 版本
-V = settings.v
+V = settings.V
 
 
 def serve_robots_txt(request):
@@ -86,6 +86,8 @@ urlpatterns = [
 
     # menuItem
     path(f'{V}/api/m/', include('MenuItem.urls', namespace='MenuItem')),
+
+    path(f'{V}/api/camera/', include('Camera.urls', namespace='Camera')),
 
 
     # # file
