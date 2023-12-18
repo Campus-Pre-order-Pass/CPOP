@@ -313,6 +313,7 @@ RATELIMITS = {
     # comment
     'comment': '5/m',
 }
+
 RATELIMITS_DEFAULT = "100/m"
 RATELIMITS_ADMIN = "10/m"
 RATELIMITS_USER = "10/m"
@@ -686,4 +687,4 @@ ANALYTICAL_PROVIDERS = {
 
 
 # 版本
-V = "V0"
+V = "v0"
