@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 import cv2
 import numpy as np
 import requests
@@ -7,6 +7,10 @@ import json
 import django
 import sys
 
+# api
+from drfa.decorators import api_view, APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 # models
 from Shop.models import CurrentState, Vendor
@@ -297,6 +301,8 @@ def process_and_recognize_image(esp32_cam):
 
 
 # @csrf_exempt
+
+@api_view(['GET', 'PUT', 'POST'])
 def upload_image(request):
     if request.method == "POST":
         try:
