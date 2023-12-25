@@ -349,7 +349,6 @@ def upload_image(request):
 def save_model(vendor_id, current_number):
     try:
         v = Vendor.objects.get(id=vendor_id)
-        print(v)
         c = CurrentState.objects.get(vendor_id=v)
 
         c.current_number = current_number

@@ -1,8 +1,15 @@
+# include makefiles/create_venv.mk
+# include makefiles/install_dependencies.mk
+# include makefiles/run_server.mk
+
+# all:  install_dependencies run_server
+
+
 # Detect operating system
 ifeq ($(OS),Windows_NT)
 	VENV_CREATE = python -m venv venv
 	VENV_ACTIVATE = .venv\Scripts\activate
-	SOURCE =
+	SOURCE = source
 else
 	VENV_CREATE = python3 -m venv venv
 	VENV_ACTIVATE = .venv/bin/activate
@@ -26,7 +33,7 @@ create_venv:
 	$(VENV_CREATE)
 
 # Install dependencies
-install:~
+install: activate
 	pip install -r requirements.txt
 
 # Check and kill the process on port 8000
