@@ -301,7 +301,6 @@ def process_and_recognize_image(esp32_cam):
 
 
 # @csrf_exempt
-
 @api_view(['GET', 'PUT', 'POST'])
 def upload_image(request):
     if request.method == "POST":
@@ -318,7 +317,7 @@ def upload_image(request):
 
             # 调用图像处理函数
             result = process_and_recognize_image(roi_color)  # 圖片處理進入點
-            print("result:", result)
+            # print("result:", result)
 
             digits = None
             digits = (
@@ -326,16 +325,15 @@ def upload_image(request):
                     ) if result["status"] == "success" else -1
             )
             data = {"current_number": digits}
-            print("data:", data)
-            # 這是最後傳送的url格式，https://cpop.api.iside.shop/v0/api/s/current/ + storeID
+            # print("data:", data)
 
             # TODO: check
 
             save_model(storeID, digits)
 
-            url = PUT_URL + storeID
-            response = requests.put(url, data=json.dumps(data))  # url傳送
-            print("response:", response.text)
+            # url = PUT_URL + storeID
+            # response = requests.put(url, data=json.dumps(data))  # url傳送
+            # print("response:", response.text)
 
             # 返回 JSON 响应，表示图像上传成功，并包含处理结果
             return JsonResponse({"status": "success", "digits": digits})
@@ -349,7 +347,14 @@ def upload_image(request):
 
 
 def save_model(vendor_id, current_number):
-    c = CurrentState.objects.get(Vendor.objects.get(vendor_id))
-    c.current_number = current_number
-    c.save()
-    return True
+    try:
+        v = Vendor.objects.get(id=vendor_id)
+        print(v)
+        c = CurrentState.objects.get(vendor_id=v)
+
+        c.current_number = current_number
+        c.save()
+        return True
+    except Exception as e:
+        print(e)
+        return False

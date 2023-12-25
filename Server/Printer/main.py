@@ -149,7 +149,7 @@ class OrderInvoiceGenerator:
 
     # 根據店家設定印表機和標誌
 
-    def ㄅㄞset_shop_configuration(self, shop):
+    def set_shop_configuration(self, shop):
         if shop == "A":
             print("唯美食棧")
             self.printer_port = 1000

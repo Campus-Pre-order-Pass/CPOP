@@ -15,9 +15,10 @@ class OrderModelTest(TestCase):
 
     def test_printer(self):
         # Assuming OrderInvoiceGenerator is in your_module
+        # invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
         invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
         result = invoice_generator.generate_invoice(
-            shop="B", order_details=self.order_details_example, print_invoice=True, show_invoice=False)
+            shop="A", order_details=self.order_details_example, print_invoice=True, show_invoice=False)
         # Assert that the result is as expected
         # You may need to adjust this based on the actual return value
         self.assertTrue(result)
