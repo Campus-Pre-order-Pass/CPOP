@@ -329,14 +329,13 @@ def upload_image(request):
 
             # TODO: check
 
-            save_model(storeID, digits)
+            ok = save_model(storeID, digits)
 
-            # url = PUT_URL + storeID
-            # response = requests.put(url, data=json.dumps(data))  # url傳送
-            # print("response:", response.text)
+            status = 'success' if ok else 'error'
 
-            # 返回 JSON 响应，表示图像上传成功，并包含处理结果
-            return JsonResponse({"status": "success", "digits": digits})
+            # 創建 JSON response 對象
+            response_data = {"status": status, "digits": digits}
+            return JsonResponse(response_data)
         except cv2.error as e:
             return JsonResponse({"status": "error", "message": str(e)})
         except Exception as e:
