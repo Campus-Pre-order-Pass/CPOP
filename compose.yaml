@@ -1,16 +1,24 @@
 version: "3"
-
 services:
-  django:
-    image: your-django-image:latest
-    container_name: django-app
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./your-django-project:/app
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
     environment:
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_PORT=5432
-      - DJANGO_DB_NAME=mydatabase
-      - DJANGO_DB_USER=myuser
-      - DJANGO_DB_PASSWORD=mypassword
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.10.0
+    volumes:
+      - ./logstash/config:/usr/share/logstash/pipeline
+    ports:
+      - "5000:5000"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch

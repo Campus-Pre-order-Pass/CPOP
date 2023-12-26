@@ -26,6 +26,20 @@ CPOP 高科美食通是一個使用多種技術堆疊的專案，旨在提供高
 
 ## 如何運行
 
+### 透過 makefile
+
+1. 啟動所有前端後端伺服器與建制
+
+   ```bash
+   make all
+   ```
+
+2. 啟動 server
+
+   ```bash
+   make runser
+   ```
+
 ### 後端 (Django + Redis)
 
 1. 進入 `server` 目錄：

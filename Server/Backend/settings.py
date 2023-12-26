@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-k=^(!mg80*&)4$cbw8whm!q0%62%n3#w%p#ox5o_k08il&1m@2'
 
 """
-name:  hungwei
+name:  hungwei  
 pas:   Ws7tscypC2VrpQpwbsQdURUe97nuRF3p
 """
 
@@ -624,6 +624,8 @@ JAZZMIN_SETTINGS = {
         {"name": "Swagger Documentation", "url": "http://49.213.238.75:8000/swagger/",
             "permissions": [], "new_window": True},
     ],
+
+
     #############
     # Side Menu #
     #############
@@ -653,6 +655,8 @@ JAZZMIN_SETTINGS = {
     #############
     # UI Tweaks #
     #############
+
+
     # Relative paths to custom CSS/JS scripts (must be present in static files)
     "custom_css": None,
     "custom_js": None,

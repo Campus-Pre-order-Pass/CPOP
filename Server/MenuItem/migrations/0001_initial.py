@@ -17,11 +17,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ExtraOption',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100, verbose_name='名稱')),
-                ('description', models.TextField(default='', null=True, verbose_name='解釋')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6, verbose_name='價格')),
-                ('vendor', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='Shop.vendor', verbose_name='廠商')),
+                ('description', models.TextField(
+                    default='', null=True, verbose_name='解釋')),
+                ('price', models.DecimalField(
+                    decimal_places=2, max_digits=6, verbose_name='價格')),
+                ('vendor', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.CASCADE, to='Shop.vendor', verbose_name='廠商')),
             ],
             options={
                 'verbose_name': '額外選項',
@@ -31,16 +35,24 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MenuItem',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100, unique=True, verbose_name='標題')),
-                ('price', models.DecimalField(decimal_places=2, max_digits=6, validators=[helper.vaidate.validate_count], verbose_name='價格')),
-                ('unit', models.CharField(default='份', max_length=100, verbose_name='單位')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(
+                    max_length=100, unique=True, verbose_name='標題')),
+                ('price', models.DecimalField(decimal_places=2, max_digits=6,
+                 validators=[helper.vaidate.validate_count], verbose_name='價格')),
+                ('unit', models.CharField(default='份',
+                 max_length=100, verbose_name='單位')),
                 ('hot', models.BooleanField(default=False, verbose_name='是否為熱門商品')),
-                ('menu_img_url', models.ImageField(blank=True, null=True, upload_to='menu_images/', verbose_name='照片')),
+                ('menu_img_url', models.ImageField(blank=True, null=True,
+                 upload_to='menu_images/', verbose_name='照片')),
                 ('desc', models.TextField(blank=True, null=True, verbose_name='商品描述')),
-                ('promotions', models.CharField(blank=True, max_length=100, null=True, verbose_name='促銷信息')),
-                ('daily_max_orders', models.IntegerField(default=20, verbose_name='訂購數量')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='創建時間')),
+                ('promotions', models.CharField(blank=True,
+                 max_length=100, null=True, verbose_name='促銷信息')),
+                ('daily_max_orders', models.IntegerField(
+                    default=20, verbose_name='訂購數量')),
+                ('created_at', models.DateTimeField(
+                    auto_now_add=True, verbose_name='創建時間')),
             ],
             options={
                 'verbose_name': '菜單',
@@ -50,10 +62,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MenuStatus',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('remaining_quantity', models.PositiveIntegerField(default=0, verbose_name='剩餘數量')),
-                ('is_available', models.BooleanField(default=True, verbose_name='是否可以供應')),
-                ('menu_item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='MenuItem.menuitem', verbose_name='廠商')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('remaining_quantity', models.PositiveIntegerField(
+                    default=0, verbose_name='剩餘數量')),
+                ('is_available', models.BooleanField(
+                    default=True, verbose_name='是否可以供應')),
+                ('menu_item', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='MenuItem.menuitem', verbose_name='廠商')),
             ],
             options={
                 'verbose_name': '菜單狀態',
@@ -63,9 +79,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MenuItemCategory',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=30, verbose_name='標籤名稱')),
-                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='menu_item_categories', to='Shop.vendor', verbose_name='廠商')),
+                ('vendor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='menu_item_categories', to='Shop.vendor', verbose_name='廠商')),
             ],
             options={
                 'verbose_name': '標籤',
@@ -75,20 +93,24 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='menuitem',
             name='category',
-            field=models.ManyToManyField(to='MenuItem.menuitemcategory', verbose_name='食物標籤'),
+            field=models.ManyToManyField(
+                to='MenuItem.menuitemcategory', verbose_name='食物標籤'),
         ),
         migrations.AddField(
             model_name='menuitem',
             name='extra_option',
-            field=models.ManyToManyField(to='MenuItem.extraoption', verbose_name='額外選鑿'),
+            field=models.ManyToManyField(
+                to='MenuItem.extraoption', verbose_name='額外選鑿'),
         ),
         migrations.AddField(
             model_name='menuitem',
             name='vendor',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='menu_items', to='Shop.vendor', verbose_name='廠商'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='menu_items', to='Shop.vendor', verbose_name='廠商'),
         ),
         migrations.AddConstraint(
             model_name='menuitem',
-            constraint=models.CheckConstraint(check=models.Q(('price__gte', 0)), name='price_non_negative'),
+            constraint=models.CheckConstraint(check=models.Q(
+                ('price__gte', 0)), name='price_non_negative'),
         ),
     ]

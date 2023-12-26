@@ -24,3 +24,7 @@ create_venv_check:
 # Create virtual environment if it doesn't exist
 create_venv:
 	$(VENV_CREATE)
+
+	
+activate:
+	cd $(SOURCE) && . $(VENV_ACTIVATE)

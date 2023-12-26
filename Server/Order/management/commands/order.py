@@ -23,12 +23,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Your logic for testing the printer goes here
         order_details_example = [
-            ["哈哈: ", "11-05 10:30", ""],
-            ["平台: ", "888", ""],
-            ["總金額: ", "1000", ""],
-            ["波士頓龍蝦蛋餅", "1", ""],
-            ["雙色吐司", "1", "巧克力/奶酥"],
-            ["紅茶", "1", "去冰"]
+            ["時間: ", "11-05 10:30", ""],
+            ["平台: ", "123", ""],
+            ["總金額: ", "85", ""],
+            ["滷肉飯", "1", ""],
+            ["綠豆牛奶冰沙", "1", ""]
         ]
 
         # Assuming OrderInvoiceGenerator is in your_module

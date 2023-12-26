@@ -37,3 +37,7 @@ dist-ssr
 .vscode/*
 .DS_Store
 !.vscode/extensions.json
+
+# build 
+/build
+/out
