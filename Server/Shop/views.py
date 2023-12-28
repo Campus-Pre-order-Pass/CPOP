@@ -131,7 +131,7 @@ class CurrentStateAPIView(APIView):
         if not settings.DEBUG:
             self.authentication_classes = [FirebaseTokenAuthentication]
 
-    @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
+    # @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, vendor_id):
         v = Vendor.objects.get(id=int(vendor_id))
         serializer = CurrentStateSerializer(CurrentState.objects.get(vendor=v))

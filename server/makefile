@@ -14,10 +14,16 @@ include makefiles/install_dependencies.mk
 # with wsgi
 run-wsgi:check_and_kill activate run_server_wsgi
 
-
+# 啟動test server 模式
 run:check_and_kill activate run_server
 
 
+# 啟動虛擬環境
+act: activate
+
+# test case 
+test: act 
+	./manage.py test Order.tests.OrderPayTest
 
 
 # all:  install_dependencies run_server

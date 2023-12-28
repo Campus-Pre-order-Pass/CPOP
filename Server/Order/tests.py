@@ -1,6 +1,9 @@
 from django.test import TestCase
 
+
 from Printer.main import OrderInvoiceGenerator
+
+from Order.OrderLogic.order_logic import OrderLogic
 
 
 class OrderModelTest(TestCase):
@@ -24,3 +27,8 @@ class OrderModelTest(TestCase):
         self.assertTrue(result)
 
         # You can add more assertions based on the expected behavior of your generate_invoice method
+
+
+class OrderPayTest(TestCase):
+    # ./manage.py test Order.tests.OrderPayTest
+    OrderLogic.test_order()

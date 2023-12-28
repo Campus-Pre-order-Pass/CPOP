@@ -3,6 +3,9 @@
 import os
 import sys
 
+# check
+from helper.script.check_redis import Check
+
 
 def main():
     """Run administrative tasks."""
@@ -17,6 +20,10 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
+# 在这里执行初始化和检查
+Check.init_sql()
+Check.check_redis()
 
 if __name__ == '__main__':
     main()

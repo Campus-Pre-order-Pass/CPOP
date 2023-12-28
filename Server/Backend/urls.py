@@ -84,9 +84,13 @@ urlpatterns = [
     # shop
     path(f'{V}/api/s/', include('Shop.urls', namespace='Shop')),
 
+    # order
+    path(f'{V}/api/o/', include('Order.urls', namespace='Order')),
+
     # menuItem
     path(f'{V}/api/m/', include('MenuItem.urls', namespace='MenuItem')),
 
+    # camera
     path(f'{V}/api/camera/', include('Camera.urls', namespace='Camera')),
 
 

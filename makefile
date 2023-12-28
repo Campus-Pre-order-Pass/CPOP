@@ -24,10 +24,11 @@ runser:
 # update:
 
 
-redius: run-redius-docker
+# redius: run-redius-docker
 
 # 正式啟動
-all:
-    docker-compose up
+# all:
+#     docker-compose up
+
 
 
