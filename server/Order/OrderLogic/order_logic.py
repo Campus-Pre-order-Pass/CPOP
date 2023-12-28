@@ -42,6 +42,8 @@ class OrderLogic:
 
     V = "0"
 
+    order_table = any
+
     # _instance = None  # 類變量，用於保存實例
 
     # def __new__(cls, *args, **kwargs):
@@ -56,6 +58,9 @@ class OrderLogic:
         vendor_id = data.get('vendor_id')
         customer_id = data.get('customer_id')
         menu_items = data.get('order_items')
+
+        # if self.TEST:
+        #     print(vendor_id, customer_id, menu_items)
 
         # 检查是否成功获取到必要的键值，如果没有，引发异常
         if vendor_id is None or customer_id is None or menu_items is None:
@@ -123,11 +128,13 @@ class OrderLogic:
         # 加入hash算法
         order_table.confirmation_hash = HashTool.hash_data(data=order_table)
 
-        return order_table
+        # TODO: 要改
+        self.order_table = order_table
 
     def order(self, order: Order) -> str:
+        Order.objects.save()
 
-        return "hash code"
+        return order.confirmation_hash
 
     def cancel_order(self, data) -> str:
         pass
@@ -153,3 +160,6 @@ class OrderLogic:
         self.TEST = test
 
         return self.TEST
+
+    def get_order_table(self) -> Order:
+        return self.order_table

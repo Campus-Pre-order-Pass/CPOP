@@ -84,7 +84,6 @@ class Order(models.Model):
         print(f"Customer: {self.customer}")
         print(f"Order Time: {self.order_time}")
         print(f"Take Time: {self.take_time}")
-        print(f"Total Amount: {self.total_amount}")
         print(f"Order Status: {self.order_status}")
         print(f"Created At: {self.created_at}")
         print(f"Confirmation Hash: {self.confirmation_hash}")
@@ -93,6 +92,12 @@ class Order(models.Model):
         print("Order Items:")
         for order_item in self.order_items.all():
             print(f"  - {order_item}")
+
+        print("")
+        print(f"Total Amount: {self.total_amount}")
+        print("")
+
+        return "OK"
 
     class Meta:
         verbose_name = "訂單"

@@ -102,3 +102,7 @@ class OrderVaild():
     def is_special_day(vendor: Vendor, test: bool = False):
         """ 判斷是否是特別，像是六日校慶等等"""
         pass
+
+    @staticmethod
+    def is_confirmation_hash_same(vendor: Vendor, test: bool = False):
+        pass

@@ -1,4 +1,5 @@
 from django.test import TestCase
+import time
 
 
 from Printer.main import OrderInvoiceGenerator
@@ -32,16 +33,21 @@ class OrderModelTest(TestCase):
 class OrderPayTest(TestCase):
     # ./manage.py test Order.tests.OrderPayTest
 
+    start_time = time.time()
+
+    # 执行你的代码
     order_s = OrderLogic()
-
     order_s.setTest(True)
-
     json_data = order_s.test_order()
-
     o = order_s.check_order(data=json_data)
+    order_s.create_order(data=o)
 
-    order_table = order_s.create_order(data=o)
+    orders = order_s.get_order_table()
 
-    print(order_table.show())
+    print(orders.show())
+    # 记录结束时间
+    end_time = time.time()
 
-    # OrderLogic.order()
+    # 计算执行时间
+    execution_time = end_time - start_time
+    print(f"Total execution time: {execution_time} seconds")
