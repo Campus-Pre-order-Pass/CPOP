@@ -31,4 +31,17 @@ class OrderModelTest(TestCase):
 
 class OrderPayTest(TestCase):
     # ./manage.py test Order.tests.OrderPayTest
-    OrderLogic.test_order()
+
+    order_s = OrderLogic()
+
+    order_s.setTest(True)
+
+    json_data = order_s.test_order()
+
+    o = order_s.check_order(data=json_data)
+
+    order_table = order_s.create_order(data=o)
+
+    print(order_table.show())
+
+    # OrderLogic.order()

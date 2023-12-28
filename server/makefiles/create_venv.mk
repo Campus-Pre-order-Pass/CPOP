@@ -1,11 +1,11 @@
 # Detect operating system
 ifeq ($(OS),Windows_NT)
-	VENV_CREATE = python -m venv venv
+	VENV_CREATE = python -m venv .venv
 	VENV_ACTIVATE = .venv\Scripts\activate
 	SOURCE =
 else
-	VENV_CREATE = python3 -m venv venv
-	VENV_ACTIVATE = .venv/bin/activate
+	VENV_CREATE = python3 -m venv .venv
+	VENV_ACTIVATE =  .venv/bin/activate
 	SOURCE = .
 endif
 

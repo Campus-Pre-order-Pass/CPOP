@@ -8,7 +8,6 @@ asttokens==2.4.0
 backcall==0.2.0
 blessed==1.20.0
 CacheControl==0.13.1
-cachetools==5.3.1
 certifi==2023.7.22
 cffi==1.16.0
 charset-normalizer==3.2.0

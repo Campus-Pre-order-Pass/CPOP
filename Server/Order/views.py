@@ -22,6 +22,9 @@ from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseT
 from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuItem
 
+# order
+from Order.OrderLogic.order_logic import OrderLogic
+
 # serializers
 
 # helpers
@@ -48,6 +51,9 @@ class PayOrderAPIView(APIView):
     def get(self, request):
         """獲取訂單資訊"""
 
+        OrderLogic.create_order(request.data)
+        OrderLogic.order()
+
         orders = [{'order_id': 1, 'status': 'pending', 'amount': 50.00},
                   {'order_id': 2, 'status': 'completed', 'amount': 75.00}]
 
@@ -62,6 +68,8 @@ class PayOrderAPIView(APIView):
         # ...
 
         return Response({"message": "Order created successfully"}, status=status.HTTP_201_CREATED)
+
+
 # @handle_exceptions(Vendor)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')

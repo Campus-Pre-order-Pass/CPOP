@@ -6,8 +6,7 @@ from .models import Order
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        exclude = ["vendor", "customer", "created_at",
-                   "confirmation_hash", "order_status"]
+        exclude = ["created_at"]
 
 
 # class CurrentStateSerializer(serializers.ModelSerializer):

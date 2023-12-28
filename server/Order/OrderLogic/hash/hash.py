@@ -1,5 +1,6 @@
 import hashlib
 import secrets
+from django.core.serializers import serialize
 
 
 class HashTool():
@@ -8,8 +9,10 @@ class HashTool():
         """
         使用 SHA-256 对数据进行哈希加密
         """
+        serialized_data = serialize('json', [data])
+
         sha256 = hashlib.sha256()
-        sha256.update(data.encode('utf-8'))
+        sha256.update(serialized_data.encode('utf-8'))
         return sha256.hexdigest()
 
     @staticmethod

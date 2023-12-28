@@ -28,6 +28,14 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.menuItem.title} - {self.quantity} 個"
 
+    def show_order(self):
+        extra_option_str = ", ".join(str(option)
+                                     for option in self.extra_option.all())
+        required_option_str = ", ".join(str(option)
+                                        for option in self.required_option.all())
+
+        return f"{self.menuItem.title} - {self.quantity} 個 (額外選項: {extra_option_str}, 必選選項: {required_option_str})"
+
     class Meta:
         verbose_name = "訂單產品"
         verbose_name_plural = "訂單產品列表"
@@ -42,9 +50,9 @@ class Order(models.Model):
     order_items = models.ManyToManyField(
         OrderItem, related_name='order_items', verbose_name="訂單項目")
 
-    order_time = models.DateField(verbose_name="訂單日期")
+    order_time = models.DateTimeField(verbose_name="訂單日期")
 
-    take_time = models.TimeField(verbose_name="取餐時間")
+    take_time = models.DateTimeField(verbose_name="取餐時間")
 
     total_amount = models.DecimalField(
         max_digits=10, decimal_places=2, verbose_name="總金額")
@@ -56,10 +64,10 @@ class Order(models.Model):
         verbose_name="訂單狀態"
     )
 
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
-
     confirmation_hash = models.CharField(
         max_length=64, blank=True, null=True, verbose_name="哈希加密")  # 使用 CharField 存储哈希值
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
 
     # def save(self, *args, **kwargs):
     #     # 在保存订单前生成哈希值
@@ -69,6 +77,22 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order #{self.pk} - {self.customer}"
+
+    def show(self):
+        print(f"Order ID: {self.id}")
+        print(f"Vendor: {self.vendor}")
+        print(f"Customer: {self.customer}")
+        print(f"Order Time: {self.order_time}")
+        print(f"Take Time: {self.take_time}")
+        print(f"Total Amount: {self.total_amount}")
+        print(f"Order Status: {self.order_status}")
+        print(f"Created At: {self.created_at}")
+        print(f"Confirmation Hash: {self.confirmation_hash}")
+
+        # Display order items
+        print("Order Items:")
+        for order_item in self.order_items.all():
+            print(f"  - {order_item}")
 
     class Meta:
         verbose_name = "訂單"
