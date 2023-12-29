@@ -11,6 +11,8 @@ from Order.OrderLogic.helper.tool import Tool
 
 from decimal import Decimal
 
+from Order.OrderLogic.error.error import OrderCreationError
+
 
 class Helper:
     @staticmethod
@@ -29,10 +31,10 @@ class Helper:
                 extra_option_ids = order_item.get('extra_option_ids', [])
 
                 if not Tool.is_positive_integer(quantity):
-                    raise ValueError("Invalid quantity for order item")
+                    raise OrderCreationError("Invalid quantity for order item")
 
                 if not Tool.is_positive_float(menuItem.price):
-                    raise ValueError("Invalid price for menu item")
+                    raise OrderCreationError("Invalid price for menu item")
 
                 # 計算必選選項總價格
                 for required_option_id in required_option_ids:
@@ -50,4 +52,4 @@ class Helper:
 
             return total
         except Exception as e:
-            raise ValueError(str(e), SettingsManager.ERROR_CODE)
+            raise OrderCreationError(str(e), SettingsManager.ERROR_CODE)

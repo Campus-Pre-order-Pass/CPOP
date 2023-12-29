@@ -1,4 +1,5 @@
 from Order.OrderLogic.setting import SettingsManager
+from Order.OrderLogic.error.error import OrderCreationError
 
 
 class Tool():
@@ -32,5 +33,5 @@ class Tool():
 
         except ValueError:
             # If the conversion to float fails, raise a ValueError
-            raise ValueError("It's not a positive float",
-                             SettingsManager.ERROR_CODE)
+            raise OrderCreationError("It's not a positive float",
+                                     SettingsManager.ERROR_CODE)

@@ -40,6 +40,8 @@ from helper.fileupload import upload_file
 from helper.handle_exceptions import handle_exceptions
 from helper.vaidate import convert_to_bool
 
+from Order.OrderLogic.error.error import OrderCreationError
+
 
 # cache
 from django.views.decorators.cache import cache_page
@@ -70,16 +72,25 @@ class PayOrderAPIView(APIView):
 
         return Response({"order": orderSerializer.data})
 
-    def post(self, request):
+    def post(self, request,  customer_id: int = None):
         "新增訂單資訊"
 
         order_managment = OrderLogic()
 
-        order_managment.check_order(request.data)
+        order_managment.setTest(settings.TEST)
 
-        hash_code = order_managment.order()
+        try:
+            # Your order logic here
+            order_managment.check_order(request.data)
+            hash_code = order_managment.order()
 
-        return Response({"message": "Order created successfully", "hash_code": hash_code}, status=status.HTTP_201_CREATED)
+            # Assuming the order creation is successful, return the response
+            return Response({"message": "Order created successfully", "hash_code": hash_code}, status=status.HTTP_201_CREATED)
+
+        except OrderCreationError as oce:
+            # Handle the ValueError and return an appropriate response
+            error_message = str(oce)
+            return Response({"error": error_message, "code": oce.code, "source": oce.error_source}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @handle_exceptions(Order)
@@ -100,7 +111,6 @@ class PayStatusAPIView(APIView):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
 class OrderAPIView(APIView):
-
     def get(self, request, order_id: int):
         """
             1. 獲取該訂單的細節

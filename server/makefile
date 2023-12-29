@@ -23,7 +23,7 @@ act: activate
 
 # test case 
 test: 
-	./manage.py test Order.tests.OrderPayTest
+	./manage.py test Order.tests.TestPayOrderAPIView
 
 
 migrate:

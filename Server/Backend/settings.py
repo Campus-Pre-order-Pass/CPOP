@@ -41,15 +41,19 @@ config.encodeing = 'utf-8'
 # SECRET_KEY = config('SECRET_KEY')
 SECRET_KEY = get_random_secret_key()
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = config('DEBUG', default=False, cast=bool)
+
+# test
+DEBUG = True
+TEST = True
 
 ALLOWED_HOSTS = ['*', ]
 
 # ssl support/
-SECURE_SSL_REDIRECT = config(
-    'SECURE_SSL_REDIRECT', default=False, cast=bool)
+# SECURE_SSL_REDIRECT = config(
+#     'SECURE_SSL_REDIRECT', default=False, cast=bool)
 
-
+SECURE_SSL_REDIRECT = False
 # Application definition
 
 INSTALLED_APPS = [

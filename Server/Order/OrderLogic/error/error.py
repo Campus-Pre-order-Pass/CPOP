@@ -1,17 +1,10 @@
-class CustomError(Exception):
-    """Custom exception class for your specific errors."""
-    pass
+class BaseError(Exception):
+    def __init__(self, message, error_code, error_source=None):
+        super().__init__(message)
+        self.code = error_code
+        self.error_source = error_source
 
 
-class ErrorHandler:
-    @staticmethod
-    def raise_custom_error(message):
-        """Raise a custom error with the provided message."""
-        raise CustomError(message)
-
-
-# # Example of using the custom error handler
-# try:
-#     ErrorHandler.raise_custom_error("This is a custom error message.")
-# except CustomError as e:
-#     print(f"Caught an error: {e}")
+class OrderCreationError(BaseError):
+    def __init__(self, message, error_code, error_source=None):
+        super().__init__(message, error_code, error_source)

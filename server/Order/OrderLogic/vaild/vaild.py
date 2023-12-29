@@ -1,6 +1,7 @@
 # models
 from Order.models import Order, OrderItem
 from Customer.models import Customer
+from Order.OrderLogic.error.error import OrderCreationError
 from Shop.models import Vendor, DayOfWeek
 
 # serializers
@@ -94,7 +95,8 @@ class OrderVaild():
 
         # 判斷
         if order_count_today > SettingsManager.MAX_USER_PURCHASE_LIMIT:
-            raise ValueError("Exceeded the maximum user purchase limit.")
+            raise ValueError(
+                "Exceeded the maximum user purchase limit.")
 
         return True
 

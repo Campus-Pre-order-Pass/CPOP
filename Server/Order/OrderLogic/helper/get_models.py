@@ -9,6 +9,8 @@ from django.db.models import Model, QuerySet
 from MenuItem.models import ExtraOption, MenuItem, RequiredOption
 from Order.models import OrderItem, Order
 
+from Order.OrderLogic.error.error import OrderCreationError
+
 
 class ModelManager:
     """管理mdoels與"""
@@ -18,11 +20,11 @@ class ModelManager:
             # 使用 objects.get() 获取模型实例
             return model_class.objects.get(id=id)
         except ObjectDoesNotExist:
-            raise ValueError(
+            raise OrderCreationError(
                 f"{model_class.__name__} not found for the given id.", code=SettingsManager.MODELS_NOT_FOUND)
         except Exception as e:
             # 捕捉其他可能的异常
-            raise ValueError(
+            raise OrderCreationError(
                 f"An error occurred while retrieving {model_class.__name__}: {str(e)}", code=SettingsManager.MODELS_ERROR)
 
     @staticmethod

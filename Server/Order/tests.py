@@ -1,11 +1,15 @@
 from django.test import TestCase
 import time
 
+from django.test import Client
+from django.urls import reverse
+from unittest.mock import MagicMock
 
 from Printer.main import OrderInvoiceGenerator
 
 from Order.OrderLogic.order_logic import OrderLogic
 from Order.OrderLogic.test.mark import MarkData
+from Order.views import PayOrderAPIView
 
 
 class OrderModelTest(TestCase):
@@ -60,3 +64,51 @@ class OrderPayTest(TestCase):
     def test_get_json_order_results(self):
         data = MarkData.get_json_order_results()
         print(data)
+
+
+class TestPayOrderAPIView(TestCase):
+    # def setUp(self):
+    #     # 在这里执行测试数据库的初始化工作
+    #     # 这可能包括数据库迁移、创建模型实例等
+    #     call_command('migrate')
+    #     # 其他初始化工作
+
+    # def tearDown(self):
+    #     # 在这里执行测试数据库的清理工作
+    #     # 这可能包括删除测试用例创建的模型实例等
+    #     # 通常会使用 `django.test.TestCase` 提供的数据库刷新机制
+    #     self._fixture_teardown()
+
+    # def test_pay_order_success(self):
+    # Mock the necessary dependencies
+
+    # Create a test client
+    client = Client()
+
+    # Prepare test data
+    test_data = MarkData.get_json_order_data()
+
+    # Use the reverse function to get the URL for the view
+    # Replace "pay-order" with the actual URL name
+    url = reverse("Order:pay_order")
+
+    # Make a POST request to the view with the test data
+    response = client.post(url, data=test_data,
+                           content_type="application/json")
+    # 打印响应状态码
+    print(f"Status Code: {response.status_code}")
+
+    # 打印响应头
+    # print("Response Headers:")
+    # for header, value in response.items():
+    #     print(f"{header}: {value}")
+
+    # 打印响应内容
+    print("Response Content:")
+    print(response.content.decode('utf-8'))
+    # # Assert the expected behavior
+
+    # expected_response = {
+    #     "message": "Order created successfully", "hash_code": "hash_code"}
+    # self.assertEqual(response.status_code, 201)
+    # self.assertEqual(response.json(), expected_response)

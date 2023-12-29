@@ -22,6 +22,9 @@ from Order.OrderLogic.helper.helper import Helper
 # printer
 from Printer.main import OrderInvoiceGenerator
 
+# error
+from Order.OrderLogic.error.error import OrderCreationError
+
 # models
 from ..models import Order, OrderItem
 from Shop.models import Vendor
@@ -73,6 +76,7 @@ class OrderLogic(AbstractOrderLogic):
         return self.order
 
     def check_order(self, data: any) -> bool:
+        """檢查 order"""
         vendor_id = data.get('vendor_id')
         customer_id = data.get('customer_id')
         order_items = data.get('order_items')
@@ -84,8 +88,10 @@ class OrderLogic(AbstractOrderLogic):
 
         # 检查是否成功获取到必要的键值，如果没有，引发异常
         if vendor_id is None or customer_id is None or order_items is None:
-            raise ValueError(
-                "Failed to retrieve necessary key-value pairs from data.", SettingsManager.FORMAT_ERROR)
+            raise OrderCreationError(
+                "Failed to retrieve necessary key-value pairs from data.",
+                SettingsManager.FORMAT_ERROR,
+                f"{self.__class__.__name__}.check_order")
 
         self.vendor = ModelManager.creat_model_instance(Vendor, vendor_id)
         self.customer = ModelManager.creat_model_instance(
@@ -99,25 +105,29 @@ class OrderLogic(AbstractOrderLogic):
         try:
             OrderVaild.is_order_valid()
         except Exception as e:
-            raise ValueError(e, SettingsManager.ERROR_CODE)
+            raise OrderCreationError(
+                e, SettingsManager.ERROR_CODE, f"{self.__class__.__name__}.check_order")
         try:
             # 檢查使用者購買上限
             OrderVaild.check_user_purchase_limit(
                 customer=self.customer, test=self.TEST)
         except Exception as e:
-            raise ValueError(e, SettingsManager.USER_PURCHASE_LIMIT_ERROR)
+            raise OrderCreationError(
+                e, SettingsManager.USER_PURCHASE_LIMIT_ERROR, f"{self.__class__.__name__}.check_order")
         try:
-            # 減持是否在營業時間
+            # 檢查是否在營業時間
             OrderVaild.check_business_hours(vendor=self.vendor, test=self.TEST)
         except Exception as e:
-            raise ValueError(e, SettingsManager.BUSINESS_HOURS_ERROR)
+            raise OrderCreationError(
+                e, SettingsManager.BUSINESS_HOURS_ERROR,  f"{self.__class__.__name__}.check_order")
         try:
             # 实现檢查庫存的逻辑
             for order_item in self.order_items:
                 OrderVaild.check_inventory(
                     order_item=self.order_items, test=self.TEST)
         except Exception as e:
-            raise ValueError(e, SettingsManager.INVENTORY_ERROR)
+            raise OrderCreationError(
+                e, SettingsManager.INVENTORY_ERROR, f"{self.__class__.__name__}.check_order")
 
         # finally:
         #     print("Order")
@@ -134,12 +144,13 @@ class OrderLogic(AbstractOrderLogic):
             customer=self.customer,
             order_time=timezone.now(),
             take_time=timezone.now(),
-            total_amount=Helper.get_total_amount(order_items=self.order_items),
             order_status="created",
         )
 
         # 加入hash算法
         order_table.confirmation_hash = HashTool.hash_data(data=order_table)
+
+        order_table.order_status = "processing"
         order_table.save()
 
         # TODO: 要改
@@ -157,7 +168,7 @@ class OrderLogic(AbstractOrderLogic):
         #     order_table.order_status = "processing"
         #     order_table.save()
         # except Exception as e:
-        #     raise ValueError(str(e), SettingsManager.PRINTER_ERROR)
+        #     raise OrderCreationError(str(e), SettingsManager.PRINTER_ERROR)
 
         return self.order_table.confirmation_hash
 

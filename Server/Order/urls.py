@@ -5,8 +5,9 @@ app_name = "Order"
 
 urlpatterns = [
     # 建立訂單
-    path('pay/<int:customer_id>',
+    path('pay/create/<int:customer_id>',
          views.PayOrderAPIView.as_view(), name='create_order'),
+
     # 查看訂單狀態
     path('pay/status/<int:order_id>',
          views.PayStatusAPIView.as_view(), name='order_status'),
@@ -17,7 +18,5 @@ urlpatterns = [
 
     # 下訂單
     path('pay',
-         views.PayStatusAPIView.as_view(), name='order_status'),
-
-
+         views.PayOrderAPIView.as_view(), name='pay_order'),
 ]
