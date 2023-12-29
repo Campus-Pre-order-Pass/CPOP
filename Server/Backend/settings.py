@@ -100,6 +100,10 @@ INSTALLED_APPS = [
     'CSP',
     "Track",
     "Camera",
+
+
+    # other
+    "AdminChart",
 ]
 
 
@@ -267,7 +271,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'zh-hans'  # 或者 'zh-hant'，根据需要选择简体或繁体中文
+LANGUAGE_CODE = 'zh-hant'
 
 TIME_ZONE = 'Asia/Taipei'
 

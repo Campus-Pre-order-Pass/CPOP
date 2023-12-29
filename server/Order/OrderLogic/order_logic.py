@@ -70,6 +70,8 @@ class OrderLogic(AbstractOrderLogic):
     #         # 在這裡進行初始化/配置
     #         cls._instance.config = cls._load_config()
     #     return cls._instance
+    # def __init__():
+    #     pass
 
     def __str__(self) -> str:
         super().__str__()

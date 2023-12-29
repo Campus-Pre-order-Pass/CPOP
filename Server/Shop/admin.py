@@ -8,7 +8,6 @@ from helper.admin.vendor_class_base import BaseVendorAdmin, BaseVendorKeyAdmin
 
 @admin.register(CurrentState)
 class CurrentStateAdmin(BaseVendorKeyAdmin):
-
     list_display = ('vendor', 'current_number', 'is_start')
     list_filter = ('vendor__name',)
 

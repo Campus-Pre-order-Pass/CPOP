@@ -41,3 +41,7 @@ class AbstractOrderLogic(ABC):
         Order: Created order instance.
         """
         pass
+
+
+class OrderVaild(ABC):
+    pass

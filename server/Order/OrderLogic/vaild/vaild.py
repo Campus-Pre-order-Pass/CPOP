@@ -108,3 +108,7 @@ class OrderVaild():
     @staticmethod
     def is_confirmation_hash_same(vendor: Vendor, test: bool = False):
         pass
+
+    @staticmethod
+    def is_over_timezone(vendor: Vendor, test: bool = False):
+        pass

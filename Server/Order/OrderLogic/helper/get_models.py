@@ -14,6 +14,7 @@ from Order.OrderLogic.error.error import OrderCreationError
 
 class ModelManager:
     """管理mdoels與"""
+
     @staticmethod
     def creat_model_instance(model_class: Model, id: int) -> QuerySet:
         try:

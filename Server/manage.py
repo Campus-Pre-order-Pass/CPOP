@@ -23,7 +23,7 @@ def main():
 
 # 在这里执行初始化和检查
 Check.init_sql()
-Check.check_redis()
+# Check.check_redis()
 
 if __name__ == '__main__':
     main()
