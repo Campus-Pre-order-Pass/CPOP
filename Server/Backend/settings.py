@@ -135,6 +135,10 @@ INTERNAL_IPS = [
 
 
 # axes
+if DEBUG:
+    # 如果你在本地使用 DEBUG 模式，请禁用 django-axes
+    AXES_ENABLED = False
+
 AUTHENTICATION_BACKENDS = [
     # AxesStandaloneBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
     'axes.backends.AxesStandaloneBackend',
@@ -587,7 +591,7 @@ Q_CLUSTER = {
     'save_limit': 250,
     'queue_limit': 500,
     'cpu_affinity': 1,
-    'label': 'Django Q',
+    'label': '排程管理',
     'redis': {
         'host': '127.0.0.1',
         'port': 6379,

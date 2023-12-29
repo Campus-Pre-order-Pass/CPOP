@@ -28,7 +28,7 @@ class Order(models.Model):
     # order_items = models.ManyToManyField(
     #     OrderItem,  related_name='order_items', verbose_name="訂單項目")
 
-    order_time = models.DateTimeField(verbose_name="訂單日期")
+    order_time = models.DateTimeField(auto_now_add=True, verbose_name="訂單日期")
 
     take_time = models.DateTimeField(verbose_name="取餐時間")
 

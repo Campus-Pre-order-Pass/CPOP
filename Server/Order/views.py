@@ -42,14 +42,11 @@ from helper.vaidate import convert_to_bool
 
 from Order.OrderLogic.error.error import OrderCreationError
 
-
 # cache
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import never_cache
-
-# customer order history =================================================
 
 
 @handle_exceptions(Order)
@@ -121,4 +118,4 @@ class OrderAPIView(APIView):
         s = OrderItemSerializer(data=items, many=True)
         s.is_valid()
 
-        return Response({"itmes":   s.data})
+        return Response({"itmes": s.data})

@@ -10,6 +10,9 @@ include makefiles/check/check_and_kill.mk
 include makefiles/create_venv.mk
 include makefiles/install_dependencies.mk
 
+# celery
+include makefiles/celery/celery.mk
+
 
 # with wsgi
 run-wsgi:check_and_kill activate run_server_wsgi
@@ -31,52 +34,19 @@ migrate:
 	python manage.py migrate
 
 
-# all:  install_dependencies run_server
+django-q:
+	python manage.py qcluster
+	# python manage.py qmonitor
+	# python manage.py qmonitor --port=8888
 
 
-# Detect operating system
-# ifeq ($(OS),Windows_NT)
-# 	VENV_CREATE = python -m venv venv
-# 	VENV_ACTIVATE = .venv\Scripts\activate
-# 	SOURCE = source
-# else
-# 	VENV_CREATE = python3 -m venv venv
-# 	VENV_ACTIVATE = .venv/bin/activate
-# 	SOURCE = .
-# endif
+celery-worker:
+	celery -A Backend worker -l info
 
-# # Activate virtual environment in the current directory
-# activate:
-# 	cd $(SOURCE) && . $(VENV_ACTIVATE)
-
-# # Check if virtual environment already exists
-# check_venv:
-# 	@if [ -e $(VENV_ACTIVATE) ]; then \
-# 		echo "Virtual environment already exists."; \
-# 	else \
-# 		make create_venv; \
-# 	fi
-
-# # Create virtual environment if it doesn't exist
-# create_venv:
-# 	$(VENV_CREATE)
-
-# # Install dependencies
-# install: activate
-# 	pip install -r requirements.txt
-
-# # Check and kill the process on port 8000
-# check_and_kill:
-# 	@if lsof -i :8000; then \
-# 		echo "Port 8000 is already in use. Killing the process..."; \
-# 		lsof -ti :8000 | xargs kill -9; \
-# 	fi
-
-# # Run Django server
-# run: check_and_kill activate
-# 	python manage.py runserver 0.0.0.0:8000
-
-# # Define 'all' target to check venv, install, and run
-# all: check_venv activate install run
+celery-beat:
+	celery -A Backend beat -l info
 
 
+
+start-flower:check_and_kill_5555
+    celery -A Backend flower -l info --basic_auth=twtrubiks:password123

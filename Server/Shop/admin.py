@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
-from Shop.models import CurrentState, DayOfWeek, Vendor
+from Shop.models import CurrentState, DayOfWeek, Vendor, Promotion
 from helper.admin.vendor_class_base import BaseVendorAdmin, BaseVendorKeyAdmin
 
 
@@ -58,6 +58,18 @@ class VendorAdmin(BaseVendorAdmin):
     #         return "No Image"
 
     # vendor_img_preview.short_description = "Vendor Image Preview"
+
+
+@admin.register(Promotion)
+class PromotionAdmin(BaseVendorKeyAdmin):
+    list_display = ('vendor', 'promotions', 'promotion_type', 'end_time')
+    list_filter = ('vendor__name',)
+
+    search_fields = ('vendor__name',)
+
+    ordering = ('-created_at',)
+
+    list_per_page = 20
 
 
 # =============================================================================

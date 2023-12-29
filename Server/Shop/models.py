@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import datetime
 
 
 class Vendor(models.Model):
@@ -36,6 +37,8 @@ class Vendor(models.Model):
 
     # 其他資訊
     desc = models.TextField(blank=True, null=True, verbose_name="其他資訊")
+
+    # TODO: 要把促銷刪除獨立出來
     promotions = models.TextField(blank=True, null=True, verbose_name="促銷信息")
 
     # 商店連結URL
@@ -110,3 +113,64 @@ class CurrentState(models.Model):
 
     def __str__(self):
         return f"Current State for {self.current_number}"
+
+
+NEW_RELEASE = 'new_release'
+NEW_OFFER = 'new_offer'
+NEW_DISCOUNT = 'new_discount'
+
+PROMOTION_TYPE_CHOICES = [
+    (NEW_RELEASE, '新上市'),
+    (NEW_OFFER, '新優惠'),
+    (NEW_DISCOUNT, '新折扣'),
+]
+
+
+class Promotion(models.Model):
+    vendor = models.ForeignKey(
+        Vendor, on_delete=models.CASCADE, related_name='promotion', verbose_name="供應商")
+
+    promotions = models.TextField(blank=True, null=True, verbose_name="促銷信息")
+
+    is_show_promotion_price = models.BooleanField(
+        default=False, verbose_name="顯示促銷價格")
+
+    promotion_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    promotion_image = models.ImageField(
+        upload_to='promotion_images/', blank=True, null=True, verbose_name="促銷照片")
+
+    promotion_type = models.CharField(
+        max_length=50, choices=PROMOTION_TYPE_CHOICES, null=True, verbose_name="促銷類型")
+
+    start_time = models.DateTimeField(verbose_name="促銷開始時間")
+
+    end_time = models.DateTimeField(verbose_name="促銷結束時間")
+
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
+
+    class Meta:
+        verbose_name = "廠商促銷"
+        verbose_name_plural = "促銷"
+
+    def __str__(self):
+        return f"{self.vendor.name}促銷: {self.promotions} {self.promotion_price}"
+
+
+class VendorDailyMetrics(models.Model):
+    vendor = models.ForeignKey(
+        Vendor, on_delete=models.CASCADE, verbose_name="廠商")
+
+    date = models.DateField(verbose_name="日期")
+
+    max_purchase_count = models.PositiveIntegerField(verbose_name="最大購買人數")
+
+    simultaneous_purchase_limit = models.PositiveIntegerField(
+        verbose_name="同時間購買人數限制")
+    # 可以添加其他需要的字段
+
+    class Meta:
+        unique_together = ['vendor', 'date']  # 确保每个厂商每天只有一条记录
+
+    def __str__(self):
+        return f"{self.vendor.username} - {self.date}"
