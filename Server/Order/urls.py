@@ -5,9 +5,19 @@ app_name = "Order"
 
 urlpatterns = [
     # 建立訂單
-    path('pay', views.PayOrderAPIView.as_view(), name='create_order'),
-    path('pay/status', views.PayStatusAPIView.as_view(), name='order_status'),
+    path('pay/<int:customer_id>',
+         views.PayOrderAPIView.as_view(), name='create_order'),
+    # 查看訂單狀態
+    path('pay/status/<int:order_id>',
+         views.PayStatusAPIView.as_view(), name='order_status'),
 
     # 查看過往訂單
-    path('orders', views.OrderAPIView.as_view(), name='view_orders'),
+    path('item/<int:order_id>',
+         views.OrderAPIView.as_view(), name='view_orders'),
+
+    # 下訂單
+    path('pay',
+         views.PayStatusAPIView.as_view(), name='order_status'),
+
+
 ]

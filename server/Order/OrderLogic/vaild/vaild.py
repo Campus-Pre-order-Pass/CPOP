@@ -68,7 +68,7 @@ class OrderVaild():
         return True
 
     @staticmethod
-    def check_inventory(order_item: OrderItem, test: bool = False) -> bool:
+    def check_inventory(order_item: any, test: bool = False) -> bool:
         """      
             1. 实现檢查庫存的逻辑
             2. 如果庫存足夠，返回 True；否则返回 False

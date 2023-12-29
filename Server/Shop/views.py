@@ -38,6 +38,7 @@ from helper.vaidate import convert_to_bool
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.views.decorators.cache import cache_control
+from django.views.decorators.cache import never_cache
 
 
 # shop =================================================================
@@ -62,6 +63,8 @@ class ShopAPIView(APIView):
         """主要進入點"""
 
         # TODO: 要加入校區判斷
+
+        # TODO: 需要做 cache views seperator
         shop_list = []
 
         if shop_id:
@@ -121,6 +124,7 @@ def update_image(request, uid):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(never_cache, name='get')
 class CurrentStateAPIView(APIView):
     renderer_classes = [JSONRenderer]
 

@@ -26,6 +26,11 @@ test:
 	./manage.py test Order.tests.OrderPayTest
 
 
+migrate:
+	python manage.py makemigrations
+	python manage.py migrate
+
+
 # all:  install_dependencies run_server
 
 

@@ -2,6 +2,7 @@
 import hashlib
 import secrets
 from django.db import models
+from django.utils import timezone
 
 # models
 from Customer.models import Customer
@@ -9,36 +10,13 @@ from Shop.models import Vendor
 from MenuItem.models import ExtraOption, MenuItem, RequiredOption
 
 ORDER_STATUS_CHOICES = [
+    ('created', '創建'),
     ('pending', '已下單'),
     ('processing', '製作中'),
     ('completed', '完成'),
     ('canceled', '取消'),
+    ('error', '錯誤'),
 ]
-
-
-class OrderItem(models.Model):
-    menuItem = models.ForeignKey(
-        MenuItem, on_delete=models.CASCADE, related_name='menu_item', verbose_name="產品")
-    quantity = models.PositiveIntegerField(default=1, verbose_name="數量")
-    extra_option = models.ManyToManyField(
-        ExtraOption, verbose_name="額外選項")
-    required_option = models.ManyToManyField(
-        RequiredOption, verbose_name="必選選項")
-
-    def __str__(self):
-        return f"{self.menuItem.title} - {self.quantity} 個"
-
-    def show_order(self):
-        extra_option_str = ", ".join(str(option)
-                                     for option in self.extra_option.all())
-        required_option_str = ", ".join(str(option)
-                                        for option in self.required_option.all())
-
-        return f"{self.menuItem.title} - {self.quantity} 個 (額外選項: {extra_option_str}, 必選選項: {required_option_str})"
-
-    class Meta:
-        verbose_name = "訂單產品"
-        verbose_name_plural = "訂單產品列表"
 
 
 class Order(models.Model):
@@ -47,8 +25,8 @@ class Order(models.Model):
     customer = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name='order_item', verbose_name="顧客")
 
-    order_items = models.ManyToManyField(
-        OrderItem, related_name='order_items', verbose_name="訂單項目")
+    # order_items = models.ManyToManyField(
+    #     OrderItem,  related_name='order_items', verbose_name="訂單項目")
 
     order_time = models.DateTimeField(verbose_name="訂單日期")
 
@@ -88,13 +66,10 @@ class Order(models.Model):
         print(f"Created At: {self.created_at}")
         print(f"Confirmation Hash: {self.confirmation_hash}")
 
-        # Display order items
-        print("Order Items:")
-        for order_item in self.order_items.all():
-            print(f"  - {order_item}")
-
         print("")
+
         print(f"Total Amount: {self.total_amount}")
+
         print("")
 
         return "OK"
@@ -102,3 +77,32 @@ class Order(models.Model):
     class Meta:
         verbose_name = "訂單"
         verbose_name_plural = "訂單列表"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name='訂單項目')
+
+    menuItem = models.ForeignKey(
+        MenuItem, on_delete=models.CASCADE, related_name='menu_item', verbose_name="產品")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="數量")
+
+    extra_option = models.ManyToManyField(
+        ExtraOption, verbose_name="額外選項")
+    required_option = models.ManyToManyField(
+        RequiredOption, verbose_name="必選選項")
+
+    def __str__(self):
+        return f"{self.menuItem.title} - {self.quantity} 個"
+
+    def show_order(self):
+        extra_option_str = ", ".join(str(option)
+                                     for option in self.extra_option.all())
+        required_option_str = ", ".join(str(option)
+                                        for option in self.required_option.all())
+
+        return f"{self.menuItem.title} - {self.quantity} 個 (額外選項: {extra_option_str}, 必選選項: {required_option_str})"
+
+    class Meta:
+        verbose_name = "訂單產品"
+        verbose_name_plural = "訂單產品列表"

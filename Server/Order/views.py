@@ -19,13 +19,19 @@ from django_ratelimit.decorators import ratelimit
 
 # authentication
 from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
+
+# models
+from Order.models import Order, OrderItem
+from Order.OrderLogic.test.mark import MarkData
 from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuItem
+from Customer.models import Customer
 
 # order
 from Order.OrderLogic.order_logic import OrderLogic
 
 # serializers
+from Order.serializers import OrderItemSerializer, OrderSerializer
 
 # helpers
 from helper.fileupload import upload_file
@@ -39,50 +45,70 @@ from helper.vaidate import convert_to_bool
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.views.decorators.cache import cache_control
+from django.views.decorators.cache import never_cache
 
 # customer order history =================================================
 
 
-# @handle_exceptions(Vendor)
+@handle_exceptions(Order)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(never_cache, name='get')
+@method_decorator(never_cache, name='post')
 class PayOrderAPIView(APIView):
-    def get(self, request):
+    def get(self, request, customer_id: int):
         """獲取訂單資訊"""
+        c = Customer.objects.get(id=customer_id)
+        o = Order.objects.filter(customer=c)
 
-        OrderLogic.create_order(request.data)
-        OrderLogic.order()
+        orderSerializer = OrderSerializer(data=o, many=True)
+        orderSerializer.is_valid()  # 调用 is_valid() 方法
 
-        orders = [{'order_id': 1, 'status': 'pending', 'amount': 50.00},
-                  {'order_id': 2, 'status': 'completed', 'amount': 75.00}]
+        # 如果验证成功，可以访问 orderSerializer.data 或 orderSerializer.validated_data
+        # print(orderSerializer.data)
 
-        return Response({'orders': orders}, status=status.HTTP_200_OK)
+        return Response({"order": orderSerializer.data})
 
     def post(self, request):
         "新增訂單資訊"
-        # 处理创建订单的逻辑，例如从请求中获取订单信息并保存到数据库
-        # 这里只是一个示例，你需要根据实际情况来编写具体的逻辑
-        data = request.data
-        # 根据请求中的数据创建订单
-        # ...
 
-        return Response({"message": "Order created successfully"}, status=status.HTTP_201_CREATED)
+        order_managment = OrderLogic()
+
+        order_managment.check_order(request.data)
+
+        hash_code = order_managment.order()
+
+        return Response({"message": "Order created successfully", "hash_code": hash_code}, status=status.HTTP_201_CREATED)
 
 
-# @handle_exceptions(Vendor)
+@handle_exceptions(Order)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-
-
+@method_decorator(never_cache, name='get')
 class PayStatusAPIView(APIView):
-    pass
+    def get(self, request, order_id: int, *args, **kwargs):
+        "該訂單目前狀態"
+        order = Order.objects.get(id=order_id)
+        return Response({"status": order.order_status})
 
 
-# @handle_exceptions(Vendor)
+@handle_exceptions(OrderItem)
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(never_cache, name='get')
 class OrderAPIView(APIView):
-    pass
+
+    def get(self, request, order_id: int):
+        """
+            1. 獲取該訂單的細節
+            2. 會有 token
+        """
+        order = Order.objects.get(id=order_id)
+        items = OrderItem.objects.filter(order=order)
+        s = OrderItemSerializer(data=items, many=True)
+        s.is_valid()
+
+        return Response({"itmes":   s.data})

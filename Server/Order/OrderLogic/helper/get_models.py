@@ -7,11 +7,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model, QuerySet
 
 from MenuItem.models import ExtraOption, MenuItem, RequiredOption
-from Order.models import OrderItem
+from Order.models import OrderItem, Order
 
 
 class ModelManager:
-    """管理mdoels與過濾"""
+    """管理mdoels與"""
     @staticmethod
     def creat_model_instance(model_class: Model, id: int) -> QuerySet:
         try:
@@ -19,14 +19,14 @@ class ModelManager:
             return model_class.objects.get(id=id)
         except ObjectDoesNotExist:
             raise ValueError(
-                f"{model_class.__name__} not found for the given id.", SettingsManager.MODELS_NOT_FOUND)
+                f"{model_class.__name__} not found for the given id.", code=SettingsManager.MODELS_NOT_FOUND)
         except Exception as e:
             # 捕捉其他可能的异常
             raise ValueError(
-                f"An error occurred while retrieving {model_class.__name__}: {str(e)}", SettingsManager.MODELS_ERROR)
+                f"An error occurred while retrieving {model_class.__name__}: {str(e)}", code=SettingsManager.MODELS_ERROR)
 
     @staticmethod
-    def create_order_items(order_items):
+    def create_order_items(order_items: any, order: Order) -> any:
         created_order_items = []
 
         for order_item_data in order_items:
@@ -46,6 +46,7 @@ class ModelManager:
 
             # Create OrderItem instance
             order_item_instance = OrderItem.objects.create(
+                order=order,
                 menuItem=ModelManager.creat_model_instance(
                     model_class=MenuItem, id=menu_item_id),
                 quantity=quantity

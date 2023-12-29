@@ -22,3 +22,6 @@ class SettingsManager():
 
     # other settings
     NOT_POSIT_ERROR = 501
+
+    # print error
+    PRINTER_ERROR = 502

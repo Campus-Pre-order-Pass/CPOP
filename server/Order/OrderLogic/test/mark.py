@@ -6,7 +6,7 @@ from Shop.models import Vendor
 from Customer.models import Customer
 
 # serializers
-from Order.serializers import OrderSerializer
+from Order.serializers import OrderItemSerializer, OrderSerializer
 
 # tools
 from Order.OrderLogic.hash.hash import HashTool
@@ -77,6 +77,16 @@ class MarkData():
     @staticmethod
     def get_json_order_data():
         with open('Order/OrderLogic/test/data.json', 'r') as file:
+            python_object = json.load(file)
+
+        # 打印从文件读取并解析得到的 Python 对象
+        # print(python_object)
+
+        return python_object
+
+    @staticmethod
+    def get_json_order_results() -> any:
+        with open('Order/OrderLogic/test/response.json', 'r') as file:
             python_object = json.load(file)
 
         # 打印从文件读取并解析得到的 Python 对象

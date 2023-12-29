@@ -4,6 +4,9 @@ import hashlib
 import secrets
 from django.utils import timezone
 
+# abstract
+from Order.OrderLogic.abstract.abstractmethod import AbstractOrderLogic
+
 # SettingsManager
 from Order.OrderLogic.setting import SettingsManager
 
@@ -15,6 +18,9 @@ from Order.OrderLogic.vaild.vaild import OrderVaild
 
 # Helper
 from Order.OrderLogic.helper.helper import Helper
+
+# printer
+from Printer.main import OrderInvoiceGenerator
 
 # models
 from ..models import Order, OrderItem
@@ -28,7 +34,7 @@ from Order.OrderLogic.hash.hash import HashTool
 from Order.OrderLogic.test.mark import MarkData
 
 
-class OrderLogic:
+class OrderLogic(AbstractOrderLogic):
     """
     1. 檢查 ordering
 
@@ -44,6 +50,14 @@ class OrderLogic:
 
     order_table = any
 
+    vendor = any
+
+    customer = any
+
+    order_items = any
+
+    menu_items = any
+
     # _instance = None  # 類變量，用於保存實例
 
     # def __new__(cls, *args, **kwargs):
@@ -54,38 +68,33 @@ class OrderLogic:
     #         cls._instance.config = cls._load_config()
     #     return cls._instance
 
-    def check_order(self, data: any) -> any:
+    def __str__(self) -> str:
+        super().__str__()
+        return self.order
+
+    def check_order(self, data: any) -> bool:
         vendor_id = data.get('vendor_id')
         customer_id = data.get('customer_id')
-        menu_items = data.get('order_items')
+        order_items = data.get('order_items')
+
+        self.order_items = order_items
 
         # if self.TEST:
         #     print(vendor_id, customer_id, menu_items)
 
         # 检查是否成功获取到必要的键值，如果没有，引发异常
-        if vendor_id is None or customer_id is None or menu_items is None:
+        if vendor_id is None or customer_id is None or order_items is None:
             raise ValueError(
                 "Failed to retrieve necessary key-value pairs from data.", SettingsManager.FORMAT_ERROR)
 
-        vendor = ModelManager.creat_model_instance(Vendor, vendor_id)
-        customer = ModelManager.creat_model_instance(Customer, customer_id)
-        order_items = ModelManager.create_order_items(menu_items)
+        self.vendor = ModelManager.creat_model_instance(Vendor, vendor_id)
+        self.customer = ModelManager.creat_model_instance(
+            Customer, customer_id)
+        #  order_items = ModelManager.create_order_items(menu_items)
 
-        data = {
-            "vendor": vendor,
-            "customer": customer,
-            "order_items": order_items
-        }
+        # self.order_items = order_items
 
-        return data
-
-    def create_order(self, data: any) -> Order:
-        """交易創建"""
-
-        # 解構
-        vednor = data["vendor"]
-        customer = data["customer"]
-        order_items = data["order_items"]
+        # 判斷事件
 
         try:
             OrderVaild.is_order_valid()
@@ -94,47 +103,63 @@ class OrderLogic:
         try:
             # 檢查使用者購買上限
             OrderVaild.check_user_purchase_limit(
-                customer=customer, test=self.TEST)
+                customer=self.customer, test=self.TEST)
         except Exception as e:
             raise ValueError(e, SettingsManager.USER_PURCHASE_LIMIT_ERROR)
         try:
             # 減持是否在營業時間
-            OrderVaild.check_business_hours(vendor=vednor, test=self.TEST)
+            OrderVaild.check_business_hours(vendor=self.vendor, test=self.TEST)
         except Exception as e:
             raise ValueError(e, SettingsManager.BUSINESS_HOURS_ERROR)
         try:
             # 实现檢查庫存的逻辑
-            for order_item in order_items:
+            for order_item in self.order_items:
                 OrderVaild.check_inventory(
-                    order_item=order_item, test=self.TEST)
+                    order_item=self.order_items, test=self.TEST)
         except Exception as e:
             raise ValueError(e, SettingsManager.INVENTORY_ERROR)
 
         # finally:
         #     print("Order")
 
-        order_table = Order.objects.create(
-            vendor=vednor,
-            customer=customer,
+        return True
+
+    def create_order(self):
+        pass
+
+    def order(self) -> str:
+        """交易"""
+        order_table = Order(
+            vendor=self.vendor,
+            customer=self.customer,
             order_time=timezone.now(),
             take_time=timezone.now(),
-            total_amount=Helper.get_total_amount(order_items=order_items),
-            order_status="pending",
+            total_amount=Helper.get_total_amount(order_items=self.order_items),
+            order_status="created",
         )
-
-        for order_item in order_items:
-            order_table.order_items.add(order_item)
 
         # 加入hash算法
         order_table.confirmation_hash = HashTool.hash_data(data=order_table)
+        order_table.save()
 
         # TODO: 要改
         self.order_table = order_table
 
-    def order(self, order: Order) -> str:
-        Order.objects.save()
+        ModelManager.create_order_items(
+            self.order_items, self.order_table)
 
-        return order.confirmation_hash
+        # 給 printer
+        # try:
+        #     invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
+        #     result = invoice_generator.generate_invoice(
+        #         shop="A", order_details=self.order_details_example, print_invoice=True, show_invoice=False)
+
+        #     order_table.order_status = "processing"
+        #     order_table.save()
+        # except Exception as e:
+        #     raise ValueError(str(e), SettingsManager.PRINTER_ERROR)
+
+        return self.order_table.confirmation_hash
 
     def cancel_order(self, data) -> str:
         pass
