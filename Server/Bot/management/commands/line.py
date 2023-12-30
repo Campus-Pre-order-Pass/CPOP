@@ -5,7 +5,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import MessageEvent, TextMessage, SourceUser, TextSendMessage
 
 
 #
@@ -24,9 +24,10 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Handling Line Bot events...'))
 
         # Example of handling text messages
+        user_id = 'user_id'  # Replace with the user's ID
         text_message_event = MessageEvent(
-            message=TextMessage(text='hello'),
-            source=None  # You may need to create a proper source object
+            message=TextMessage(text='你好'),
+            source=SourceUser(user_id=user_id)
         )
 
         # Call the handle_message function directly

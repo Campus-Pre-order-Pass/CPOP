@@ -71,16 +71,16 @@ class ShopAPIView(APIView):
             # 处理特定shop_id的情况
 
             vendor = Vendor.objects.get(id=shop_id)
-            current_state = CurrentState.get_today_status(
-                vendor_id=int(shop_id))
+            # current_state = CurrentState.get_today_status(
+            #     vendor_id=int(shop_id))
 
             vendor_serializer = VendorSerializer(vendor)
-            current_state_serializer = CurrentStateSerializer(
-                current_state)
+            # current_state_serializer = CurrentStateSerializer(
+            #     current_state)
 
             shop_list = {
                 "vendor": vendor_serializer.data,
-                "current": current_state_serializer.data
+                # "current": current_state_serializer.data
             }
 
         else:
@@ -88,21 +88,23 @@ class ShopAPIView(APIView):
             vendor_list = Vendor.objects.all()
 
             for vendor in vendor_list:
-                try:
-                    current_state = CurrentState.get_today_status(
-                        vendor_id=int(shop_id))
-                except CurrentState.DoesNotExist:
-                    # Handle the case where there is no CurrentState for the vendor.
-                    current_state = None
+                # try:
+                #     current_state = CurrentState.get_today_status(
+                #         vendor_id=int(shop_id))
+                # except CurrentState.DoesNotExist:
+                #     # Handle the case where there is no CurrentState for the vendor.
+                #     current_state = None
 
                 vendor_serializer = VendorSerializer(vendor)
-                current_state_serializer = CurrentStateSerializer(
-                    current_state) if current_state else None
+                # current_state_serializer = CurrentStateSerializer(
+                #     current_state) if current_state else None
 
                 shop_list.append({
                     "vendor": vendor_serializer.data,
-                    "current": current_state_serializer.data if current_state_serializer else None
+                    # "current": current_state_serializer.data if current_state_serializer else None
                 })
+
+                # shop_list.append(vendor_serializer)
 
         return Response(shop_list)
 

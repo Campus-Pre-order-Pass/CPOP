@@ -17,6 +17,9 @@ urlpatterns = [
          views.OrderAPIView.as_view(), name='view_orders'),
 
     # 下訂單
+    path('pay/<int:customer_id>',
+         views.PayOrderAPIView.as_view(), name='pay_order'),
+
     path('pay',
          views.PayOrderAPIView.as_view(), name='pay_order'),
 ]

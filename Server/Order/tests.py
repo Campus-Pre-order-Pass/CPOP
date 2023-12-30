@@ -1,4 +1,7 @@
-from django.test import TestCase
+from pathlib import Path
+from django.test import TestCase, override_settings
+from django.core.management import call_command
+
 import time
 
 from django.test import Client
@@ -67,6 +70,7 @@ class OrderPayTest(TestCase):
 
 
 class TestPayOrderAPIView(TestCase):
+    pass
     # def setUp(self):
     #     # 在这里执行测试数据库的初始化工作
     #     # 这可能包括数据库迁移、创建模型实例等
@@ -83,32 +87,80 @@ class TestPayOrderAPIView(TestCase):
     # Mock the necessary dependencies
 
     # Create a test client
-    client = Client()
+    # client = Client()
 
-    # Prepare test data
-    test_data = MarkData.get_json_order_data()
+    # # Prepare test data
+    # test_data = MarkData.get_json_order_data()
 
-    # Use the reverse function to get the URL for the view
-    # Replace "pay-order" with the actual URL name
-    url = reverse("Order:pay_order")
+    # # Use the reverse function to get the URL for the view
+    # # Replace "pay-order" with the actual URL name
+    # url = reverse("Order:pay_order")
 
-    # Make a POST request to the view with the test data
-    response = client.post(url, data=test_data,
-                           content_type="application/json")
-    # 打印响应状态码
-    print(f"Status Code: {response.status_code}")
+    # # Make a POST request to the view with the test data
+    # response = client.post(url, data=test_data,
+    #                        content_type="application/json")
+    # # 打印响应状态码
+    # print(f"Status Code: {response.status_code}")
 
-    # 打印响应头
-    # print("Response Headers:")
-    # for header, value in response.items():
-    #     print(f"{header}: {value}")
+    # # 打印响应头
+    # # print("Response Headers:")
+    # # for header, value in response.items():
+    # #     print(f"{header}: {value}")
 
-    # 打印响应内容
-    print("Response Content:")
-    print(response.content.decode('utf-8'))
-    # # Assert the expected behavior
+    # # 打印响应内容
+    # print("Response Content:")
+    # print(response.content.decode('utf-8'))
+    # # # Assert the expected behavior
 
-    # expected_response = {
-    #     "message": "Order created successfully", "hash_code": "hash_code"}
-    # self.assertEqual(response.status_code, 201)
-    # self.assertEqual(response.json(), expected_response)
+    # # expected_response = {
+    # #     "message": "Order created successfully", "hash_code": "hash_code"}
+    # # self.assertEqual(response.status_code, 201)
+    # # self.assertEqual(response.json(), expected_response)
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+class TestAPIView(TestCase):
+
+    @override_settings(DATABASES={'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}})
+    def setUp(self):
+        super().setUp()
+        # 在测试数据库中加载测试数据
+        # call_command('flush', interactive=False)  # 非交互式模式，不需要确认
+        call_command('loaddata', 'static/json/Shop.json')
+        call_command('loaddata', 'static/json/Customer.json')
+        call_command('loaddata', 'static/json/MenuItem.json')
+        call_command('loaddata', 'static/json/Order.json')
+
+    def test_PayOrderAPIView(self):
+        # 创建一个 Django Client 实例
+        client = Client()
+
+        # 使用 reverse 获取 URL
+        customer_id = 1
+        url = reverse("Order:pay_order", args=[customer_id])
+
+        # 发起 GET 请求
+        response = client.get(url, content_type="application/json")
+
+        print(response.content)
+
+        # 检查响应状态码是否是 200 OK
+        self.assertEqual(response.status_code, 200)
+
+    def test_OrderAPIView(self):
+        # 创建一个 Django Client 实例
+        client = Client()
+
+        # 使用 reverse 获取 URL，并传递参数
+        order_id = 1
+        url = reverse("Order:order_status", args=[order_id])
+
+        # 发起 GET 请求
+        response = client.get(url, content_type="application/json")
+
+        print(response.content)
+
+        # 检查响应状态码是否是 200 OK
+        self.assertEqual(response.status_code, 200)

@@ -146,6 +146,7 @@ class OrderLogic(AbstractOrderLogic):
             customer=self.customer,
             order_time=timezone.now(),
             take_time=timezone.now(),
+            total_amount=Helper.get_total_amount(order_items=self.order_items),
             order_status="created",
         )
 

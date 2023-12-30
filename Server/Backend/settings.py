@@ -222,24 +222,18 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
 
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'music',
-    #     'USER': 'gWvPZkyaanAP5cXQqE8hkX5hnmYYhcMr',
-    #     'PASSWORD': 'ZkyaanAP5cXQqE8hkX5hnmYYhcMr',
-    #     'HOST': '127.0.0.1',
-    #     'PORT': '3306',
-    #     'OPTIONS': {
-    #             'sql_mode': 'STRICT_ALL_TABLES',
-    #     }
-    # },
+USE_DEFAULT_DB = False
+
+DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+}
+
+if not USE_DEFAULT_DB:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cpop',
         'USER': 'gWvPZkyaanAP5cXQqE8hkX5hnmYYhcMr',
@@ -249,9 +243,7 @@ DATABASES = {
         'OPTIONS': {
             'sql_mode': 'STRICT_ALL_TABLES',
         }
-    },
-
-}
+    }
 
 
 # Password validation

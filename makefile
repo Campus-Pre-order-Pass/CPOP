@@ -1,5 +1,5 @@
 # run
-include ./makefiles/run/run_redius_docker.mk
+# include ./makefiles/run/run_redius_docker.mk
 
 ifeq ($(OS),Windows_NT)
     # Windows
@@ -19,6 +19,12 @@ endif
 # 執行server
 runser:
 	cd $(SERVER_EXECUTABLE) ; $(MAKE) run
+
+
+act:
+	./run_with_venv.sh 
+
+
 
 # 更新server 或是 web 套件
 # update:

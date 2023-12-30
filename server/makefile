@@ -28,8 +28,13 @@ act: activate
 test: 
 	./manage.py test Order.tests.TestPayOrderAPIView
 
+test-all: 
+	./manage.py test Order.tests.TestAPIView
+	# ./manage.py test Shop.tests.TestAPIView
+
+
 command:
-	./manage.py line
+	./manage.py 
 
 
 migrate:
@@ -47,3 +52,10 @@ django-q:
 # 啟動 celery 用 flower 監控
 start-flower: check_and_kill_5555
 	celery -A Backend flower -l info --basic_auth=twtrubiks:password123
+
+dumpdata:
+	./manage.py dumpdata Shop > static/json/Shop.json
+	./manage.py dumpdata MenuItem > static/json/MenuItem.json
+	./manage.py dumpdata Customer > static/json/Customer.json
+	./manage.py dumpdata Order > static/json/Order.json
+
