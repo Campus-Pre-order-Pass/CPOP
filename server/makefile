@@ -28,6 +28,9 @@ act: activate
 test: 
 	./manage.py test Order.tests.TestPayOrderAPIView
 
+command:
+	./manage.py line
+
 
 migrate:
 	python manage.py makemigrations
@@ -40,13 +43,7 @@ django-q:
 	# python manage.py qmonitor --port=8888
 
 
-celery-worker:
-	celery -A Backend worker -l info
 
-celery-beat:
-	celery -A Backend beat -l info
-
-
-
-start-flower:check_and_kill_5555
-    celery -A Backend flower -l info --basic_auth=twtrubiks:password123
+# 啟動 celery 用 flower 監控
+start-flower: check_and_kill_5555
+	celery -A Backend flower -l info --basic_auth=twtrubiks:password123

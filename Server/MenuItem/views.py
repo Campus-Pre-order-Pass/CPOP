@@ -39,6 +39,7 @@ from helper.vaidate import convert_to_bool
 # cache
 from django.views.decorators.cache import cache_page
 from django.views.decorators.cache import cache_control
+from django.views.decorators.cache import never_cache
 
 # MenuItem =================================================================
 
@@ -109,6 +110,17 @@ class MenuItemAPIView(APIView):
         menuItem = MenuItem.objects.get(uid=uid)
         menuItem.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@handle_exceptions(MenuStatus)
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
+# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(never_cache, name='get')
+class MenuItemAPIView(APIView):
+    def get(slef, request):
+        MenuStatus.get_today_status(vendor_id=1)
+        pass
 
 
 # @handle_exceptions(ExtraOption)

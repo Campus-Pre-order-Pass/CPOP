@@ -1,6 +1,11 @@
 from django.db import models
 from django.conf import settings
 import datetime
+from datetime import date
+
+
+# BaseStatusModel
+from helper.tool.base_models import BaseStatusModel
 
 
 class Vendor(models.Model):
@@ -98,16 +103,32 @@ class DayOfWeek(models.Model):
         return f"{self.get_day_display()} - {self.open_time} to {self.close_time}"
 
 
-class CurrentState(models.Model):
+SHOPPING_TYPES = [
+    ('online', '線上購物'),
+    ('physical', '實體購物'),
+]
+
+
+class CurrentState(BaseStatusModel):
     vendor = models.ForeignKey(
         Vendor, on_delete=models.CASCADE, related_name='current_state', verbose_name="供應商")
+
+    shopping_type = models.CharField(
+        max_length=10, choices=SHOPPING_TYPES, default='online', verbose_name="購物類型")
+
+    date = models.DateField(default=date.today, verbose_name="日期")
+
     current_number = models.IntegerField(default=0, verbose_name="當前號碼")
+
     wait_number = models.IntegerField(default=0, verbose_name="等待號碼")
+
     is_start = models.BooleanField(default=False, verbose_name="是否開業")
+
     is_delivery_available = models.BooleanField(
         default=False, verbose_name="是否提供外送")
 
     class Meta:
+        unique_together = ['vendor', 'date']  # 确保每个厂商每天只有一条记录
         verbose_name = "商店狀態"
         verbose_name_plural = "商店狀態"
 
@@ -143,6 +164,12 @@ class Promotion(models.Model):
     promotion_type = models.CharField(
         max_length=50, choices=PROMOTION_TYPE_CHOICES, null=True, verbose_name="促銷類型")
 
+    max_purchase_count = models.PositiveIntegerField(
+        verbose_name="最大購買人數", default=30)
+
+    simultaneous_purchase_limit = models.PositiveIntegerField(
+        verbose_name="同時間購買人數限制", default=5)
+
     start_time = models.DateTimeField(verbose_name="促銷開始時間")
 
     end_time = models.DateTimeField(verbose_name="促銷結束時間")
@@ -157,7 +184,7 @@ class Promotion(models.Model):
         return f"{self.vendor.name}促銷: {self.promotions} {self.promotion_price}"
 
 
-class VendorDailyMetrics(models.Model):
+class VendorDailyMetrics(BaseStatusModel):
     vendor = models.ForeignKey(
         Vendor, on_delete=models.CASCADE, verbose_name="廠商")
 
@@ -171,6 +198,8 @@ class VendorDailyMetrics(models.Model):
 
     class Meta:
         unique_together = ['vendor', 'date']  # 确保每个厂商每天只有一条记录
+        verbose_name = "廠商每日指標"
+        verbose_name_plural = "每日指標"
 
     def __str__(self):
-        return f"{self.vendor.username} - {self.date}"
+        return f"{self.vendor.name} - {self.date}"

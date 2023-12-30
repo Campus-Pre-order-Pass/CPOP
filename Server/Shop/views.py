@@ -71,7 +71,8 @@ class ShopAPIView(APIView):
             # 处理特定shop_id的情况
 
             vendor = Vendor.objects.get(id=shop_id)
-            current_state = CurrentState.objects.get(vendor=vendor)
+            current_state = CurrentState.get_today_status(
+                vendor_id=int(shop_id))
 
             vendor_serializer = VendorSerializer(vendor)
             current_state_serializer = CurrentStateSerializer(
@@ -88,7 +89,8 @@ class ShopAPIView(APIView):
 
             for vendor in vendor_list:
                 try:
-                    current_state = CurrentState.objects.get(vendor=vendor)
+                    current_state = CurrentState.get_today_status(
+                        vendor_id=int(shop_id))
                 except CurrentState.DoesNotExist:
                     # Handle the case where there is no CurrentState for the vendor.
                     current_state = None
@@ -137,13 +139,15 @@ class CurrentStateAPIView(APIView):
 
     # @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, vendor_id):
-        v = Vendor.objects.get(id=int(vendor_id))
-        serializer = CurrentStateSerializer(CurrentState.objects.get(vendor=v))
+        # v = Vendor.objects.get(id=int(vendor_id))
+        # serializer = CurrentStateSerializer(CurrentState.objects.get(vendor=v))
+        serializer = CurrentStateSerializer(
+            CurrentState.get_today_status(vendor_id=int(vendor_id)))
         return Response(serializer.data)
 
     def put(self, request, vendor_id):
         v = Vendor.objects.get(id=int(vendor_id))
-        c = CurrentState.objects.get(vendor=v)
+        c = CurrentState.get_today_status(vendor_id=int(vendor_id))
         serializer = CurrentStateSerializer(
             c, data=request.data, partial=True)
         if serializer.is_valid():

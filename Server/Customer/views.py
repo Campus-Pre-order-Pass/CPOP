@@ -18,7 +18,7 @@ from rest_framework import status
 from django_ratelimit.decorators import ratelimit
 
 # authentication
-from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
+# from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
 from Customer.models import Customer
 from Shop.models import CurrentState, Vendor
 from Customer.serializers import CustomerSerializerSerializer

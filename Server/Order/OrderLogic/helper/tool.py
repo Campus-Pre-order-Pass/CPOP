@@ -34,4 +34,5 @@ class Tool():
         except ValueError:
             # If the conversion to float fails, raise a ValueError
             raise OrderCreationError("It's not a positive float",
-                                     SettingsManager.ERROR_CODE)
+                                     SettingsManager.ERROR_CODE,
+                                     f"{Tool.__class__.__name__}.is_positive_float")

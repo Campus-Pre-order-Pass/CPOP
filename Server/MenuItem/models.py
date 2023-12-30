@@ -6,6 +6,7 @@ from Shop.models import Vendor
 
 # helper
 from helper.vaidate import validate_count
+from helper.tool.base_models import BaseStatusModel
 
 
 class MenuItemCategory(models.Model):
@@ -91,6 +92,9 @@ class MenuItem(models.Model):
         max_length=100, blank=True, null=True, verbose_name="促銷信息")
     daily_max_orders = models.IntegerField(default=20, verbose_name="訂購數量")
 
+    remaining_quantity = models.PositiveIntegerField(
+        default=20, verbose_name="剩餘數量")
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
 
     class Meta:
@@ -106,17 +110,21 @@ class MenuItem(models.Model):
         return self.title
 
 
-class MenuStatus(models.Model):
+class MenuStatus(BaseStatusModel):
     menu_item = models.ForeignKey(
         MenuItem, on_delete=models.CASCADE, verbose_name="菜單")  # 菜單項目關聯
 
     remaining_quantity = models.PositiveIntegerField(
-        default=0, verbose_name="剩餘數量")  # 添加剩餘數量字段
+        default=0, verbose_name="剩餘數量")
 
     is_available = models.BooleanField(
-        default=True, verbose_name="是否可以供應")  # 是否可供應
+        default=True, verbose_name="是否可以供應")
+
+    date = models.DateField(verbose_name="日期")
 
     class Meta:
+        unique_together = ['menu_item', 'date']
+
         verbose_name = "菜單狀態"
         verbose_name_plural = "菜單狀態"
 

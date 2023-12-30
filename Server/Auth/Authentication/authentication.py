@@ -2,7 +2,7 @@
 import os
 from rest_framework.permissions import BasePermission
 import firebase_admin
-from firebase_admin import auth
+# from firebase_admin import auth
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status

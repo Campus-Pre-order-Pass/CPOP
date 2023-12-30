@@ -1,18 +1,28 @@
 from django.contrib import admin
 from django.conf import settings
-from Shop.models import CurrentState, DayOfWeek, Vendor, Promotion
+from Shop.models import CurrentState, DayOfWeek, Vendor, Promotion, VendorDailyMetrics
 from helper.admin.vendor_class_base import BaseVendorAdmin, BaseVendorKeyAdmin
+from django.utils import timezone
 
 
 # =================================================================
 
 @admin.register(CurrentState)
 class CurrentStateAdmin(BaseVendorKeyAdmin):
-    list_display = ('vendor', 'current_number', 'is_start')
-    list_filter = ('vendor__name',)
+    list_display = ('vendor', 'current_number', 'is_start', 'date')
+    list_filter = ('vendor__name', 'date')
 
     search_fields = ('vendor__name',)
     list_per_page = 10
+
+    def changelist_view(self, request, extra_context=None):
+        if not request.GET.get('date'):
+            q = request.GET.copy()
+            q['date'] = str(timezone.now().date())
+            request.GET = q
+            request.META['QUERY_STRING'] = request.GET.urlencode()
+
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 @admin.register(DayOfWeek)
@@ -68,6 +78,19 @@ class PromotionAdmin(BaseVendorKeyAdmin):
     search_fields = ('vendor__name',)
 
     ordering = ('-created_at',)
+
+    list_per_page = 20
+
+
+@admin.register(VendorDailyMetrics)
+class VendorDailyMetricsAdmin(admin.ModelAdmin):
+    list_display = ('vendor', 'date', 'max_purchase_count',
+                    'simultaneous_purchase_limit')
+    list_filter = ('vendor__name', 'date')
+
+    search_fields = ('vendor__name',)
+
+    ordering = ('-date',)
 
     list_per_page = 20
 

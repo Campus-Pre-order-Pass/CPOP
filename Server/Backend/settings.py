@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import socket
 import sentry_sdk
 import os
 from pathlib import Path
@@ -68,7 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # jobs
-    "django_apscheduler",
+    # "django_apscheduler",
 
     # log
     "log_viewer",
@@ -76,8 +77,9 @@ INSTALLED_APPS = [
     'axes',
     # 'djangosecure',
     'csp',
+
     'simple_history',
-    'django_q',
+    # 'django_q',
     'analytical',
     # mail
     # 'django_mail_admin',
@@ -101,9 +103,9 @@ INSTALLED_APPS = [
     "Track",
     "Camera",
 
-
     # other
     "AdminChart",
+    "Bot"
 ]
 
 
@@ -438,10 +440,25 @@ LOGGING = {
             'formatter': 'verbose',
 
         },
+
+        # tasks file
+
+        'tasks_file': {
+            'level': 'CRITICAL',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'logs/tasks.log',
+            'maxBytes': 5*1024*1024,
+            'backupCount': 3,
+            'formatter': 'verbose',
+
+        },
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
     },
     'loggers': {
         # 'django': {
-        #     'handlers': ['debug_file', 'info_file', 'warning_file', 'error_file', 'critical_file',],
+        #     'handlers': ['debug_file', 'info_file', 'warning_file', 'error_file', 'critical_file', 'tasks_file'],
         #     'level': 'DEBUG',
         #     'propagate': True,
         # },
@@ -451,6 +468,17 @@ LOGGING = {
         #     'level': 'DEBUG',  # 设置日志级别
         #     'propagate': False,
         # },
+        'celery': {
+            'handlers': ['console', 'tasks_file'],
+            'level': 'DEBUG',
+        },
+
+        'tasks': {
+            'handlers': ['tasks_file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+
     },
 }
 
@@ -581,22 +609,33 @@ CSP_REPORT_URI = '/csp-report-endpoint/'
 # )
 
 
-#
-Q_CLUSTER = {
-    'name': 'django_q',
-    'workers': 8,
-    'recycle': 500,
-    'timeout': 60,
-    'compress': True,
-    'save_limit': 250,
-    'queue_limit': 500,
-    'cpu_affinity': 1,
-    'label': '排程管理',
-    'redis': {
-        'host': '127.0.0.1',
-        'port': 6379,
-        'db': 0, }
-}
+# Q_CLUSTER = {
+#     'name': 'django_q',
+#     'workers': 8,
+#     'recycle': 500,
+#     'timeout': 60,
+#     'compress': True,
+#     'save_limit': 250,
+#     'queue_limit': 500,
+#     'cpu_affinity': 1,
+#     'label': '排程管理',
+#     'redis': {
+#         'host': '127.0.0.1',
+#         'port': 6379,
+#         'db': 0, }
+# }
+# 获取主机名
+
+hostname = socket.gethostname()
+
+
+flower_url = "http://49.213.238.75:5555"
+rabbitmq_url = "http://49.213.238.75:15672"
+
+# 如果是本地测试环境，修改链接
+if "laihungweideMBP" in hostname:
+    flower_url = "http://localhost:5555"
+    rabbitmq_url = "http://localhost:15672"
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
@@ -631,10 +670,18 @@ JAZZMIN_SETTINGS = {
 
     # Links to put along the top menu
     "topmenu_links": [
-        {"name": "GA4 Dashboard",
-            "url": "https://analytics.google.com/analytics/web/", "permissions": [], "new_window": True},
-        {"name": "Swagger Documentation", "url": "http://49.213.238.75:8000/swagger/",
+
+        {"name": "GA4", "url": "https://analytics.google.com/analytics/web/",
             "permissions": [], "new_window": True},
+
+        {"name": "Swagger", "url": "http://49.213.238.75:8000/swagger/",
+            "permissions": ["廠商組"], "new_window": True},
+
+        {"name": "Flower", "url": flower_url,
+            "permissions": ["廠商組"], "new_window": True},
+
+        {"name": "RabbitMQ", "url": rabbitmq_url,
+            "permissions": ["廠商組"], "new_window": True},
     ],
 
 

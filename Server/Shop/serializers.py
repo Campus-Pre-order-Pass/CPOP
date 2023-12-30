@@ -10,8 +10,9 @@ class VendorSerializer(serializers.ModelSerializer):
 
 
 class CurrentStateSerializer(serializers.ModelSerializer):
+    # 舊版
 
     class Meta:
         model = CurrentState
-        exclude = ["id", "vendor"]
+        exclude = ["id", "vendor", "date"]
         # fields = '__all__'
