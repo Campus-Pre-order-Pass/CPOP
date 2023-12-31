@@ -1,17 +1,17 @@
 
 # run
-include makefiles/run/run_server.mk
-include makefiles/run/run_server_wsgi.mk
+include script/makefiles/run/run_server.mk
+include script/makefiles/run/run_server_wsgi.mk
 
 # check 
-include makefiles/check/check_and_kill.mk
+include script/makefiles/check/check_and_kill.mk
 
 # orther
-include makefiles/create_venv.mk
-include makefiles/install_dependencies.mk
+include script/makefiles/create_venv.mk
+include script/makefiles/install_dependencies.mk
 
 # celery
-include makefiles/celery/celery.mk
+include script/makefiles/celery/celery.mk
 
 
 # with wsgi
@@ -34,7 +34,7 @@ test-all:
 
 
 command:
-	./manage.py 
+	./manage.py $(c)
 
 
 migrate:
@@ -46,7 +46,6 @@ django-q:
 	python manage.py qcluster
 	# python manage.py qmonitor
 	# python manage.py qmonitor --port=8888
-
 
 
 # 啟動 celery 用 flower 監控

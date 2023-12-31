@@ -1,40 +1,18 @@
-# run
-# include ./makefiles/run/run_redius_docker.mk
-
-ifeq ($(OS),Windows_NT)
-    # Windows
-    SERVER_EXECUTABLE = .\server.exe
-else
-    UNAME_S := $(shell uname -s)
-    ifeq ($(UNAME_S),Darwin)
-        # macOS
-        SERVER_EXECUTABLE = ./server
-    else
-        # Assume Linux (add more conditions if needed)
-        SERVER_EXECUTABLE = ./server
-    endif
-endif
+include script/makefiles/create_venv.mk 
 
 
-# 執行server
-runser:
-	cd $(SERVER_EXECUTABLE) ; $(MAKE) run
+PATH_DIR = script/shell
 
+# Set the path to the directory containing your scripts
+SCRIPTS_DIR = script/shell
 
-act:
-	./run_with_venv.sh 
+build:give_execute_permission activate
+# cd $(PATH_DIR)/run &&  ./enter_venv.sh
+
+# Target to give execute permission to all shell scripts in the directory
+give_execute_permission:
+	chmod +x $(SCRIPTS_DIR)/*/*.sh
 
 
 
-# 更新server 或是 web 套件
-# update:
-
-
-# redius: run-redius-docker
-
-# 正式啟動
-# all:
-#     docker-compose up
-
-
-
+.PHONY: give_execute_permission
