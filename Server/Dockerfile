@@ -1,17 +1,22 @@
-FROM python:3.4
+FROM python:3.10
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends \
+#     postgresql-client \
+#     && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
 WORKDIR /usr/src/app
 COPY requirements.txt ./
+RUN pip install --upgrade pip
+
 RUN pip install -r requirements.txt
 COPY . .
 
 EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+# CMD ["pytho3", "manage.py", "runserver", "0.0.0.0:8000"]
 
 # uwsgi server
 # FROM python:3.8.2

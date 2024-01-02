@@ -14,6 +14,7 @@ attrs==23.1.0
 backcall==0.2.0
 billiard==4.2.0
 blessed==1.20.0
+blinker==1.7.0
 CacheControl==0.13.1
 cachetools==5.3.1
 celery==5.3.6
@@ -63,14 +64,14 @@ django-sslserver==0.22
 django-tracking2==0.5.1
 django-user-agents==0.4.0
 djangorestframework==3.14.0
-djangorestframework-firebase==0.3.0
 djangorestframework-simplejwt==5.2.2
 drf-yasg==1.21.7
 escpos==2.0.0
 et-xmlfile==1.1.0
 executing==2.0.0
 Faker==21.0.0
-firebase-admin==2.18.0
+firebase-admin==6.3.0
+Flask==3.0.0
 flower==2.0.1
 frozenlist==1.4.1
 future==0.15.2
@@ -93,7 +94,9 @@ idna==3.4
 inflection==0.5.1
 ipykernel==6.25.2
 ipython==8.16.1
+itsdangerous==2.1.2
 jedi==0.19.1
+Jinja2==3.1.2
 jsonfield==3.1.0
 jupyter_client==8.3.1
 jupyter_core==5.3.2
@@ -101,6 +104,7 @@ kombu==5.3.4
 line-bot-sdk==3.7.0
 Markdown==3.5.1
 MarkupPy==1.14
+MarkupSafe==2.1.3
 matplotlib-inline==0.1.6
 msgpack==1.0.6
 multidict==6.0.4
@@ -163,6 +167,7 @@ user-agents==2.2.0
 viivakoodi==0.8.0
 vine==5.1.0
 wcwidth==0.2.8
+Werkzeug==3.0.1
 wrapt==1.16.0
 xlrd==2.0.1
 xlwt==1.3.0

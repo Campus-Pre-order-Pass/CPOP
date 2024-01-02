@@ -69,3 +69,13 @@ CPOP 高科美食通是一個使用多種技術堆疊的專案，旨在提供高
 現在，你可以通過訪問 [http://localhost:8000](http://localhost:8000) 來查看你的應用程式。
 
 請確保安裝了 Docker、Node.js 和相關套件，並按照上述步驟進行設置和運行。
+
+<!--
+# PORT
+
+8000: django
+flowe
+5000: Logstash TCP input
+9200: Elasticsearch HTTP
+9300: Elasticsearch TCP transport
+5601: Kibana -->

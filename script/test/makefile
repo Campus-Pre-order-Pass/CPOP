@@ -1,11 +1,9 @@
 # path = script/shell
 
-build:
-    cd server && ./create_venv.sh
-    cd server && ./enter_venv.sh
 
+test:
+	venv-check
 
-    
 command:
 	./manage.py $(c)
 
