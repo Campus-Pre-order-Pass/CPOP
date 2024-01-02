@@ -12,6 +12,7 @@ PATH_DIR = script/shell
 SCRIPTS_DIR = script/shell
 
 DOCKER_NAME = docker-compose
+DEOCKER_TESTS_DIR = docker/test
 .DEFAULT_GOAL := help
 
 help:
@@ -42,15 +43,27 @@ build:
 	docker-compose down
 	docker-compose up --build
 
-build-test:docker-build
+
+#  test =================================================================
+
+
+build-test:
+	cd ./docker/test && docker-compose up --build
+
+
 
 test-re-build: docker-rm docker-build
 
 test-update:
-	$(DOCKER_NAME) down
-	$(DOCKER_NAME) build
+	cd ./docker/test && $(DOCKER_NAME) down
+	cd ./docker/test &&$(DOCKER_NAME) build
 	# $(DOCKER_NAME) up -d
-	$(DOCKER_NAME) up 
+	cd ./docker/test && $(DOCKER_NAME) up 
+
+test-stop:
+	cd $(DEOCKER_TESTS_DIR) && $(DOCKER_NAME) down
+
+
 
 
 server-cmd:

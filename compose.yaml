@@ -9,6 +9,7 @@ services:
     ports:
       - "8000:8000"
     depends_on:
+      - postgres
       - celery
       - flower
 
@@ -39,3 +40,20 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  # postgres:
+  #   container_name: postgres
+  #   image: postgres
+  #   #自動重新啟動
+  #   restart: always
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     #預設使用者
+  #     POSTGRES_USER: myuser
+  #     #預設密碼
+  #     POSTGRES_PASSWORD: mypassword
+  #     #預設資料庫
+  #     POSTGRES_DB: mydb
+  #     #將資料掛載到電腦中、刪除容器時資料還會保留
+  #     PGDATA: ./pgdata:/var/lib/postgresql/data/pgdata
