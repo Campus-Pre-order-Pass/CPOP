@@ -11,14 +11,16 @@ stop-rm:
 
 
 docker-build:
-	docker-compose down
 	docker-compose up --build
 
 docker-run:
 	docker-compose up
 
-docker-stop:
+docker-down:
 	docker-compose down
+docker-rm:
+	docker-compose down -v
+
 
 
 

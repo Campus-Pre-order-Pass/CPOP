@@ -222,8 +222,9 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
-USE_DEFAULT_DB = False
+# TODO: 需要改
+# USE_DEFAULT_DB = !DEBUG
+USE_DEFAULT_DB = True
 
 DATABASES = {
     'default': {
@@ -518,7 +519,8 @@ SITEHEADER = 'CPOP後台管理'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',  # 根據你的 Redis 配置更改
+        # TODO: 需要改
+        "LOCATION": "redis://redis:6379/1",  # 主机名为服务名 "redis"
         "OPTIONS": {
             "SOCKET_CONNECT_TIMEOUT": 5,  # 連接超時（秒為單位）
             "SOCKET_TIMEOUT": 5,  # Socket 超時（秒為單位）

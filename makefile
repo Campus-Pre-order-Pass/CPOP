@@ -11,7 +11,7 @@ PATH_DIR = script/shell
 # Set the path to the directory containing your scripts
 SCRIPTS_DIR = script/shell
 
-DOCKER_ANME = docker-compose
+DOCKER_NAME = docker-compose
 .DEFAULT_GOAL := help
 
 help:
@@ -42,8 +42,20 @@ build:
 	docker-compose down
 	docker-compose up --build
 
-build-test:
-	cd docker/test && $(DOCKER_ANME) up
+build-test:docker-build
+
+test-re-build: docker-rm docker-build
+
+test-update:
+	$(DOCKER_NAME) down
+	$(DOCKER_NAME) build
+	# $(DOCKER_NAME) up -d
+	$(DOCKER_NAME) up 
+
+
+server-cmd:
+	docker exec -it cpop-server-1 python manage.py $(CMD)
+
 
 test-port:
 	@nc -zv localhost 6379 || echo "Redis is not running on port 6379"
