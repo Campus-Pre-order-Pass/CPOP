@@ -75,7 +75,7 @@ class OrderLogic(AbstractOrderLogic):
 
     def __str__(self) -> str:
         super().__str__()
-        return self.order
+        return self.order.__class__.__name__
 
     def check_order(self, data: any) -> bool:
         """檢查 order"""

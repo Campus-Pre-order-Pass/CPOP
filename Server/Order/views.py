@@ -1,6 +1,7 @@
 # django
 from django.shortcuts import render
 from django.conf import settings
+from django.test import TestCase
 from django.utils.decorators import method_decorator
 from django.core.files.storage import FileSystemStorage
 import os
@@ -58,6 +59,7 @@ from django.views.decorators.cache import never_cache
 class PayOrderAPIView(APIView):
     def get(self, request, customer_id: int):
         """獲取訂單資訊"""
+
         c = Customer.objects.get(id=customer_id)
         o = Order.objects.filter(customer=c)
 
@@ -74,11 +76,11 @@ class PayOrderAPIView(APIView):
 
         order_managment = OrderLogic()
 
-        order_managment.setTest(settings.TEST)
+        order_managment.setTest(test=settings.TEST)
 
         try:
             # Your order logic here
-            order_managment.check_order(request.data)
+            order_managment.check_order(data=request.data)
             hash_code = order_managment.order()
 
             # Assuming the order creation is successful, return the response

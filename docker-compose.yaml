@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./Server
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - celery
+      - flower
+
+  celery:
+    build:
+      context: ./Server
+    command: celery -A Backend worker -l info
+
+  flower:
+    build:
+      context: ./Server
+    command: celery -A Backend flower -l info --basic_auth=twtrubiks:password123
+    ports:
+      - "5555:5555"
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    # image: rabbitmq:latest
+    image: rabbitmq:3.12.6-management
+    environment:
+      RABBITMQ_DEFAULT_USER: celery
+      RABBITMQ_DEFAULT_PASS: password123
+      RABBITMQ_DEFAULT_VHOST: my_vhost
+    ports:
+      - "5672:5672"
+      - "15672:15672"

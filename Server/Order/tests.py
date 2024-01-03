@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from django.test import TestCase, override_settings
 from django.core.management import call_command
@@ -13,6 +14,9 @@ from Printer.main import OrderInvoiceGenerator
 from Order.OrderLogic.order_logic import OrderLogic
 from Order.OrderLogic.test.mark import MarkData
 from Order.views import PayOrderAPIView
+
+# TestAPIBaseCase
+from helper.base.base_test_case import TestAPIBaseCase
 
 
 class OrderModelTest(TestCase):
@@ -121,18 +125,7 @@ class TestPayOrderAPIView(TestCase):
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-class TestAPIView(TestCase):
-
-    @override_settings(DATABASES={'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / 'db.sqlite3'}})
-    def setUp(self):
-        super().setUp()
-        # 在测试数据库中加载测试数据
-        # call_command('flush', interactive=False)  # 非交互式模式，不需要确认
-        call_command('loaddata', 'static/json/Shop.json')
-        call_command('loaddata', 'static/json/Customer.json')
-        call_command('loaddata', 'static/json/MenuItem.json')
-        call_command('loaddata', 'static/json/Order.json')
-
+class TestAPIView(TestAPIBaseCase):
     def test_PayOrderAPIView(self):
         # 创建一个 Django Client 实例
         client = Client()
@@ -144,7 +137,7 @@ class TestAPIView(TestCase):
         # 发起 GET 请求
         response = client.get(url, content_type="application/json")
 
-        print(response.content)
+        # print(response.content)
 
         # 检查响应状态码是否是 200 OK
         self.assertEqual(response.status_code, 200)
@@ -154,13 +147,22 @@ class TestAPIView(TestCase):
         client = Client()
 
         # 使用 reverse 获取 URL，并传递参数
-        order_id = 1
+        order_id = 4
         url = reverse("Order:order_status", args=[order_id])
 
         # 发起 GET 请求
         response = client.get(url, content_type="application/json")
 
-        print(response.content)
+        # print(response.content)
 
         # 检查响应状态码是否是 200 OK
         self.assertEqual(response.status_code, 200)
+
+
+class OrderLoggerTestCase(TestCase):
+    def test_write(self):
+        # 获取名为 'order' 的 logger
+        logger = logging.getLogger('order')
+
+        # 在此之后，你可以记录不同级别的日志消息
+        logger.info('This is a debug message for the order logger.')

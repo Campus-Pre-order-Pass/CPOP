@@ -22,9 +22,6 @@ cd Backend
 # Install Python dependencies
 pip install -r requirements.txt
 
-# q
-python manage.py qcluster
-
 # Run the development server
 # generate
 python manage.py runserver 0.0.0.0:8000

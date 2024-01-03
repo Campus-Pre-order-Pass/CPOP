@@ -29,7 +29,6 @@ class BaseAPIViewWithFirebaseAuthentication(APIView):
         super().__init__(*args, **kwargs)
 
         # 在这里进行条件判断并设置属性
-        if not settings.DEBUG:
+        # TODO:  settings.TEST need to change to DEBUG
+        if not settings.TEST:
             self.authentication_classes = [FirebaseTokenAuthentication]
-
-

@@ -7,6 +7,14 @@ import sys
 from helper.script.check_redis import Check
 
 
+# if sys.version_info >= (3, 9):
+#     import select
+
+# if sys.version_info < (3, 4):
+#     raise RuntimeError('This application must be run under Python 3.4 '
+#                        'or later.')
+
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Backend.settings')

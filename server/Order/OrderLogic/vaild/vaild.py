@@ -38,7 +38,7 @@ class OrderVaild():
             return False
 
     @staticmethod
-    def is_order_valid():
+    def is_order_valid() -> bool:
         """
         检查订单对象是否有效
         """

@@ -19,6 +19,20 @@ from decouple import config
 from django.core.management.utils import get_random_secret_key
 
 
+# INSTALLED_APPS =================================================
+from Backend.conf.install_app import INSTALLED_APPS
+
+
+# DATABASES
+from Backend.conf.db_conf import DATABASES
+
+# LOGGING =================================================
+from Backend.conf.logging_conf import LOGGING
+
+# JAZZMIN_SETTINGS =================================================
+from Backend.conf.jazzmin_conf import JAZZMIN_SETTINGS
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +41,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-k=^(!mg80*&)4$cbw8whm!q0%62%n3#w%p#ox5o_k08il&1m@2'
+SECRET_KEY = 'django-insecure-k=^(!mg80*&)4$cbw8whm!q0%62%n3#w%p#ox5o_k08il&1m@2'
 
 """
 name:  hungwei  
@@ -40,13 +54,14 @@ pas:   Ws7tscypC2VrpQpwbsQdURUe97nuRF3p
 config.encodeing = 'utf-8'
 
 # SECRET_KEY = config('SECRET_KEY')
-SECRET_KEY = get_random_secret_key()
+# SECRET_KEY = get_random_secret_key()
 
 # DEBUG = config('DEBUG', default=False, cast=bool)
 
 # test
 DEBUG = True
 TEST = True
+
 
 ALLOWED_HOSTS = ['*', ]
 
@@ -56,57 +71,6 @@ ALLOWED_HOSTS = ['*', ]
 
 SECURE_SSL_REDIRECT = False
 # Application definition
-
-INSTALLED_APPS = [
-    # admin
-    'jazzmin',
-
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # jobs
-    # "django_apscheduler",
-
-    # log
-    "log_viewer",
-    # django-axes
-    'axes',
-    # 'djangosecure',
-    'csp',
-
-    'simple_history',
-    # 'django_q',
-    'analytical',
-    # mail
-    # 'django_mail_admin',
-
-    'debug_toolbar',
-    'rest_framework',
-    'drf_yasg',
-
-    # AP
-    "Auth",
-    "Review",
-    "Sandbox",
-    "Task",
-
-    # 主要AP
-    "Shop",
-    "MenuItem",
-    "Customer",
-    "Order",
-    'CSP',
-    "Track",
-    "Camera",
-
-    # other
-    "AdminChart",
-    "Bot"
-]
 
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -164,6 +128,7 @@ MIDDLEWARE = [
     # 'axes.middleware.AxesMiddleware',
     # cache
     'django.middleware.common.CommonMiddleware',
+
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     # application
@@ -224,35 +189,6 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 
 # TODO: 需要改
 # USE_DEFAULT_DB = !DEBUG
-USE_DEFAULT_DB = True
-
-DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',      # 你的数据库名称
-        'USER': 'myuser',          # 你的数据库用户名
-        'PASSWORD': 'mypassword',  # 你的数据库密码
-        'HOST': 'localhost',       # 数据库服务器的主机名，如果在本地运行，通常是 'localhost'
-        'PORT': '5432',            # 数据库服务器的端口，默认是 5432
-    }
-}
-
-if not USE_DEFAULT_DB:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cpop',
-        'USER': 'gWvPZkyaanAP5cXQqE8hkX5hnmYYhcMr',
-        'PASSWORD': 'ZkyaanAP5cXQqE8hkX5hnmYYhcMr',
-        'HOST': '49.213.238.75',
-        'PORT': '3306',
-        'OPTIONS': {
-            'sql_mode': 'STRICT_ALL_TABLES',
-        }
-    }
 
 
 # Password validation
@@ -365,123 +301,8 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, 'translations'),  # 将 'translations' 更改为您的翻译文件所在的目录
 ]
 
-LOG_VIEWER_FILES = ['django.log', 'job.log']
-LOG_VIEWER_FILES_PATTERN = '*.log*'
-LOG_VIEWER_FILES_DIR = 'logs/'
-LOG_VIEWER_PAGE_LENGTH = 25       # total log lines per-page
-LOG_VIEWER_MAX_READ_LINES = 1000  # total log lines will be read
-# Max log files loaded in Datatable per page
-LOG_VIEWER_FILE_LIST_MAX_ITEMS_PER_PAGE = 25
-LOG_VIEWER_PATTERNS = ['[INFO]', '[DEBUG]',
-                       '[WARNING]', '[ERROR]', '[CRITICAL]']
-# String regex expression to exclude the log from line
-LOG_VIEWER_EXCLUDE_TEXT_PATTERN = None
 
-# Optionally you can set the next variables in order to customize the admin:
-LOG_VIEWER_FILE_LIST_TITLE = "Custom title"
-LOG_VIEWER_FILE_LIST_STYLES = "/static/css/logs_css.css"
-
-
-# settings.py
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'debug_file': {
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/debug.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-        },
-        'info_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/info.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-        },
-        'warning_file': {
-            'level': 'WARNING',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/warning.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-        },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/error.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-        },
-        'critical_file': {
-            'level': 'CRITICAL',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/critical.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-
-        },
-
-        # tasks file
-
-        'tasks_file': {
-            'level': 'CRITICAL',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'logs/tasks.log',
-            'maxBytes': 5*1024*1024,
-            'backupCount': 3,
-            'formatter': 'verbose',
-
-        },
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        # 'django': {
-        #     'handlers': ['debug_file', 'info_file', 'warning_file', 'error_file', 'critical_file', 'tasks_file'],
-        #     'level': 'DEBUG',
-        #     'propagate': True,
-        # },
-        # 添加一个新的Logger来处理测试模式下的日志
-        # 'test_logger': {
-        #     'handlers': ['console'],  # 使用控制台处理程序
-        #     'level': 'DEBUG',  # 设置日志级别
-        #     'propagate': False,
-        # },
-        'celery': {
-            'handlers': ['console', 'tasks_file'],
-            'level': 'DEBUG',
-        },
-
-        'tasks': {
-            'handlers': ['tasks_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-
-    },
-}
+# logger =================================================================
 
 
 # email ================================================================
@@ -628,120 +449,6 @@ CSP_REPORT_URI = '/csp-report-endpoint/'
 #         'db': 0, }
 # }
 # 获取主机名
-
-hostname = socket.gethostname()
-
-
-flower_url = "http://49.213.238.75:5555"
-rabbitmq_url = "http://49.213.238.75:15672"
-
-# 如果是本地测试环境，修改链接
-if "laihungweideMBP" in hostname:
-    flower_url = "http://localhost:5555"
-    rabbitmq_url = "http://localhost:15672"
-
-JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
-
-    "site_title": "CPOP",
-
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-
-    "site_header": "CPOP",
-
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "CPOP",
-
-    # logo
-    "site_logo": "logo.png",
-
-    # CSS classes that are applied to the logo above
-    "site_logo_classes": "img-circle",
-
-
-
-    # Welcome text on the login screen
-    "welcome_sign": "歡迎使用CPOP管理台!!",
-
-
-    # Copyright on the footer
-    "copyright": "CPOP團隊",
-
-    ############
-    # Top Menu #
-    ############
-
-    # Links to put along the top menu
-    "topmenu_links": [
-
-        {"name": "GA4", "url": "https://analytics.google.com/analytics/web/",
-            "permissions": [], "new_window": True},
-
-        {"name": "Swagger", "url": "http://49.213.238.75:8000/swagger/",
-            "permissions": ["廠商組"], "new_window": True},
-
-        {"name": "Flower", "url": flower_url,
-            "permissions": ["廠商組"], "new_window": True},
-
-        {"name": "RabbitMQ", "url": rabbitmq_url,
-            "permissions": ["廠商組"], "new_window": True},
-    ],
-
-
-    #############
-    # Side Menu #
-    #############
-
-    "show_sidebar": True,
-
-    # Custom icons for side menu apps/models See https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
-    # for the full list of 5.13.0 free icon classes
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-    },
-
-
-    # Icons that are used when one is not manually specified
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-
-    #################
-    # Related Modal #
-    #################
-
-    # Use modals instead of popups
-    "related_modal_active": False,
-
-    #############
-    # UI Tweaks #
-    #############
-
-
-    # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
-    "custom_js": None,
-    # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
-    "use_google_fonts_cdn": True,
-    # Whether to show the UI customizer on the sidebar
-    "show_ui_builder": False,
-
-}
-
-
-# drf-yasg 配置
-SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'api_version': '1.0',
-    'enabled_methods': ['get', 'post', 'put', 'patch', 'delete'],
-    'SECURITY_DEFINITIONS': {
-        'basic': {
-            'type': 'basic',
-        },
-    },
-}
-
 
 ANALYTICAL_INTERNAL_IPS = ['127.0.0.1']  # 用于本地开发
 ANALYTICAL_AUTO_IDENTIFY = True

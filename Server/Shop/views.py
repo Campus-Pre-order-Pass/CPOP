@@ -19,6 +19,7 @@ from django_ratelimit.decorators import ratelimit
 
 # authentication
 from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
+from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
 from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuItem
 
@@ -47,16 +48,7 @@ from django.views.decorators.cache import never_cache
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-class ShopAPIView(APIView):
-    renderer_classes = [JSONRenderer]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # 在这里进行条件判断并设置属性
-        if not settings.DEBUG:
-            self.authentication_classes = [FirebaseTokenAuthentication]
-
+class ShopAPIView(BaseAPIViewWithFirebaseAuthentication):
     # @cache_page(settings.CACHE_TIMEOUT_LONG)
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, shop_id=None):
@@ -129,16 +121,7 @@ def update_image(request, uid):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
-class CurrentStateAPIView(APIView):
-    renderer_classes = [JSONRenderer]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # 在这里进行条件判断并设置属性
-        if not settings.DEBUG:
-            self.authentication_classes = [FirebaseTokenAuthentication]
-
+class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
     # @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, vendor_id):
         # v = Vendor.objects.get(id=int(vendor_id))

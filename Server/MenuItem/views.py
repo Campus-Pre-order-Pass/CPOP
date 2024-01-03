@@ -22,8 +22,12 @@ from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseT
 
 # models
 from MenuItem.models import MenuItem, MenuStatus, ExtraOption, RequiredOption
+from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
 from Shop.models import Vendor
 
+
+# TestAPIBaseCase
+from helper.base.base_test_case import TestAPIBaseCase
 
 # serializers
 from MenuItem.serializers import MenuItemExtraOptionSerializer, MenuItemRequiredOptionSerializer, MenuItemSerializer, ExtraOptionSerializer, RequiredOptionSerializer
@@ -48,19 +52,9 @@ from django.views.decorators.cache import never_cache
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-class MenuItemAPIView(APIView):
-    renderer_classes = [JSONRenderer]
-
-    # TODO: 是 DEBUG
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # 在这里进行条件判断并设置属性
-        if not settings.DEBUG:
-            self.authentication_classes = [FirebaseTokenAuthentication]
-
+class MenuItemAPIView(BaseAPIViewWithFirebaseAuthentication):
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
-    def get(self, request, uid):
+    def get(self, request, uid: str):
         vendor = Vendor.objects.get(id=uid)
 
         menuItem = MenuItem.objects.filter(vendor=vendor)
@@ -117,7 +111,7 @@ class MenuItemAPIView(APIView):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
-class MenuItemAPIView(APIView):
+class MenuStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
     def get(slef, request):
         MenuStatus.get_today_status(vendor_id=1)
         pass
@@ -145,17 +139,7 @@ class MenuItemAPIView(APIView):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-class OptionPIView(APIView):
-    renderer_classes = [JSONRenderer]
-
-    # TODO: 是 DEBUG
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # 在这里进行条件判断并设置属性
-        if not settings.DEBUG:
-            self.authentication_classes = [FirebaseTokenAuthentication]
-
+class OptionPIView(BaseAPIViewWithFirebaseAuthentication):
     # @cache_page(settings.CACHE_TIMEOUT_LONG)
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, menu_id):

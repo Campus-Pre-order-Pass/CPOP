@@ -28,21 +28,23 @@ build:
 # act: activate
 
 # # test case 
-# test: 
-# 	./manage.py test Order.tests.TestPayOrderAPIView
+test: 
+	./manage.py test Order.tests.OrderLoggerTestCase
 
-# test-all: 
-# 	./manage.py test Order.tests.TestAPIView
-# 	# ./manage.py test Shop.tests.TestAPIView
-
-
-# command:
-# 	./manage.py $(c)
+test-all: 
+	./manage.py test Order.tests.TestAPIView
+	# ./manage.py test Shop.tests.TestAPIView
+	./manage.py test MenuItem.tests.TestAPIView
 
 
-# migrate:
-# 	python manage.py makemigrations
-# 	python manage.py migrate
+command:
+	./manage.py $(CMD)
+
+
+migrate:
+	python manage.py makemigrations
+	python manage.py migrate
+
 
 
 # django-q:
@@ -55,9 +57,21 @@ build:
 # start-flower: check_and_kill_5555
 # 	celery -A Backend flower -l info --basic_auth=twtrubiks:password123
 
-# dumpdata:
-# 	./manage.py dumpdata Shop > static/json/Shop.json
-# 	./manage.py dumpdata MenuItem > static/json/MenuItem.json
-# 	./manage.py dumpdata Customer > static/json/Customer.json
-# 	./manage.py dumpdata Order > static/json/Order.json
+dumpdata:
+	./manage.py dumpdata Shop > static/json/Shop.json
+	./manage.py dumpdata MenuItem > static/json/MenuItem.json
+	./manage.py dumpdata Customer > static/json/Customer.json
+	./manage.py dumpdata Order > static/json/Order.json
 
+
+loaddata:
+	./manage.py loaddata  static/json/Shop.json
+	./manage.py loaddata  static/json/MenuItem.json
+	./manage.py loaddata  static/json/Customer.json
+	./manage.py loaddata  static/json/Order.json
+
+# loaddata:
+# 	./manage.py loaddata static/json/production_data.json
+
+# dumpdata:
+# 	./manage.py dumpdata >  static/json/production_data.json

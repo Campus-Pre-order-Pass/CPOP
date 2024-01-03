@@ -13,6 +13,8 @@ SCRIPTS_DIR = script/shell
 
 DOCKER_NAME = docker-compose
 DEOCKER_TESTS_DIR = docker/test
+
+
 .DEFAULT_GOAL := help
 
 help:
@@ -48,7 +50,7 @@ build:
 
 
 build-test:
-	cd ./docker/test && docker-compose up --build
+	cd ./docker/test && docker-compose up -d
 
 
 
@@ -61,7 +63,7 @@ test-update:
 	cd ./docker/test && $(DOCKER_NAME) up 
 
 test-stop:
-	cd $(DEOCKER_TESTS_DIR) && $(DOCKER_NAME) down
+	cd $(DEOCKER_TESTS_DIR) && $(DOCKER_NAME) down 
 
 
 

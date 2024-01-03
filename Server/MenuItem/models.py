@@ -1,6 +1,9 @@
+from django.utils import timezone
 import uuid
 from django.db import models
 from django.conf import settings
+from datetime import date
+
 # models
 from Shop.models import Vendor
 
@@ -120,7 +123,7 @@ class MenuStatus(BaseStatusModel):
     is_available = models.BooleanField(
         default=True, verbose_name="是否可以供應")
 
-    date = models.DateField(verbose_name="日期")
+    date = models.DateTimeField(default=timezone.now, verbose_name="日期")
 
     class Meta:
         unique_together = ['menu_item', 'date']
