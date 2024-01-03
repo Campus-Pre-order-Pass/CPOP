@@ -119,19 +119,19 @@ LOGGING = {
         #     'level': 'DEBUG',  # 设置日志级别
         #     'propagate': False,
         # },
-        'celery': {
-            'handlers': ['console', 'tasks_file'],
-            'level': 'DEBUG',
-        },
+        # 'celery': {
+        #     'handlers': ['console', 'tasks_file'],
+        #     'level': 'DEBUG',
+        # },
 
-        'tasks': {
-            'handlers': ['tasks_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        # 'tasks': {
+        #     'handlers': ['tasks_file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
 
         'order': {
-            'handlers': ['console', 'order_file'],
+            'handlers': ['order_file'],
             'level': 'INFO',
             'propagate': True,
         },

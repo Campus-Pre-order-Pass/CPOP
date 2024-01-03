@@ -77,9 +77,8 @@ urlpatterns = [
     # path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
 
     # customer
-    path(f'{V}/api/customer/',
+    path(f'{V}/api/c/',
          include('Customer.urls', namespace='Customer')),
-
 
     # shop
     path(f'{V}/api/s/', include('Shop.urls', namespace='Shop')),

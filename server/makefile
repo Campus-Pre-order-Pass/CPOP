@@ -28,13 +28,14 @@ build:
 # act: activate
 
 # # test case 
-test: 
-	./manage.py test Order.tests.OrderLoggerTestCase
+# test: 
+# 	./manage.py test Shop.tests.TestAPIView
 
 test-all: 
 	./manage.py test Order.tests.TestAPIView
-	# ./manage.py test Shop.tests.TestAPIView
+	 ./manage.py test Shop.tests.TestAPIView
 	./manage.py test MenuItem.tests.TestAPIView
+	./manage.py test Customer.tests.TestAPIView
 
 
 command:
@@ -56,6 +57,7 @@ migrate:
 # # 啟動 celery 用 flower 監控
 # start-flower: check_and_kill_5555
 # 	celery -A Backend flower -l info --basic_auth=twtrubiks:password123
+
 
 dumpdata:
 	./manage.py dumpdata Shop > static/json/Shop.json

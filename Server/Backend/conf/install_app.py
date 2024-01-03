@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     "Auth",
     "Review",
     "Sandbox",
-    "Task",
 
     # 主要AP
     "Shop",

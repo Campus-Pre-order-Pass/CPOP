@@ -16,6 +16,7 @@ from rest_framework import status
 
 # rate
 from django_ratelimit.decorators import ratelimit
+from helper.decorator.custom_ratelimit import custom_ratelimit
 
 # authentication
 from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
@@ -45,9 +46,7 @@ from django.views.decorators.cache import never_cache
 # shop =================================================================
 
 @handle_exceptions(Vendor)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 class ShopAPIView(BaseAPIViewWithFirebaseAuthentication):
     # @cache_page(settings.CACHE_TIMEOUT_LONG)
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
@@ -117,31 +116,29 @@ def update_image(request, uid):
 
 
 @handle_exceptions(CurrentState)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
 @method_decorator(never_cache, name='get')
 class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
     # @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
-    def get(self, request, vendor_id):
+    def get(self, request, vendor_id: str):
         # v = Vendor.objects.get(id=int(vendor_id))
         # serializer = CurrentStateSerializer(CurrentState.objects.get(vendor=v))
         serializer = CurrentStateSerializer(
             CurrentState.get_today_status(vendor_id=int(vendor_id)))
         return Response(serializer.data)
 
-    def put(self, request, vendor_id):
-        v = Vendor.objects.get(id=int(vendor_id))
+    def patch(self, request, vendor_id: str):
         c = CurrentState.get_today_status(vendor_id=int(vendor_id))
         serializer = CurrentStateSerializer(
             c, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def upload_vendor_image(request, vendor_id):
+def upload_vendor_image(request, vendor_id: str):
     """已停用"""
     if request.method == 'POST':
         vendor = Vendor.objects.get(pk=vendor_id)
