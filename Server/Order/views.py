@@ -17,9 +17,11 @@ from rest_framework import status
 
 # rate
 from django_ratelimit.decorators import ratelimit
+from helper.decorator.custom_ratelimit import custom_ratelimit
 
 # authentication
 from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
+from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
 
 # models
 from Order.models import Order, OrderItem
@@ -50,14 +52,27 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.cache import never_cache
 
 
+# swagger
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from Order.drf import DRF
+
+
 @handle_exceptions(Order)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
+# @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
 @method_decorator(never_cache, name='post')
-class PayOrderAPIView(APIView):
+class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
+    @swagger_auto_schema(
+        operation_summary=DRF.PayOrderAPIView["GET"]["operation_summary"],
+        operation_description=DRF.PayOrderAPIView["GET"]["operation_description"],
+        manual_parameters=DRF.PayOrderAPIView["GET"]["manual_parameters"],
+        responses=DRF.PayOrderAPIView["GET"]["responses"],
+    )
     def get(self, request, customer_id: int):
+        print(Customer.objects.get(uid="test"))
         """獲取訂單資訊"""
 
         c = Customer.objects.get(id=customer_id)
@@ -66,14 +81,43 @@ class PayOrderAPIView(APIView):
         orderSerializer = OrderSerializer(data=o, many=True)
         orderSerializer.is_valid()  # 调用 is_valid() 方法
 
-        # 如果验证成功，可以访问 orderSerializer.data 或 orderSerializer.validated_data
-        # print(orderSerializer.data)
-
         return Response({"order": orderSerializer.data})
 
-    def post(self, request,  customer_id: int = None):
-        "新增訂單資訊"
+    @swagger_auto_schema(
+        operation_summary=DRF.PayOrderAPIView["POST"]["operation_summary"],
+        operation_description=DRF.PayOrderAPIView["POST"]["operation_description"],
+        request_body=DRF.PayOrderAPIView["POST"]["request_body"],
+        responses=DRF.PayOrderAPIView["POST"]["responses"],
+    )
+    def post(self, request, customer_id=None):
+        """
+            # PayOrderAPIView
 
+            ## Description
+            This API endpoint is used for creating a new order.
+
+            ## Method
+            - **POST**
+
+            ## Request Body (JSON)
+            Provide the order details in the following format:
+
+            ```json
+            {
+            "customer_id": 123,
+            "products": [
+                {
+                "product_id": 456,
+                "quantity": 2
+                },
+                {
+                "product_id": 789,
+                "quantity": 1
+                }
+            ]
+            }
+            ```
+        """
         order_managment = OrderLogic()
 
         order_managment.setTest(test=settings.TEST)
@@ -93,11 +137,16 @@ class PayOrderAPIView(APIView):
 
 
 @handle_exceptions(Order)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+# @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
-class PayStatusAPIView(APIView):
+class PayStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
+    @swagger_auto_schema(
+        operation_summary=DRF.PayStatusAPIView["GET"]["operation_summary"],
+        operation_description=DRF.PayStatusAPIView["GET"]["operation_description"],
+        responses=DRF.PayStatusAPIView["GET"]["responses"],
+    )
     def get(self, request, order_id: int, *args, **kwargs):
         "該訂單目前狀態"
         order = Order.objects.get(id=order_id)
@@ -105,12 +154,18 @@ class PayStatusAPIView(APIView):
 
 
 @handle_exceptions(OrderItem)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
-class OrderAPIView(APIView):
-    def get(self, request, order_id: int):
+class OrderAPIView(BaseAPIViewWithFirebaseAuthentication):
+    @swagger_auto_schema(
+        operation_summary=DRF.OrderAPIView["GET"]["operation_summary"],
+        operation_description=DRF.OrderAPIView["GET"]["operation_description"],
+        manual_parameters=DRF.OrderAPIView["GET"]["manual_parameters"],
+        responses=DRF.OrderAPIView["GET"]["responses"],
+    )
+    def get(self, request, customer_id: int,  order_id: int):
         """
             1. 獲取該訂單的細節
             2. 會有 token

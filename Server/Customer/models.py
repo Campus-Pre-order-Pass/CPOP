@@ -18,4 +18,4 @@ class Customer(models.Model):
         verbose_name_plural = "顧客列表"
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.id}"

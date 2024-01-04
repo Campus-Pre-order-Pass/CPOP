@@ -28,14 +28,16 @@ build:
 # act: activate
 
 # # test case 
-# test: 
-# 	./manage.py test Shop.tests.TestAPIView
+test: 
+	./manage.py test Order.tests.TestAPIView.test_post_PayOrder
 
-test-all: 
-	./manage.py test Order.tests.TestAPIView
-	 ./manage.py test Shop.tests.TestAPIView
-	./manage.py test MenuItem.tests.TestAPIView
-	./manage.py test Customer.tests.TestAPIView
+api-test:
+	./manage.py test Order.tests.TestAPIView && \
+	./manage.py test Shop.tests.TestAPIView && \
+	./manage.py test MenuItem.tests.TestAPIView && \
+	./manage.py test Customer.tests.TestAPIView && \
+	echo "\033[32mAll tests passed.\033[0m"
+
 
 
 command:
@@ -58,6 +60,9 @@ migrate:
 # start-flower: check_and_kill_5555
 # 	celery -A Backend flower -l info --basic_auth=twtrubiks:password123
 
+app:
+	./python manage.py startapp $(APP)
+	echo "# This is $(APP) Swagger configuration" > $(APP)/drf.py
 
 dumpdata:
 	./manage.py dumpdata Shop > static/json/Shop.json
@@ -77,3 +82,6 @@ loaddata:
 
 # dumpdata:
 # 	./manage.py dumpdata >  static/json/production_data.json
+
+.PHONY: api-test dumpdata loaddata  migrate app
+ 

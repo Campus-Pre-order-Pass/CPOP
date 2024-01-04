@@ -6,6 +6,15 @@ import requests
 import json
 import django
 import sys
+from django.conf import settings
+from django.utils.decorators import method_decorator
+
+
+# handle_exceptions
+from helper.handle_exceptions import handle_exceptions
+from helper.decorator.custom_ratelimit import custom_ratelimit
+from django.views.decorators.cache import never_cache
+
 
 # api
 from drfa.decorators import api_view, APIView
@@ -15,6 +24,11 @@ from rest_framework import status
 # models
 from Shop.models import CurrentState, Vendor
 
+
+# swagger
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .drf import DRF
 
 BASE_URL = "https://cpop.api.iside.shop/"
 PUT_URL = BASE_URL + "/v0/api/s/current/"
@@ -300,10 +314,32 @@ def process_and_recognize_image(esp32_cam):
         return {"status": "error", "message": "Hello, Error!"}
 
 
-# @csrf_exempt
-@api_view(['GET', 'PUT', 'POST'])
-def upload_image(request):
-    if request.method == "POST":
+def save_model(vendor_id, current_number):
+    try:
+        v = Vendor.objects.get(id=vendor_id)
+        # TODO: 需要修改
+        c = CurrentState.objects.get(vendor_id=v)[0]
+
+        c.current_number = current_number
+        c.save()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
+@handle_exceptions(CurrentState)
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
+@method_decorator(never_cache, name='patch')
+class UploadImageAPIView(APIView):
+    @swagger_auto_schema(
+        operation_summary=DRF.upload_image["PATCH"]["operation_summary"],
+        operation_description=DRF.upload_image["PATCH"]["operation_description"],
+        consumes=DRF.upload_image["PATCH"]["consumes"],
+        request_body=DRF.upload_image["PATCH"]["request_body"],
+        responses=DRF.upload_image["PATCH"]["responses"],
+    )
+    def patch(slef, request):
         try:
             # 处理上传的图像数据
             image_data = request.FILES["image"].read()
@@ -335,24 +371,6 @@ def upload_image(request):
 
             # 創建 JSON response 對象
             response_data = {"status": status, "digits": digits}
-            return JsonResponse(response_data)
+            return Response(response_data)
         except cv2.error as e:
-            return JsonResponse({"status": "error", "message": str(e)})
-        except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)})
-    else:
-        # 返回错误响应，仅接受 POST 请求
-        return JsonResponse({"status": "error", "message": "Invalid request method"})
-
-
-def save_model(vendor_id, current_number):
-    try:
-        v = Vendor.objects.get(id=vendor_id)
-        c = CurrentState.objects.get(vendor_id=v)
-
-        c.current_number = current_number
-        c.save()
-        return True
-    except Exception as e:
-        print(e)
-        return False
+            return Response({"status": "error", "message": str(e)})

@@ -21,15 +21,17 @@ from django.conf import settings
 import os
 from django.conf.urls.static import static
 from CSP.views import handle_csp_report
+from django.urls import include
 
-from helper.file import upload_vendor_image
 import debug_toolbar   # 必要的导入
 
 #
 from rest_framework import permissions
+
 # drf_yasg
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
 
 
 # 版本
@@ -47,14 +49,15 @@ def trigger_error(request):
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
-        default_version='v1',
-        description="Test description",
+        title="CPOP API",
+        default_version=V,
+        description="這是CPOP的API文檔案，可以透過底下url做測試，同時還可以做到`立即測試`，不會把models公開，底下models僅公開資料，前端可自行定義",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
+        contact=openapi.Contact(email="lai09150915@gmail.com"),
         license=openapi.License(name="BSD License"),
     ),
-    public=True,
+    public=False,
+    # 權限
     permission_classes=(permissions.AllowAny,),
 )
 
@@ -77,17 +80,17 @@ urlpatterns = [
     # path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
 
     # customer
-    path(f'{V}/api/c/',
+    path(f'{V}/api/customer/',
          include('Customer.urls', namespace='Customer')),
 
     # shop
-    path(f'{V}/api/s/', include('Shop.urls', namespace='Shop')),
+    path(f'{V}/api/shop/', include('Shop.urls', namespace='Shop')),
 
     # order
-    path(f'{V}/api/o/', include('Order.urls', namespace='Order')),
+    path(f'{V}/api/order/', include('Order.urls', namespace='Order')),
 
     # menuItem
-    path(f'{V}/api/m/', include('MenuItem.urls', namespace='MenuItem')),
+    path(f'{V}/api/menu/', include('MenuItem.urls', namespace='MenuItem')),
 
     # camera
     path(f'{V}/api/camera/', include('Camera.urls', namespace='Camera')),
@@ -114,6 +117,7 @@ urlpatterns = [
 
     path('redoc/', schema_view.with_ui('redoc',
          cache_timeout=0), name='schema-redoc'),
+
 
 
 

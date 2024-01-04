@@ -7,7 +7,7 @@ from .models import Order, OrderItem
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("vendor", "customer", "order_time",
-                    "take_time", "total_amount", "order_status")
+                    "take_time", "total_amount", "order_status", "confirmation_hash")
     ordering = ("-take_time",)
 
     list_filter = ('vendor__name',)

@@ -85,10 +85,12 @@ class OrderItem(models.Model):
 
     menuItem = models.ForeignKey(
         MenuItem, on_delete=models.CASCADE, related_name='menu_item', verbose_name="產品")
+
     quantity = models.PositiveIntegerField(default=1, verbose_name="數量")
 
     extra_option = models.ManyToManyField(
         ExtraOption, verbose_name="額外選項")
+
     required_option = models.ManyToManyField(
         RequiredOption, verbose_name="必選選項")
 

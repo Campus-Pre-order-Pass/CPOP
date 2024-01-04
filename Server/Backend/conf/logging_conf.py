@@ -102,11 +102,11 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django': {
-            'handlers': ['tasks_file', 'order_file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
+        # 'django': {
+        #     'handlers': ['tasks_file', 'order_file'],
+        #     'level': 'DEBUG',
+        #     'propagate': True,
+        # },
 
         # 'django': {
         #     'handlers': ['debug_file', 'info_file', 'warning_file', 'error_file', 'critical_file', 'tasks_file', 'order_file'],

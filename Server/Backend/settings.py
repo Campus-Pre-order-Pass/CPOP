@@ -33,6 +33,9 @@ from Backend.conf.logging_conf import LOGGING
 from Backend.conf.jazzmin_conf import JAZZMIN_SETTINGS
 
 
+# SWAGGER_SETTINGS =================================================
+from Backend.conf.swagger_conf import SWAGGER_SETTINGS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -373,7 +376,9 @@ CACHE_MIDDLEWARE_SECONDS：每个页面应缓存的秒数
 CACHE_MIDDLEWARE_KEY_PREFIX：用于生成缓存
 """
 CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 300  # 5 分鐘的示例
+# CACHE_MIDDLEWARE_SECONDS = 300  # 5 分鐘的示例
+# TODO: need to change cache timeout
+CACHE_MIDDLEWARE_SECONDS = 0  # 5 分鐘的示例
 CACHE_MIDDLEWARE_KEY_PREFIX = "cache_redis_demo_first"
 
 

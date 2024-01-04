@@ -12,10 +12,10 @@ urlpatterns = [
          views.CurrentStateAPIView.as_view(), name="current"),
 
     # file
-    path('file/<str:uid>', views.update_image, name="update_image"),
+    # path('file/<str:uid>', views.update_image, name="update_image"),
 
     # shop
-    path('<str:shop_id>', views.ShopAPIView.as_view(), name="shop"),
+    path('<str:vendor_id>', views.ShopAPIView.as_view(), name="shop"),
 
-    path('', views.ShopAPIView.as_view(), name="shop"),
+    path('', views.ShopListAPIView.as_view(), name="shop_list"),
 ]

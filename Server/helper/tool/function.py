@@ -2,8 +2,14 @@ import time
 
 
 class PrinterTool():
+    """1. colorful printer
+        2. used  for  staticmethod `PrinterTool.print_warning(text....)`"""
+
+    def __str__(self) -> str:
+        return self.__class__.__name__
+
     @staticmethod
-    def printcolor(color, text):
+    def printcolor(text, color="green") -> None:
         # printcolor 函式：在終端機中以不同顏色打印文字
         # 根据传入的颜色选择相应的 ANSI 转义码
         if color == "header":  # 目前無用
@@ -37,10 +43,28 @@ class PrinterTool():
         return nowtime
 
     @staticmethod
-    def switch_key(tkey):
+    def switch_key(tkey: str) -> any:
         # switch_key 函式：根據鍵的格式返回對應的鍵值
         if tkey.startswith("#"):
             key = tkey[1:]
         else:
             key = tkey.split("@")[0]
         return key
+
+    @staticmethod
+    def print_blue(text: any) -> None:
+        """print blue text"""
+
+        PrinterTool.printcolor(color="blue", text=text)
+
+    @staticmethod
+    def print_green(text: any) -> None:
+        """print green text"""
+
+        PrinterTool.printcolor(text=text)
+
+    @staticmethod
+    def print_warning(text: any) -> None:
+        """print red text"""
+
+        PrinterTool.printcolor(color="warning", text=text)

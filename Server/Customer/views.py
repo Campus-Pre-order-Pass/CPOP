@@ -50,6 +50,11 @@ from django.views.decorators.cache import never_cache
 from helper.decorator.custom_ratelimit import custom_ratelimit
 
 
+# swagger
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .drf import DRF
+
 # ----------------------------------------------------------------
 
 
@@ -57,7 +62,7 @@ from helper.decorator.custom_ratelimit import custom_ratelimit
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='delete')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
 @method_decorator(never_cache, name='get')
 @method_decorator(never_cache, name='post')
 @method_decorator(never_cache, name='patch')
@@ -65,25 +70,45 @@ from helper.decorator.custom_ratelimit import custom_ratelimit
 class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
     """有關顧客的api view"""
 
+    @swagger_auto_schema(
+        operation_summary=DRF.CustomerAPIView["GET"]["operation_summary"],
+        operation_description=DRF.CustomerAPIView["GET"]["operation_description"],
+        manual_parameters=DRF.CustomerAPIView["GET"]["manual_parameters"],
+        responses=DRF.CustomerAPIView["GET"]["responses"],
+    )
     def get(self, request, uid: str):
         c = Customer.objects.get(uid=uid)
         serializer = CustomerSerializerSerializer(c)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    @swagger_auto_schema(
+        operation_summary=DRF.CustomerAPIView["POST"]["operation_summary"],
+        operation_description=DRF.CustomerAPIView["POST"]["operation_description"],
+        manual_parameters=DRF.CustomerAPIView["POST"]["manual_parameters"],
+        request_body=DRF.CustomerAPIView["POST"]["request_body"],
+        responses=DRF.CustomerAPIView["POST"]["responses"],
+    )
+    def post(self, request, uid: str):
         serializer = CustomerSerializerSerializer(data=request.data)
 
         # 检查数据是否有效
         if serializer.is_valid():
             # 数据格式正确，可以继续处理
-            vendor = Customer.objects.create(**serializer.validated_data)
-            vendor.save()
-            return Response(status=status.HTTP_201_CREATED)
+            c = Customer.objects.create(**serializer.validated_data)
+            c.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             # 数据格式不正确，返回错误响应
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        operation_summary=DRF.CustomerAPIView["PATCH"]["operation_summary"],
+        operation_description=DRF.CustomerAPIView["PATCH"]["operation_description"],
+        manual_parameters=DRF.CustomerAPIView["PATCH"]["manual_parameters"],
+        request_body=DRF.CustomerAPIView["PATCH"]["request_body"],
+        responses=DRF.CustomerAPIView["PATCH"]["responses"],
+    )
     def patch(self, request, uid: str):
         c = Customer.objects.get(uid=uid)
         serializer = CustomerSerializerSerializer(
@@ -93,6 +118,12 @@ class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @swagger_auto_schema(
+        operation_summary=DRF.CustomerAPIView["DELETE"]["operation_summary"],
+        operation_description=DRF.CustomerAPIView["DELETE"]["operation_description"],
+        manual_parameters=DRF.CustomerAPIView["DELETE"]["manual_parameters"],
+        responses=DRF.CustomerAPIView["DELETE"]["responses"],
+    )
     def delete(self, request, uid: str):
         c = Customer.objects.get(uid=uid)
         c.delete()

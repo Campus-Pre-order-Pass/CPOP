@@ -4,7 +4,7 @@
     "order_items" : [
         {
             "menu_item_id":1, 
-            "c" : [1, 2],
+            "extra_option_ids" : [1, 2],
             "required_option_ids": [1, 2],
             "quantity": 2
         },

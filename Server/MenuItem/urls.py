@@ -11,5 +11,5 @@ urlpatterns = [
     path('options/<str:menu_id>', views.OptionPIView.as_view(),
          name="ExtraOptionPIView"),
     # path('test', views.test, name="TestOptionPIView"),
-    path('<str:uid>', views.MenuItemAPIView.as_view(), name="VendorAPIView"),
+    path('<int:vendor_id>', views.MenuItemAPIView.as_view(), name="VendorAPIView"),
 ]
