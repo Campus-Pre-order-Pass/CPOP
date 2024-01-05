@@ -1,9 +1,6 @@
 # manage.py
 
 import click
-from django.core.management import execute_from_command_line
-
-
 # GUI
 from script.GUI.gui import GUI
 
@@ -16,8 +13,13 @@ def click():
 @click.command()
 def gui():
     # 在 Click 命令中调用 Tkinter GUI
-    app = GUI(path="./conf/gui.json")
-    app.mainloop()
+
+    while True:
+        try:
+            app = GUI(path="./conf/gui.json")
+            app.mainloop()
+        except Exception as e:
+            print(f"GUI crashed: {e}")
 
 
 if __name__ == '__main__':

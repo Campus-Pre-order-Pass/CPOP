@@ -1,9 +1,11 @@
 import os
 from subprocess import PIPE
+import subprocess
 import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import messagebox
 from tkinter import IntVar
+from tkinter import simpledialog
 
 from discord import Thread
 
@@ -49,6 +51,8 @@ class GUI(BaseGUI):
         # 创建 Label 显示版本信息
         version_label = tk.Label(self, text=f"Version: {self.conf['version']}")
         version_label.pack(side=tk.TOP, anchor=tk.NE, padx=10, pady=10)
+
+        self.execution_time_frame()
 
     def setup_test_button(self):
         # 創建一個 Frame，將 Checkbutton 放在這個 Frame 內
@@ -116,6 +120,10 @@ class GUI(BaseGUI):
                                 command=self.stop_docker)
         stop_button.grid(row=0, column=5, padx=5)
 
+        show_logs_button = tk.Button(
+            self.frame4, text="logs", command=self.ask_container_id)
+        show_logs_button.grid(row=0, column=6, pady=5)
+
     def start_docker(self):
         # 同时显示信息消息框
         c = self.get_conf_command_v0("start")
@@ -141,6 +149,18 @@ class GUI(BaseGUI):
         c = self.get_conf_command_v0("stop")
         self.run_command(c)
         messagebox.showinfo("Docker", f"停止 Docker {c}")
+
+    def show_docker_logs(self, container_id):
+        self.run_command(f"docker logs {container_id}")
+
+    def ask_container_id(self):
+        # 弹出输入框并获取用户输入的容器 ID
+        container_id = simpledialog.askstring(
+            "Container ID", "Enter Container ID:")
+
+        if container_id:
+            # 如果用户输入了容器 ID，则显示相关日志
+            self.show_docker_logs(container_id)
 
     def start_command_container(self):
         docker_command = self.docker_command_entry.get()

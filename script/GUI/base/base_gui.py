@@ -1,5 +1,6 @@
 import json
 from subprocess import PIPE
+from time import strftime
 import tkinter as tk
 from tkinter import scrolledtext
 from threading import Thread
@@ -26,6 +27,7 @@ class BaseGUI(tk.Tk):
         super().__init__(*args, **kwargs)
 
         self.test = False
+        self.start_time = datetime.now()
 
         self.conf = self.get_conf(path=path)
 
@@ -49,6 +51,7 @@ class BaseGUI(tk.Tk):
         self.result_text.tag_configure("green", foreground="green")
         self.result_text.tag_configure("red", foreground="red")
         self.result_text.tag_configure("white", foreground="white")
+        self.result_text.tag_configure("orange", foreground="#FFA500")
 
         while True:
             line = self.output_queue.get()
@@ -62,6 +65,7 @@ class BaseGUI(tk.Tk):
             output, error = process.communicate()
 
             self.result_text.insert(tk.END, "="*60, "white")
+            self.result_text.insert(tk.END, f"\n \n{docker_command}", "orange")
 
             timestamp = f"\n \n{datetime.now().strftime('%Y-%m-%d %H:%M')} - "
 
@@ -94,6 +98,29 @@ class BaseGUI(tk.Tk):
         update_thread = Thread(target=self.update_output)
         update_thread.daemon = True
         update_thread.start()
+
+    def execution_time_frame(self):
+        self.runtime_label = tk.Label(self)
+        self.runtime_label.pack(side=tk.TOP, anchor=tk.NE, padx=10, pady=10)
+
+        # 更新程序运行时间
+        self.update_runtime()
+
+    def update_runtime(self):
+        # 计算程序运行时间
+        elapsed_time = datetime.now() - self.start_time
+        hours, remainder = divmod(elapsed_time.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+
+        # 格式化时间显示
+        formatted_time = f"{hours:02}:{minutes:02}:{seconds:02}"
+
+        # 更新 Label 的文本
+        self.runtime_label.config(
+            text=f"Time: {formatted_time}")
+
+        # 每隔1000毫秒（1秒）调用一次update_runtime方法
+        self.after(1000, self.update_runtime)
 
     # def print_terminal_message(self, message: any, returncode: int = 0,  *args, **kwargs):
     #     """"Print a terminal message and color"""
