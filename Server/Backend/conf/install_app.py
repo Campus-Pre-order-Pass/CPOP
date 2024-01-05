@@ -46,5 +46,6 @@ INSTALLED_APPS = [
 
     # other
     "AdminChart",
-    "Bot"
+    "Bot",
+    "common_commands"
 ]

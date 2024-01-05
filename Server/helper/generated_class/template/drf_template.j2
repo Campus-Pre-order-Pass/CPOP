@@ -1,0 +1,21 @@
+# drf_template.jinja
+
+{{ drf_imports }}
+
+{{ mark_imports }}
+
+{{ base_config_imports }}
+
+{{ serializer_imports }}
+
+uid_param = openapi.Parameter(
+    name="{{ uid_param_name }}",
+    in_=openapi.IN_PATH,
+    type=openapi.TYPE_STRING,
+    description="{{ uid_param_description }}",
+    required=True,
+    example="{{ uid_param_example }}",
+)
+
+class DRF({{ base_class }}):
+    {{ drf_methods }}

@@ -12,6 +12,8 @@ from django.urls import reverse
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
+from helper.tool.function import PrinterTool
+
 
 class TestAPIBaseCase(TestCase):
     """在setup 加入測試資料"""
@@ -68,6 +70,8 @@ class TestAPIBaseCaseV2(APITestCase):
     @staticmethod
     def is_available(response, status_code=200):
         if response.status_code != status_code:
-            print("Unexpected response status code:", response.status_code)
-            print("Response content:", response.content.decode(
-                'utf-8'))
+            PrinterTool.print_green(
+                f"Unexpected response status code: P{response.status_code}")
+            print("")
+            PrinterTool.print_red(
+                f"Response content: {response.content.decode('utf-8')}")

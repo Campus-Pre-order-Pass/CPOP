@@ -71,11 +71,10 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         manual_parameters=DRF.PayOrderAPIView["GET"]["manual_parameters"],
         responses=DRF.PayOrderAPIView["GET"]["responses"],
     )
-    def get(self, request, customer_id: int):
-        print(Customer.objects.get(uid="test"))
+    def get(self, request, uid: str):
         """獲取訂單資訊"""
 
-        c = Customer.objects.get(id=customer_id)
+        c = Customer.objects.get(uid=uid)
         o = Order.objects.filter(customer=c)
 
         orderSerializer = OrderSerializer(data=o, many=True)
@@ -89,42 +88,21 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         request_body=DRF.PayOrderAPIView["POST"]["request_body"],
         responses=DRF.PayOrderAPIView["POST"]["responses"],
     )
-    def post(self, request, customer_id=None):
-        """
-            # PayOrderAPIView
+    def post(self, request, uid=None):
 
-            ## Description
-            This API endpoint is used for creating a new order.
-
-            ## Method
-            - **POST**
-
-            ## Request Body (JSON)
-            Provide the order details in the following format:
-
-            ```json
-            {
-            "customer_id": 123,
-            "products": [
-                {
-                "product_id": 456,
-                "quantity": 2
-                },
-                {
-                "product_id": 789,
-                "quantity": 1
-                }
-            ]
-            }
-            ```
-        """
         order_managment = OrderLogic()
 
         order_managment.setTest(test=settings.TEST)
 
         try:
             # Your order logic here
-            order_managment.check_order(data=request.data)
+            try:
+                order_managment.check_order(data=request.data)
+            except OrderCreationError as oce:
+                # Handle the ValueError and return an appropriate response
+                error_message = str(oce)
+                return Response({"error": f"check oredr  in {error_message}", "code": oce.code, "source": oce.error_source}, status=status.HTTP_400_BAD_REQUEST)
+
             hash_code = order_managment.order()
 
             # Assuming the order creation is successful, return the response
@@ -165,7 +143,7 @@ class OrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         manual_parameters=DRF.OrderAPIView["GET"]["manual_parameters"],
         responses=DRF.OrderAPIView["GET"]["responses"],
     )
-    def get(self, request, customer_id: int,  order_id: int):
+    def get(self, request, uid: str,  order_id: int):
         """
             1. 獲取該訂單的細節
             2. 會有 token

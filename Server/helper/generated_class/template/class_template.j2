@@ -1,0 +1,10 @@
+# class_template.jinja
+
+class {{ class_name }}:
+    def __init__(self, {% for attribute in attributes %}{{ attribute.name }}{% if not loop.last %}, {% endif %}{% endfor %}):
+        {% for attribute in attributes %}
+        self.{{ attribute.name }} = {{ attribute.name }}
+        {% endfor %}
+
+    def __str__(self):
+        return f"{{ class_name }}({', '.join([f'{attr}={getattr(self, attr)}' for attr in attribute_names])})"

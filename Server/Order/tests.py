@@ -48,21 +48,21 @@ class TestAPIView(TestAPIBaseCaseV2):
         client = Client()
 
         # 使用 reverse 获取 URL
-        customer_id = 1
-        url = reverse("Order:pay_order", args=[customer_id])
+        url = reverse("Order:pay_order", kwargs={'uid': "test"})
 
         # 发起 GET 请求
         response = client.get(
             url, content_type="application/json", format="json")
 
         # print(response.content)
+        TestAPIBaseCaseV2.is_available(response)
 
         # 检查响应状态码是否是 200 OK
         self.assertEqual(response.status_code, 200)
 
     def test_post_PayOrder(self):
         test_data = MarkData.get_json_order_data()
-        url = reverse("Order:pay_order")
+        url = reverse("Order:pay_order", kwargs={'uid': "test"})
         # url = "v0/api/o/pay"
 
         # Make a POST request to the view with the test data
@@ -83,6 +83,8 @@ class TestAPIView(TestAPIBaseCaseV2):
 
         # 发起 GET 请求
         response = client.get(url, content_type="application/json")
+
+        TestAPIBaseCaseV2.is_available(response, 200)
 
         # print(response.content)
 

@@ -85,5 +85,9 @@ stop:
 docker-stop-all:stop-all
 
 
+gui:
+	python3 cli.py gui
+
+
 
 .PHONY: give_execute_permission build

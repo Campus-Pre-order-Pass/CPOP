@@ -40,6 +40,12 @@ CPOP 高科美食通是一個使用多種技術堆疊的專案，旨在提供高
    make runser
    ```
 
+3. 啟動 docker gui 管理啟動
+
+   ```bash
+   make gui
+   ```
+
 ### 後端 (Django + Redis)
 
 1. 進入 `server` 目錄：

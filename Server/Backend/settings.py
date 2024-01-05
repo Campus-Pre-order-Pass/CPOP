@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from Backend.conf.swagger_conf import *
 import socket
 import sentry_sdk
 import os
@@ -20,21 +21,20 @@ from django.core.management.utils import get_random_secret_key
 
 
 # INSTALLED_APPS =================================================
-from Backend.conf.install_app import INSTALLED_APPS
+from Backend.conf.install_app import *
 
 
 # DATABASES
-from Backend.conf.db_conf import DATABASES
+from Backend.conf.db_conf import *
 
 # LOGGING =================================================
-from Backend.conf.logging_conf import LOGGING
+from Backend.conf.logging_conf import *
 
 # JAZZMIN_SETTINGS =================================================
-from Backend.conf.jazzmin_conf import JAZZMIN_SETTINGS
+from Backend.conf.jazzmin_conf import *
 
-
+DATABASES
 # SWAGGER_SETTINGS =================================================
-from Backend.conf.swagger_conf import SWAGGER_SETTINGS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -60,6 +60,7 @@ config.encodeing = 'utf-8'
 # SECRET_KEY = get_random_secret_key()
 
 # DEBUG = config('DEBUG', default=False, cast=bool)
+
 
 # test
 DEBUG = True
@@ -378,7 +379,7 @@ CACHE_MIDDLEWARE_KEY_PREFIX：用于生成缓存
 CACHE_MIDDLEWARE_ALIAS = 'default'
 # CACHE_MIDDLEWARE_SECONDS = 300  # 5 分鐘的示例
 # TODO: need to change cache timeout
-CACHE_MIDDLEWARE_SECONDS = 0  # 5 分鐘的示例
+CACHE_MIDDLEWARE_SECONDS = 300  # 5 分鐘的示例
 CACHE_MIDDLEWARE_KEY_PREFIX = "cache_redis_demo_first"
 
 

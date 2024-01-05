@@ -16,10 +16,18 @@ from Order.serializers import OrderItemSerializer, OrderRequestBodySerializer, O
 from rest_framework.views import APIView
 
 
+uid_param = openapi.Parameter(
+    name="uid",
+    in_=openapi.IN_PATH,
+    type=openapi.TYPE_STRING,
+    description="顧客 `UID`",
+    required=True,
+    example="test",
+)
+
+
 class DRF(APIView):
     """drf_yasg app configuration"""
-    uid = openapi.Schema(type=openapi.TYPE_STRING,
-                         description="使用者唯一識別", example="Order created successfully"),
 
     PayOrderAPIView = {
         "serializer_class": OrderItemSerializer,
@@ -27,7 +35,8 @@ class DRF(APIView):
             'operation_summary': '獲取訂單訊息',
             'operation_description': '獲取`所有`顧客訂單消息`只有價格....` ',
             'manual_parameters': [
-                BaseAPIViewDRFConfig.FIRE_BASE_HEADER
+                BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
+                uid_param
             ],
             "responses": {
                 status.HTTP_200_OK: openapi.Response(
@@ -66,9 +75,10 @@ class DRF(APIView):
         },
         'POST': {
             'operation_summary': '新增訂單',
-            'operation_description': '**重要**，透過此api完成`訂單動作`',
+            'operation_description': '**重要** 透過此api完成`訂單動作`',
             'manual_parameters': [
-                BaseAPIViewDRFConfig.FIRE_BASE_HEADER
+                BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
+                uid_param
             ],
             "request_body": openapi.Schema(
                 type=openapi.TYPE_OBJECT,
@@ -84,21 +94,40 @@ class DRF(APIView):
                                 'required_option_ids': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_INTEGER), example=[1, 2], description="必選選項 `ID`"),
                                 'extra_option_ids': openapi.Schema(type=openapi.TYPE_ARRAY, items=openapi.Items(type=openapi.TYPE_INTEGER), example=[1, 2], description="額外選項 `ID`"),
                                 'quantity': openapi.Schema(type=openapi.TYPE_INTEGER, example=2, description="數量"),
-                            }, example=[
+                            }
+
+                        ),
+                        example={
+                            "vendor_id": 1,
+                            "customer_id": 1,
+                            "order_items": [
                                 {
-                                    'menu_item_id': 1,
-                                    'required_option_ids': [1, 2],
-                                    'extra_option_ids': [1, 2],
-                                    'quantity': 2,
+                                    "menu_item_id": 36,
+                                    "required_option_ids": [
+                                        1,
+                                        2
+                                    ],
+                                    "extra_option_ids": [
+                                        1,
+                                        2
+                                    ],
+                                    "quantity": 4
                                 },
                                 {
-                                    'menu_item_id': 2,
-                                    'required_option_ids': [3, 4],
-                                    'extra_option_ids': [3, 4],
-                                    'quantity': 3,
-                                },
+                                    "menu_item_id": 2,
+                                    "required_option_ids": [
+                                        3,
+                                        4
+                                    ],
+                                    "extra_option_ids": [
+                                        3,
+                                        4
+                                    ],
+                                    "quantity": 3
+                                }
                             ]
-                        )
+                        }
+
                     ),
                 },
                 description="訂單請求的 `JSON` 格式",
@@ -152,7 +181,8 @@ class DRF(APIView):
             "operation_summary": "獲取該訂單細節",
             "operation_description": "像是點了什麼之類的",
             'manual_parameters': [
-                BaseAPIViewDRFConfig.FIRE_BASE_HEADER
+                BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
+                uid_param
             ],
             "responses": {
                 status.HTTP_200_OK: OrderItemSerializer(many=True)

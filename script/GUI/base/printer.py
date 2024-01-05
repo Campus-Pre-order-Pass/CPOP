@@ -9,7 +9,7 @@ class PrinterTool():
         return self.__class__.__name__
 
     @staticmethod
-    def printcolor(text, color="green") -> None:
+    def printcolor(text, color="green"):
         # printcolor 函式：在終端機中以不同顏色打印文字
         # 根据传入的颜色选择相应的 ANSI 转义码
         if color == "header":  # 目前無用
@@ -27,8 +27,10 @@ class PrinterTool():
             colorcode = "\033[95m"
             # raise ValueError("Unsupported color.")
 
-        # 打印带有颜色的文本
         print(str(colorcode)+str(text)+str("\033[0m"))
+
+        # 打印带有颜色的文本
+        return str(colorcode)+str(text)+str("\033[0m")
 
     @staticmethod
     def printcolorhaveline(color="green", text="", linestyle="-"):
@@ -52,24 +54,25 @@ class PrinterTool():
         return key
 
     @staticmethod
-    def print_blue(text: any) -> None:
+    def print_blue(text: any):
         """print blue text"""
 
         PrinterTool.printcolor(color="blue", text=text)
 
     @staticmethod
-    def print_green(text: any) -> None:
+    def print_green(text: any):
         """print green text"""
 
         PrinterTool.printcolor(text=text)
 
     @staticmethod
-    def print_warning(text: any) -> None:
+    def print_warning(text: any):
         """print red text"""
 
         PrinterTool.printcolor(color="warning", text=text)
 
-    def print_red(text: any) -> None:
+    @staticmethod
+    def print_red(text: any):
         """print red text"""
 
         PrinterTool.printcolor(color="fail", text=text)

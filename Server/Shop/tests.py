@@ -24,7 +24,7 @@ class TestAPIView(TestAPIBaseCaseV2):
         client = Client()
 
         # 使用 reverse 获取 URL
-        url = reverse("Shop:shop")
+        url = reverse("Shop:shop_list")
 
         # 发起 GET 请求
         response = client.get(url, content_type="application/json")

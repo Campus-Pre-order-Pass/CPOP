@@ -1,7 +1,11 @@
+TEST_LOG_PATH = logs/test/test_output.txt
+
 
 build:
 	docker-compose down
 	docker-compose up --build
+
+
 # # run
 # include script/makefiles/run/run_server.mk
 # include script/makefiles/run/run_server_wsgi.mk
@@ -31,12 +35,13 @@ build:
 test: 
 	./manage.py test Order.tests.TestAPIView.test_post_PayOrder
 
-api-test:
-	./manage.py test Order.tests.TestAPIView && \
-	./manage.py test Shop.tests.TestAPIView && \
-	./manage.py test MenuItem.tests.TestAPIView && \
-	./manage.py test Customer.tests.TestAPIView && \
+test-api:
+	./manage.py test Order.tests.TestAPIView > $(TEST_LOG_PATH)
+	./manage.py test Shop.tests.TestAPIView >> $(TEST_LOG_PATH)
+	./manage.py test MenuItem.tests.TestAPIView >> $(TEST_LOG_PATH)
+	./manage.py test Customer.tests.TestAPIView >>$(TEST_LOG_PATH)
 	echo "\033[32mAll tests passed.\033[0m"
+
 
 
 

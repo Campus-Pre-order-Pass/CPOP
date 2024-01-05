@@ -1,0 +1,50 @@
+{
+    "version" : 0,
+    "default" :{
+        "test": true
+    },
+    "commands":[
+        {
+            "tag" : "docker",
+            "title": "show",
+            "command" : "docker ps",
+            "test-command" : "docker ps",
+            "description" : "docker"
+        },
+        {
+            "tag" : "docker",
+            "title" :"stop",
+            "command" : "docker-compose stop",
+            "test-command" : "cd docker/test && docker-compose stop",
+            "description" : "Stop Docker Compose services"
+        },        
+        {
+            "tag" : "docker",
+            "title" :"rm",
+            "command" : "docker-compose down",
+            "test-command" : "cd docker/test && docker-compose down",
+            "description" : "docker"
+        },
+        {
+            "tag": "docker",
+            "title": "build",
+            "command": "docker-compose build",
+            "test-command": "cd docker/test && docker-compose build",
+            "description": "Build Docker Compose services"
+        },
+        {
+            "tag": "docker",
+            "title": "start",
+            "command": "docker-compose up -d",
+            "test-command": "cd docker/test && docker-compose up -d",
+            "description": "Start Docker Compose services"
+        },
+        {
+            "tag": "port",
+            "title": "test-port",
+            "command": "port test --all ",
+            "test-command": "cd docker/test && docker-compose up -d",
+            "description": "Start Docker Compose services"
+        }  
+    ]
+}

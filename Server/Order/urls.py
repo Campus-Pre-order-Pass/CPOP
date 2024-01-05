@@ -13,11 +13,11 @@ urlpatterns = [
          views.PayStatusAPIView.as_view(), name='order_status'),
 
     # 查看過往訂單
-    path('item/<int:customer_id>/<int:order_id>',
+    path('item/<str:uid>/<int:order_id>',
          views.OrderAPIView.as_view(), name='view_orders'),
 
     # 下訂單
-    path('pay/<int:customer_id>',
+    path('pay/<str:uid>',
          views.PayOrderAPIView.as_view(), name='pay_order'),
 
     #     path('pay',

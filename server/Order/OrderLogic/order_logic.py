@@ -2,6 +2,7 @@
 
 import hashlib
 import secrets
+from typing import Any
 from django.utils import timezone
 
 # abstract
@@ -47,6 +48,9 @@ class OrderLogic(AbstractOrderLogic):
 
     """
 
+    # def __call__(self, *args: Any, **kwds: Any) -> Any:
+    #     return super().__call__(*args, **kwds)
+
     TEST = False
 
     V = "0"
@@ -79,9 +83,10 @@ class OrderLogic(AbstractOrderLogic):
 
     def check_order(self, data: any) -> bool:
         """檢查 order"""
-        vendor_id = data.get('vendor_id')
-        customer_id = data.get('customer_id')
-        order_items = data.get('order_items')
+
+        vendor_id = data.get('vendor_id', None)
+        customer_id = data.get('customer_id', None)
+        order_items = data.get('order_items', None)
 
         self.order_items = order_items
 

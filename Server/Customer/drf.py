@@ -29,11 +29,10 @@ uid_param = openapi.Parameter(
 
 class DRF(APIView):
     """drf_yasg app configuration"""
-
     CustomerAPIView = {
         "GET": {
             "operation_summary": "獲取顧客",
-            "operation_description": "獲取顧客`",
+            "operation_description": "獲取顧客",
             'manual_parameters': [
                 BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
                 uid_param
@@ -88,7 +87,7 @@ class DRF(APIView):
             }
         },
         "DELETE": {
-            "operation_summary": "刪刪除顧客除",
+            "operation_summary": "刪除顧客除",
             "operation_description": "刪除顧客`",
             'manual_parameters': [
                 BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
@@ -100,7 +99,4 @@ class DRF(APIView):
                 )
             }
         }
-
-
-
     }
