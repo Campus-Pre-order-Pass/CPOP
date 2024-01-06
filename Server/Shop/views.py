@@ -59,14 +59,6 @@ from rest_framework.generics import GenericAPIView
 @handle_exceptions(Vendor)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 class ShopAPIView(BaseAPIViewWithFirebaseAuthentication):
-    # to Swagger
-    # serializer_class = DRF.ShopAPIView["serializer_class"]
-
-    # @swagger_auto_schema(
-    #     operation_summary=DRF.ShopAPIView["GET"]["operation_summary"],
-    #     manual_parameters=DRF.ShopAPIView["GET"]["manual_parameters"]
-    # )
-
     @swagger_auto_schema(
         operation_summary=DRF.ShopAPIView["GET"]["operation_summary"],
         operation_description=DRF.ShopAPIView["GET"]["operation_description"],
@@ -74,52 +66,13 @@ class ShopAPIView(BaseAPIViewWithFirebaseAuthentication):
         responses=DRF.ShopAPIView["GET"]["responses"],
     )
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
-    def get(self, request, vendor_id=None):
+    def get(self, request, vendor_id: int):
         # TODO: 要加入校區判斷
 
-        # TODO: 需要做 cache views seperator
-        shop_list = []
+        v = Vendor.objects.get(id=vendor_id)
+        vendor_serializer = VendorSerializer(v, many=True)
 
-        if vendor_id:
-            # 处理特定shop_id的情况
-
-            vendor = Vendor.objects.get(id=vendor_id)
-            # current_state = CurrentState.get_today_status(
-            #     vendor_id=int(shop_id))
-
-            vendor_serializer = VendorSerializer(vendor)
-            # current_state_serializer = CurrentStateSerializer(
-            #     current_state)
-
-            shop_list = {
-                "vendor": vendor_serializer.data,
-                # "current": current_state_serializer.data
-            }
-
-        else:
-            # 处理没有提供shop_id的情况
-            vendor_list = Vendor.objects.all()
-
-            for vendor in vendor_list:
-                # try:
-                #     current_state = CurrentState.get_today_status(
-                #         vendor_id=int(shop_id))
-                # except CurrentState.DoesNotExist:
-                #     # Handle the case where there is no CurrentState for the vendor.
-                #     current_state = None
-
-                vendor_serializer = VendorSerializer(vendor)
-                # current_state_serializer = CurrentStateSerializer(
-                #     current_state) if current_state else None
-
-                shop_list.append({
-                    "vendor": vendor_serializer.data,
-                    # "current": current_state_serializer.data if current_state_serializer else None
-                })
-
-                # shop_list.append(vendor_serializer)
-
-        return Response(shop_list)
+        return Response(vendor_serializer.data, status=status.HTTP_200_OK)
 
 
 # MenuItem =================================================================

@@ -88,6 +88,7 @@ docker-stop-all:stop-all
 gui:
 	python3 cli.py gui
 
-
+gui-build:
+	pyinstaller --onefile --add-data "./conf/gui.json:./conf" --add-data "./script/GUI/logo.png:./script/GUI" gui.py
 
 .PHONY: give_execute_permission build

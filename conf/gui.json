@@ -35,16 +35,18 @@
         {
             "tag": "docker",
             "title": "start",
+            "arguments":  [],
             "command": "docker-compose up -d",
             "test-command": "cd docker/test && docker-compose up -d",
             "description": "Start Docker Compose services"
         },
         {
-            "tag": "port",
-            "title": "test-port",
-            "command": "port test --all ",
-            "test-command": "cd docker/test && docker-compose up -d",
+            "tag": "docker",
+            "title": "logs",
+            "arguments":  ["id"],
+            "command": "docker logs $(id)",
+            "test-command":  "docker logs $(id)",
             "description": "Start Docker Compose services"
-        }  
+        } 
     ]
 }

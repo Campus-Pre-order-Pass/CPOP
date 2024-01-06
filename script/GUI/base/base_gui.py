@@ -1,14 +1,16 @@
+from ttkbootstrap.constants import *
 import json
 from subprocess import PIPE
 from time import strftime
 import tkinter as tk
-from tkinter import scrolledtext
 from threading import Thread
 from queue import Queue
 from datetime import datetime
+from tkinter import messagebox
 from psutil import Popen
 
-
+import ttkbootstrap as ttk
+from ttkbootstrap.dialogs.dialogs import Messagebox
 from script.GUI.base.printer import PrinterTool
 
 from script.GUI.command import CommandProcessor
@@ -16,7 +18,7 @@ from script.GUI.command import CommandProcessor
 import os
 
 
-class BaseGUI(tk.Tk):
+class BaseGUI(ttk.Window):
     """base gui class"""
 
     OK_CODE = 0
@@ -24,7 +26,7 @@ class BaseGUI(tk.Tk):
     ORTHER = 127
 
     def __init__(self, path: str, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs, themename="superhero")
 
         self.test = False
         self.start_time = datetime.now()
@@ -47,7 +49,7 @@ class BaseGUI(tk.Tk):
         print(f"test  = {self.test}")
 
     def update_output(self):
-        # tags
+        # tags colors
         self.result_text.tag_configure("green", foreground="green")
         self.result_text.tag_configure("red", foreground="red")
         self.result_text.tag_configure("white", foreground="white")
@@ -65,7 +67,8 @@ class BaseGUI(tk.Tk):
             output, error = process.communicate()
 
             self.result_text.insert(tk.END, "="*60, "white")
-            self.result_text.insert(tk.END, f"\n \n{docker_command}", "orange")
+            self.result_text.insert(
+                tk.END, f"\n \ncommand = {docker_command}", "orange")
 
             timestamp = f"\n \n{datetime.now().strftime('%Y-%m-%d %H:%M')} - "
 
@@ -74,7 +77,7 @@ class BaseGUI(tk.Tk):
                 # 插入標題文字到 Text widget 並套用 "green" 標籤
                 self.result_text.insert(tk.END, timestamp, "white")
                 # 插入內容文字到 Text widget 並套用 "white" 標籤
-                self.result_text.insert(tk.END, "Info:\n", "green")
+                self.result_text.insert(tk.END, "Info:\n \n", "green")
                 self.result_text.insert(
                     tk.END, output.decode('utf-8') + "\n", "white")
             else:
@@ -82,7 +85,7 @@ class BaseGUI(tk.Tk):
                 # 插入標題文字到 Text widget 並套用 "red" 標籤
                 self.result_text.insert(tk.END, timestamp, "white")
                 # 插入內容文字到 Text widget 並套用 "white" 標籤
-                self.result_text.insert(tk.END, "Error:\n", "red")
+                self.result_text.insert(tk.END, "Error:\n \n", "red")
                 self.result_text.insert(
                     tk.END, error.decode('utf-8') + "\n", "white")
 
@@ -121,6 +124,13 @@ class BaseGUI(tk.Tk):
 
         # 每隔1000毫秒（1秒）调用一次update_runtime方法
         self.after(1000, self.update_runtime)
+
+    def show_messgaebox_with_run_command(self, name: str, title: str, description: None) -> None:
+        c = self.get_conf_command_v0(title)
+        self.run_command(c)
+        # messagebox.showinfo(f"{name}", f"{description} {name} {c}")
+        Messagebox.show_info(
+            message=f"{name} {description} {name} {c}", title="COMMAND", parent=self)
 
     # def print_terminal_message(self, message: any, returncode: int = 0,  *args, **kwargs):
     #     """"Print a terminal message and color"""
@@ -161,3 +171,57 @@ class BaseGUI(tk.Tk):
         else:
             print("Error: Configuration data is missing or invalid.")
             return None
+
+    # @staticmethod
+    # def show_info(message, title=" ", parent=None, alert=False, **kwargs):
+    #     """Display a modal dialog box with an OK button and an INFO
+    #     icon.
+
+    #     ![](../../assets/dialogs/messagebox-show-info.png)
+
+    #     Parameters:
+
+    #         message (str):
+    #             A message to display in the message box.
+
+    #         title (str):
+    #             The string displayed as the title of the messagebox. This
+    #             option is ignored on Mac OS X, where platform guidelines
+    #             forbid the use of a title on this kind of dialog.
+
+    #         parent (Union[Window, Toplevel]):
+    #             Makes the window the logical parent of the message box. The
+    #             message box is displayed on top of its parent window.
+
+    #         alert (bool):
+    #             Specified whether to ring the display bell.
+
+    #         **kwargs (Dict):
+    #             Other optional keyword arguments.
+    #     """
+    #     dialog = MessageDialog(
+    #         message=message,
+    #         title=title,
+    #         alert=alert,
+    #         parent=parent,
+    #         buttons=["OK:primary"],
+    #         icon=Icon.info,
+    #         localize=True,
+    #         **kwargs
+    #     )
+    #     if "position" in kwargs:
+    #         position = kwargs.pop("position")
+    #     else:
+    #         position = None
+    #     dialog.show(position)
+
+
+class TestGui(ttk.Window):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs, themename="superhero")
+
+        b1 = ttk.Button(self, text="Submit", bootstyle="success")
+        b1.pack(side=tk.LEFT, padx=5, pady=10)
+
+        b2 = ttk.Button(self, text="Submit", bootstyle="info-outline")
+        b2.pack(side=tk.LEFT, padx=5, pady=10)

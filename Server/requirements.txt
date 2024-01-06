@@ -130,6 +130,7 @@ prompt-toolkit==3.0.39
 proto-plus==1.22.3
 protobuf==3.20.3
 psutil==5.9.5
+psycopg2==2.9.9
 psycopg2-binary==2.9.9
 ptyprocess==0.7.0
 pure-eval==0.2.2
@@ -164,6 +165,8 @@ stack-data==0.6.3
 tablib==3.5.0
 tornado==6.3.3
 traitlets==5.11.2
+ttkbootstrap==1.10.1
+ttkthemes==3.2.2
 types-python-dateutil==2.8.19.14
 typing_extensions==4.8.0
 tzdata==2023.4

@@ -8,6 +8,10 @@ from tkinter import IntVar
 from tkinter import simpledialog
 
 from discord import Thread
+from ttkthemes import ThemedTk
+import ttkbootstrap as ttk
+from ttkbootstrap.dialogs.dialogs import Querybox
+from ttkbootstrap.constants import *
 
 # BaseGUI
 from script.GUI.base.base_gui import BaseGUI
@@ -39,6 +43,7 @@ class GUI(BaseGUI):
     def setup_window(self):
         self.title("CPOP GUI")
         self.geometry("800x600")
+
         logo_path = os.path.abspath(os.path.join(
             os.getcwd(), "script/GUI/logo.png"))
 
@@ -96,71 +101,66 @@ class GUI(BaseGUI):
         self.frame4.pack()
 
         # 建立show
-        show_button = tk.Button(
-            self.frame4, text="show", command=self.show_docker)
+        show_button = ttk.Button(
+            self.frame4,
+            text="Show",
+            command=lambda: self.show_messgaebox_with_run_command(
+                "Docker", "show", "顯示docker"),
+            bootstyle="primary-outline"
+        )
+
         show_button.grid(row=0, column=1, padx=5)
 
         # 建立啟動按鈕
-        start_button = tk.Button(
-            self.frame4, text="strat", command=self.start_docker)
+        start_button = ttk.Button(
+            self.frame4,
+            text="strat",
+            command=lambda: self.show_messgaebox_with_run_command(
+                "Docker", "start", "啟動docker"),
+            bootstyle="success-outline")
+
         start_button.grid(row=0, column=2, padx=5)
 
         # 建立建立按鈕
-        create_button = tk.Button(
-            self.frame4, text="rebuild", command=self.create_docker)
+        create_button = ttk.Button(
+            self.frame4,
+            text="rebuild",
+            command=lambda: self.show_messgaebox_with_run_command(
+                "Docker", "rebuild", "重新建置"),
+            bootstyle="info-outline")
+
         create_button.grid(row=0, column=3, padx=5)
 
         # 建立刪除按鈕
-        delete_button = tk.Button(
-            self.frame4, text="rm", command=self.delete_docker)
+        delete_button = ttk.Button(
+            self.frame4,
+            text="rm",
+            command=lambda: self.show_messgaebox_with_run_command(
+                "Docker", 'rm`', "移除"),
+            bootstyle="danger-outline")
+
         delete_button.grid(row=0, column=4, padx=5)
 
         # 建立停止按鈕
-        stop_button = tk.Button(self.frame4, text="stop",
-                                command=self.stop_docker)
+        stop_button = ttk.Button(self.frame4,
+                                 text="stop",
+                                 command=lambda: self.show_messgaebox_with_run_command(
+                                     "Docker", "stop", "停止所有容器"),
+                                 bootstyle="warning-outline")
+
         stop_button.grid(row=0, column=5, padx=5)
 
-        show_logs_button = tk.Button(
-            self.frame4, text="logs", command=self.ask_container_id)
+        show_logs_button = ttk.Button(
+            self.frame4, text="logs", command=self.ask_container_id, bootstyle="info-outline")
         show_logs_button.grid(row=0, column=6, pady=5)
 
-    def start_docker(self):
-        # 同时显示信息消息框
-        c = self.get_conf_command_v0("start")
-        self.run_command(c)
-        messagebox.showinfo("Docker", f"启动 Docker {c}")
-
-    def show_docker(self):
-        c = self.get_conf_command_v0("show")
-        self.run_command(c)
-        messagebox.showinfo("Docker", f"顯示 Docker {c}")
-
-    def create_docker(self):
-        c = self.get_conf_command_v0("build")
-        self.run_command(c)
-        messagebox.showinfo("Docker", f"build Docker {c}")
-
-    def delete_docker(self):
-        c = self.get_conf_command_v0("rm")
-        self.run_command(c)
-        messagebox.showinfo("Docker", f"刪除 Docker {c}")
-
-    def stop_docker(self):
-        c = self.get_conf_command_v0("stop")
-        self.run_command(c)
-        messagebox.showinfo("Docker", f"停止 Docker {c}")
-
-    def show_docker_logs(self, container_id):
-        self.run_command(f"docker logs {container_id}")
-
     def ask_container_id(self):
-        # 弹出输入框并获取用户输入的容器 ID
-        container_id = simpledialog.askstring(
-            "Container ID", "Enter Container ID:")
+        container_id = Querybox.get_string(
+            parent=self, title="Enter Container ID:", initialvalue=None)
 
         if container_id:
             # 如果用户输入了容器 ID，则显示相关日志
-            self.show_docker_logs(container_id)
+            self.run_command(f"docker logs {container_id}")
 
     def start_command_container(self):
         docker_command = self.docker_command_entry.get()
