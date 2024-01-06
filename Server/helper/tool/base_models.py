@@ -4,7 +4,7 @@ from datetime import date
 
 class BaseStatusModel(models.Model):
     @classmethod
-    def get_today_status(cls: models.Model, vendor_id: int) -> any:
+    def get_today_status(cls, vendor_id: int) -> any:
         today = date.today()
 
         try:

@@ -315,10 +315,17 @@ def process_and_recognize_image(esp32_cam):
 
 
 def save_model(vendor_id, current_number):
+    if settings.TEST:
+        try:
+            v = Vendor.objects.get(id=vendor_id)
+            CurrentState.objects.get(id=v.id)
+            return True
+        except Vendor.DoesNotExist:
+            return False
     try:
         v = Vendor.objects.get(id=vendor_id)
         # TODO: 需要修改
-        c = CurrentState.objects.get(vendor_id=v)[0]
+        c = CurrentState.get_today_status(vendor_id=v.id)
 
         c.current_number = current_number
         c.save()
