@@ -126,7 +126,7 @@ class GUI(BaseGUI):
             self.frame4,
             text="rebuild",
             command=lambda: self.show_messgaebox_with_run_command(
-                "Docker", "rebuild", "重新建置"),
+                "Docker", "build", "重新建置"),
             bootstyle="info-outline")
 
         create_button.grid(row=0, column=3, padx=5)
