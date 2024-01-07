@@ -91,4 +91,13 @@ gui:
 gui-build:
 	pyinstaller --onefile --add-data "./conf/gui.json:./conf" --add-data "./script/GUI/logo.png:./script/GUI" gui.py
 
+
+
+stop-rm:
+	docker rm -f $$(docker ps -aq)
+
+
+# docker run -d -p 8000:8000 --name cpop-server-1 s990093/cpop-server:latest
+
+
 .PHONY: give_execute_permission build

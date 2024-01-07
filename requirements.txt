@@ -49,8 +49,10 @@ django-crispy-forms==2.1
 django-csp==3.7
 django-debug-toolbar==4.2.0
 django-decouple==2.1
+django-etc==1.4.0
 django-filter==23.3
 django-formtools==2.4.1
+django-hitcount==1.3.5
 django-import-export==3.3.3
 django-jazzmin==2.6.0
 django-log-viewer==1.1.7
@@ -59,9 +61,11 @@ django-picklefield==3.1
 django-q==1.3.9
 django-ratelimit==4.1.0
 django-redis==5.4.0
+django-request-logging==0.7.5
 django-rest-framework-async==0.1.0
 django-reversion==5.0.8
 django-secure==1.0.2
+django-simple-analytics==1.0.1
 django-simple-history==3.4.0
 django-sslserver==0.22
 django-tracking2==0.5.1

@@ -6,6 +6,8 @@ services:
       context: ../../Server
       dockerfile: Dockerfile
     command: celery -A Backend worker -l info
+    networks:
+      - mynetwork
 
   flower:
     build:
@@ -13,14 +15,17 @@ services:
     command: celery -A Backend flower -l info --basic_auth=twtrubiks:password123
     ports:
       - "5555:5555"
+    networks:
+      - mynetwork
 
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    networks:
+      - mynetwork
 
   rabbitmq:
-    # image: rabbitmq:latest
     image: rabbitmq:3.12.6-management
     environment:
       RABBITMQ_DEFAULT_USER: celery
@@ -29,23 +34,22 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - mynetwork
 
   postgres:
     container_name: postgres
     image: postgres
-    #自動重新啟動
     restart: always
     ports:
       - 5432:5432
     environment:
-      #預設使用者
       POSTGRES_USER: myuser
-      #預設密碼
       POSTGRES_PASSWORD: mypassword
-      #預設資料庫
       POSTGRES_DB: mydb
-      #將資料掛載到電腦中、刪除容器時資料還會保留
       PGDATA: ./pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      - mynetwork
 
   pgadmin:
     image: dpage/pgadmin4
@@ -57,6 +61,12 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
 
 volumes:
   pgadmin_data:

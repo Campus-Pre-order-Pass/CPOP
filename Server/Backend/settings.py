@@ -155,8 +155,11 @@ MIDDLEWARE = [
     # SecurityMiddleware
     # 'djangosecure.middleware.SecurityMiddleware',
 
+    "simple_analytics.middleware.page_counts",
+    # 'request_logging.middleware.LoggingMiddleware',
 
 
+    'tracking.middleware.VisitorTrackingMiddleware',
 
 
     # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
@@ -468,3 +471,26 @@ ANALYTICAL_PROVIDERS = {
 
 # 版本
 V = "v0"
+
+# DATABASES = {
+
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
+# 指定只统计特定 URL 路径
+SIMPLE_ANALYTICS_IGNORE_URLS = [
+    '/v0/api/customer/',
+    '/v0/api/shop/',
+    '/v0/api/order/',
+    '/v0/api/menu/',
+    '/v0/api/camera/',
+]
+
+REQUEST_LOGGING = {
+    'LOGGING_BACKEND': 'request_logging.backends.database.DatabaseRequestLoggingBackend',
+    'LOGGING_DB_TABLE': 'request_log',
+}

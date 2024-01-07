@@ -1,7 +1,8 @@
 {
     "version" : 0,
     "default" :{
-        "test": true
+        "test": true,
+        "showLogs":true
     },
     "commands":[
         {

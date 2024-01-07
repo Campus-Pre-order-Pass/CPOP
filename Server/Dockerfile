@@ -18,7 +18,7 @@ COPY . .
 
 EXPOSE 8000
 
-# CMD ["pytho3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["pytho3", "manage.py", "runserver", "0.0.0.0:8000" , "--settings=backend.settings_prod"]
 
 # uwsgi server
 # FROM python:3.8.2

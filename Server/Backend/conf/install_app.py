@@ -21,6 +21,13 @@ INSTALLED_APPS = [
     'csp',
 
     'simple_history',
+
+    "simple_analytics",
+
+    # 'request_logging',
+    'tracking',
+
+
     # 'django_q',
     'analytical',
     # mail

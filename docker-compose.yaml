@@ -5,17 +5,21 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000 --settings=Backend.settings_prod
     ports:
       - "8000:8000"
     depends_on:
       - celery
       - flower
+    networks:
+      - mynetwork # 添加这一行
 
   celery:
     build:
       context: ./Server
     command: celery -A Backend worker -l info
+    networks:
+      - mynetwork # 添加这一行
 
   flower:
     build:
@@ -23,14 +27,17 @@ services:
     command: celery -A Backend flower -l info --basic_auth=twtrubiks:password123
     ports:
       - "5555:5555"
+    networks:
+      - mynetwork # 添加这一行
 
   redis:
     image: "redis:alpine"
     ports:
       - "6379:6379"
+    networks:
+      - mynetwork # 添加这一行
 
   rabbitmq:
-    # image: rabbitmq:latest
     image: rabbitmq:3.12.6-management
     environment:
       RABBITMQ_DEFAULT_USER: celery
@@ -39,3 +46,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - mynetwork # 添加这一行
+
+networks:
+  mynetwork: # 定义一个名为 "mynetwork" 的网络
