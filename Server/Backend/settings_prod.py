@@ -3,6 +3,12 @@ from .settings import *
 #     command: python manage.py runserver 0.0.0.0:8000 --settings=Backend.settings_prod
 
 DEBUG = True
+TEST = DEBUG
+
+# TODO: 需要改
+STATIC_ROOT = '/app/static/'
+MEDIA_ROOT = '/app/media/'
+
 
 # Django Redis 快取配置
 CACHES = {
