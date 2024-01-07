@@ -10,6 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Backend.settings_prod')
 app = Celery(
     'Backend',
     # broker='amqp://celery:password123@0.0.0.0:5672/my_vhost',
+    # broker='amqp://celery:password123@rabbitmq:5672/my_vhost',
     broker='amqp://celery:password123@rabbitmq:5672/my_vhost',
 
 )

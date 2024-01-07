@@ -30,6 +30,13 @@ services:
     networks:
       - mynetwork # 添加这一行
 
+  cpop_web:
+    image: shiraoyuki/cpop_ui:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork # 添加这一行
+
   redis:
     image: "redis:alpine"
     ports:
