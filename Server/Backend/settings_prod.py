@@ -6,8 +6,8 @@ DEBUG = True
 TEST = DEBUG
 
 # TODO: 需要改
-STATIC_ROOT = '/app/static/'
-MEDIA_ROOT = '/app/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Django Redis 快取配置

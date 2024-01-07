@@ -61,5 +61,8 @@ services:
     networks:
       - mynetwork # 添加这一行
 
+      # username: Twp2xtDcQp9X9eh8Bw27BBYpESzWWV7W
+      # password: 76MRghEvdGqvn9fWWqCHqZnTntVmc8xw
+
 networks:
   mynetwork: # 定义一个名为 "mynetwork" 的网络

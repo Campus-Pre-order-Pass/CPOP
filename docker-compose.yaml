@@ -59,5 +59,52 @@ services:
     networks:
       - mynetwork # 添加这一行
 
+      # username: Twp2xtDcQp9X9eh8Bw27BBYpESzWWV7W
+      # password: 76MRghEvdGqvn9fWWqCHqZnTntVmc8xw
+  # sentry:
+  #   image: getsentry/sentry:latest
+  #   environment:
+  #     - SENTRY_SECRET_KEY=your-secret-key
+  #     - SENTRY_POSTGRES_HOST=sentry-postgres
+  #     - SENTRY_DB_USER=sentry
+  #     - SENTRY_DB_PASSWORD=your-db-password
+  #   ports:
+  #     - "9010:9000"
+  #   depends_on:
+  #     - sentry-postgres
+  #     - redis
+  #   networks:
+  #     - mynetwork # 添加这一行
+
+  # sentry-postgres:
+  #   image: postgres:latest
+  #   environment:
+  #     - POSTGRES_PASSWORD=your-db-password
+  #     - POSTGRES_USER=sentry
+  #   networks:
+  #     - mynetwork # 添加这一行
+
+  # gitlab:
+  #   image: gitlab/gitlab-ce
+  #   hostname: gitlab.me
+  #   container_name: gitlab-main
+  #   restart: always
+  #   environment:
+  #     GITLAB_OMNIBUS_CONFIG: |
+  #       external_url "http://gitlab.me"
+  #       letsencrypt['enable'] = false
+  #   volumes:
+  #     - /path/to/your/gitlab/config:/etc/gitlab
+  #     - /path/to/your/gitlab/logs:/var/log/gitlab
+  #     - /path/to/your/gitlab/data:/var/opt/gitlab
+  #     - /path/to/your/var/run/docker.sock:/var/run/docker.sock
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #   extra_hosts:
+  #     - "gitlab.me:192.168.0.101"
+  #   networks:
+  #     - mynetwork
+
 networks:
-  mynetwork: # 定义一个名为 "mynetwork" 的网络
+  mynetwork:
