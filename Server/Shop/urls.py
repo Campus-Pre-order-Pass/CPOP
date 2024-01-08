@@ -8,14 +8,14 @@ app_name = "Shop"
 urlpatterns = [
 
     # current
-    path('current/<str:vendor_id>',
+    path('current/<int:vendor_id>',
          views.CurrentStateAPIView.as_view(), name="current"),
 
     # file
     # path('file/<str:uid>', views.update_image, name="update_image"),
 
     # shop
-    path('<str:vendor_id>', views.ShopAPIView.as_view(), name="shop"),
+    path('<int:vendor_id>', views.ShopAPIView.as_view(), name="shop"),
 
     path('', views.ShopListAPIView.as_view(), name="shop_list"),
 ]
