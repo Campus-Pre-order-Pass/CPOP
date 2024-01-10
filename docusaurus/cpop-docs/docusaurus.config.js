@@ -22,7 +22,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/Campus-Pre-order-Pass/CPOP',
+          editUrl: 'https://github.com/Campus-Pre-order-Pass/CPOP/tree/main/docusaurus/cpop-docs',
 
         },
         blog: {
