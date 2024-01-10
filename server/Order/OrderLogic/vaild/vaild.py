@@ -84,7 +84,7 @@ class OrderVaild():
 
     @staticmethod
     def check_user_purchase_limit(customer: Customer, test: bool = False) -> bool:
-        """ 
+        """
             1. 实现檢查使用者是否達到購買次數的逻辑
             2. 如果達到購買次數限制，返回 True；否则返回 False
         """

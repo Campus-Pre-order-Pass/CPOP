@@ -4,7 +4,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 // With JSDoc @type annotations, IDEs can provide config autocompletion
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 (module.exports = {
-  title: 'My Site',
+  title: 'CPOP',
   tagline: 'Dinosaurs are cool',
   url: 'https://your-docusaurus-test-site.com',
   baseUrl: '/',
@@ -22,7 +22,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/facebook/docusaurus/edit/main/website/',
+          editUrl: 'https://github.com/Campus-Pre-order-Pass/CPOP',
+
         },
         blog: {
           showReadingTime: true,
@@ -34,6 +35,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           customCss: require.resolve('./src/css/custom.css'),
         },
       }),
+
     ],
   ],
 
@@ -55,7 +57,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
           },
           { to: '/blog', label: 'Blog', position: 'left' },
           {
-            href: 'https://github.com/facebook/docusaurus',
+            href: 'https://github.com/Campus-Pre-order-Pass/CPOP',
             label: 'GitHub',
             position: 'right',
           },

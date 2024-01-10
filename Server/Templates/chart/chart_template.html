@@ -5,76 +5,76 @@
 />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById("myChart").getContext("2d");
+    document.addEventListener("DOMContentLoaded", () => {
+      const ctx = document.getElementById("myChart").getContext("2d");
+  cpop-celery
+      // Sample data
+      const chartData = {{ chart_data | safe }};
+      const chartTitle = "{{ chart_title|safe }}";
+      // const chartData = [
 
-    // Sample data
-    const chartData = {{ chart_data | safe }};
-    const chartTitle = "{{ chart_title|safe }}";
-    // const chartData = [
+      //   { date: "2019-08-05T00:00:00Z", y: 4 },
+      //   { date: "2019-08-03T00:00:00Z", y: 2 },
+      //   { date: "2019-08-04T00:00:00Z", y: 11 },
+      //   { date: "2019-08-02T00:00:00Z", y: 3 },
+      //   { date: "2019-08-01T00:00:00Z", y: 2 },
+      // ];
+      // Parse the dates to JS
+      chartData.forEach((d) => {
+        d.x = new Date(d.date);
+      });
 
-    //   { date: "2019-08-05T00:00:00Z", y: 4 },
-    //   { date: "2019-08-03T00:00:00Z", y: 2 },
-    //   { date: "2019-08-04T00:00:00Z", y: 11 },
-    //   { date: "2019-08-02T00:00:00Z", y: 3 },
-    //   { date: "2019-08-01T00:00:00Z", y: 2 },
-    // ];
-    // Parse the dates to JS
-    chartData.forEach((d) => {
-      d.x = new Date(d.date);
-    });
-
-    const chart_A = new Chart(ctx, {
-      type: "line",
-      data: {
-        datasets: [
-          {
-            label: chartTitle,
-            data: chartData,
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',
-            tension: 0.3
-             },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          xAxes: [
+      const chart_A = new Chart(ctx, {
+        type: "line",
+        data: {
+          datasets: [
             {
-              type: "time",
-              time: {
-                unit: "day",
-                round: "day",
-                displayFormats: {
-                  day: "MMM D",
-                },
-              },
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-            },
+              label: chartTitle,
+              data: chartData,
+              fill: false,
+              borderColor: 'rgb(75, 192, 192)',
+              tension: 0.3
+               },
           ],
         },
-      },
-    });
+        options: {
+          responsive: true,
+          scales: {
+            xAxes: [
+              {
+                type: "time",
+                time: {
+                  unit: "day",
+                  round: "day",
+                  displayFormats: {
+                    day: "MMM D",
+                  },
+                },
+              },
+            ],
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            ],
+          },
+        },
+      });
 
-    // Reload chart data from the backend on button click
-    // const btn = document.querySelector("#reload");
-    // btn.addEventListener("click", async () => {
-    //   const res = await fetch("/admin/web/emailsubscriber/chart_data/");
-    //   const json = await res.json();
-    //   json.forEach((d) => {
-    //     d.x = new Date(d.date);
-    //   });
-    //   chart.data.datasets[0].data = json;
-    //   chart.update();
-    // });
-  });
+      // Reload chart data from the backend on button click
+      // const btn = document.querySelector("#reload");
+      // btn.addEventListener("click", async () => {
+      //   const res = await fetch("/admin/web/emailsubscriber/chart_data/");
+      //   const json = await res.json();
+      //   json.forEach((d) => {
+      //     d.x = new Date(d.date);
+      //   });
+      //   chart.data.datasets[0].data = json;
+      //   chart.update();
+      // });
+    });
 </script>
 <!-- Render our chart -->
 <div style="width: 80%">

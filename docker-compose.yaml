@@ -78,8 +78,20 @@ services:
     networks:
       - mynetwork # 添加这一行
 
-      # username: Twp2xtDcQp9X9eh8Bw27BBYpESzWWV7W
-      # password: 76MRghEvdGqvn9fWWqCHqZnTntVmc8xw
+  # vscode-server:
+  #   image: codercom/code-server
+  #   ports:
+  #     - "0.0.0.0:9002:8080"
+  #   volumes:
+  #     - ./config:/home/coder/.config/code-server
+  #     - /Users/hungwei/Desktop/code/CPOP:/home/coder/project
+  #   environment:
+  #     - PASSWORD=my-secret-password
+  #   networks:
+  #     - mynetwork
+
+  # username: Twp2xtDcQp9X9eh8Bw27BBYpESzWWV7W
+  # password: 76MRghEvdGqvn9fWWqCHqZnTntVmc8xw
   # sentry:
   #   image: getsentry/sentry:latest
   #   environment:
@@ -93,7 +105,7 @@ services:
   #     - sentry-postgres
   #     - redis
   #   networks:
-  #     - mynetwork # 添加这一行
+  #     - mynetwork
 
   # sentry-postgres:
   #   image: postgres:latest
@@ -101,8 +113,7 @@ services:
   #     - POSTGRES_PASSWORD=your-db-password
   #     - POSTGRES_USER=sentry
   #   networks:
-  #     - mynetwork # 添加这一行
-
+  #     - mynetwork
   # gitlab:
   #   image: gitlab/gitlab-ce
   #   hostname: gitlab.me
