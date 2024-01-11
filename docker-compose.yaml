@@ -68,7 +68,7 @@ services:
 
   docusaurus:
     build:
-      context: ./docusaurus/cpop-docs
+      context: ./cpop-docs
       dockerfile: Dockerfile
     ports:
       - "9001:9001"
