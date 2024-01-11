@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.conf import settings
-from Shop.models import CurrentState, DayOfWeek, Vendor, Promotion, VendorDailyMetrics
+from Shop.models import CurrentState, DayOfWeek, Vendor, Promotion, VendorDailyMetrics, VendorSetting
 from helper.admin.vendor_class_base import BaseVendorAdmin, BaseVendorKeyAdmin
 from django.utils import timezone
 
@@ -31,6 +31,13 @@ class DayOfWeekAdmin(BaseVendorKeyAdmin):
     list_filter = ('vendor__name',)
 
     search_fields = ('vendor__name',)
+    list_per_page = 10
+
+
+@admin.register(VendorSetting)
+class VendorSettingAdmin(admin.ModelAdmin):
+    list_display = ('is_trial_run', 'is_testing', 'is_active')
+
     list_per_page = 10
 
 

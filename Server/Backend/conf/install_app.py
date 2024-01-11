@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "Customer",
     "Order",
     'CSP',
-    "Track",
+    # "Track",
     "Camera",
 
     # other

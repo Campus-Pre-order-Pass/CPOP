@@ -14,10 +14,19 @@ from helper.script.check_redis import Check
 #     raise RuntimeError('This application must be run under Python 3.4 '
 #                        'or later.')
 
+test = True
+
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Backend.settings')
+    # TODO: change this to
+    if test:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                              'Backend.settings_dev')
+    else:
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                              'Backend.settings_prod')
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -1,5 +1,7 @@
+from contextlib import AbstractContextManager
 import logging
 from pathlib import Path
+from typing import Any
 from django.test import TestCase, override_settings
 from django.core.management import call_command
 
@@ -19,27 +21,14 @@ from Order.views import PayOrderAPIView
 from helper.base.base_test_case import TestAPIBaseCase, TestAPIBaseCaseV2
 
 
-class OrderModelTest(TestCase):
-    order_details_example = [
-        ["時間: ", "11-05 10:30", ""],
-        ["平台: ", "888", ""],
-        ["總金額: ", "1000", ""],
-        ["波士頓龍蝦蛋餅", "1", ""],
-        ["雙色吐司", "1", "巧克力/奶酥"],
-        ["紅茶", "1", "去冰"]
-    ]
+from Order.core.trading_system import TradingSystem
+from Order.core.module.module import *
 
-    def test_printer(self):
-        # Assuming OrderInvoiceGenerator is in your_module
-        # invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
-        invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
-        result = invoice_generator.generate_invoice(
-            shop="A", order_details=self.order_details_example, print_invoice=True, show_invoice=False)
-        # Assert that the result is as expected
-        # You may need to adjust this based on the actual return value
-        self.assertTrue(result)
 
-        # You can add more assertions based on the expected behavior of your generate_invoice method
+class ModuleTestCase(TestCase):
+    def test_class(self):
+        a = TradingSystem(test=True)
+        print(a.test)
 
 
 class TestAPIView(TestAPIBaseCaseV2):

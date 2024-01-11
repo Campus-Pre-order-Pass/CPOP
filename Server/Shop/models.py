@@ -203,3 +203,18 @@ class VendorDailyMetrics(BaseStatusModel):
 
     def __str__(self):
         return f"{self.vendor.name} - {self.date}"
+
+
+class VendorSetting(models.Model):
+    is_testing = models.BooleanField(default=False, verbose_name='是否正在測試')
+    is_trial_run = models.BooleanField(default=False, verbose_name='是否試營運')
+    is_active = models.BooleanField(default=False, verbose_name='是否活動')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='創建時間')
+    updated_at = models.DateTimeField(auto_now=True, verbose_name='更新時間')
+
+    class Meta:
+        verbose_name = "廠商設定"
+        verbose_name_plural = "廠商設定"
+
+    def __str__(self):
+        return str(self.is_trial_run)

@@ -1,17 +1,19 @@
+# check 
+include ../script/makefiles/check/check_and_kill.mk
+
 TEST_LOG_PATH = logs/test/test_output.txt
 
 
 build:
 	docker-compose down
 	docker-compose up --build
-
+test-ser:check_and_kill 
+	python cli.py runser --test
 
 # # run
 # include script/makefiles/run/run_server.mk
 # include script/makefiles/run/run_server_wsgi.mk
 
-# # check 
-# include script/makefiles/check/check_and_kill.mk
 
 # # orther
 # include script/makefiles/create_venv.mk
@@ -33,7 +35,7 @@ build:
 
 # # test case 
 test: 
-	./manage.py test Order.tests.TestAPIView.test_post_PayOrder
+	./manage.py test Order.tests.ModuleTestCase
 
 test-api:
 	./manage.py test Order.tests.TestAPIView > $(TEST_LOG_PATH)

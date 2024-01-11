@@ -2,13 +2,14 @@
 import django
 
 from typing import Self
-from Server.Order.core.module.base import BaseClass
+from Order.core.module.base import BaseClass
 
 
 class BaseTradingSystem(BaseClass):
     Version = "1.0"
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(BaseTradingSystem, self).__init__(*args, **kwargs)
         django.setup()
 
         self.order = None
