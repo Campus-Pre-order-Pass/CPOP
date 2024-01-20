@@ -45,7 +45,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/Campus-Pre-order-Pass/CPOP/tree/main/docusaurus/cpop-docs',
+            'https://github.com/Campus-Pre-order-Pass/CPOP/tree/main/cpop-docs',
         },
         blog: {
           showReadingTime: true,

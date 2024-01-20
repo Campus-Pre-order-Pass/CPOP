@@ -108,3 +108,18 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = "訂單產品"
         verbose_name_plural = "訂單產品列表"
+
+
+class TransactionLog(models.Model):
+    customer = models.ForeignKey(
+        Customer, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="使用者")
+    action = models.CharField(max_length=255, verbose_name="交易動作")
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name="時間戳記")
+    details = models.TextField(blank=True, null=True, verbose_name="交易詳情")
+
+    def __str__(self):
+        return f"{self.customer.name} - {self.action} - {self.timestamp}"
+
+    class Meta:
+        verbose_name = "交易日誌"
+        verbose_name_plural = "交易日誌"

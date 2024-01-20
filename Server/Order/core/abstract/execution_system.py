@@ -7,5 +7,10 @@ class ExecutionSystem(ABC):
         pass
 
     @abstractmethod
-    def execute_order(self, order):
+    def execute_order(self, order: any):
+        """s
+
+        Args:
+            order (any): _description_
+        """
         pass

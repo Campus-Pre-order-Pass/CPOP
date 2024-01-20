@@ -41,7 +41,6 @@ Django==4.2.3
 django-admin-logs==1.0.2
 django-admin-material-dashboard==1.0.10
 django-analytical==3.1.0
-django-apscheduler==0.6.2
 django-axes==6.1.1
 django-chartjs==2.3.0
 django-cors-headers==4.1.0
@@ -121,7 +120,7 @@ mysqlclient==2.2.0
 nest-asyncio==1.5.8
 numpy==1.26.2
 odfpy==1.4.1
-opencv-python==4.8.1.78
+opencv-python==4.9.0.80
 openpyxl==3.1.2
 packaging==23.2
 parso==0.8.3

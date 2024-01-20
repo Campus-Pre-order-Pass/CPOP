@@ -25,10 +25,11 @@ from Order.core.trading_system import TradingSystem
 from Order.core.module.module import *
 
 
-class ModuleTestCase(TestCase):
+class ModuleTestCase(TestAPIBaseCaseV2):
     def test_class(self):
-        a = TradingSystem(test=True)
-        print(a.test)
+        t = TradingSystem(test=True)
+        t.setData(data=self.data_manager.get_json_order_data())
+        t.execute()
 
 
 class TestAPIView(TestAPIBaseCaseV2):
@@ -50,13 +51,15 @@ class TestAPIView(TestAPIBaseCaseV2):
         self.assertEqual(response.status_code, 200)
 
     def test_post_PayOrder(self):
-        test_data = MarkData.get_json_order_data()
+        test_data = self.data_manager.get_json_order_data()
         url = reverse("Order:pay_order", kwargs={'uid': "test"})
         # url = "v0/api/o/pay"
 
         # Make a POST request to the view with the test data
         response = self.client.post(url, data=test_data,
                                     format="json")
+
+        # self.printer.print_blue(response.content)
 
         TestAPIBaseCaseV2.is_available(response, 201)
 

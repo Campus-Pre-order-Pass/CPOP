@@ -30,21 +30,5 @@ def test():
     g.mainloop()
 
 
-@cli.command()
-@click.option('--port', default=8000, help='Port number for the development server')
-@click.option('--test', is_flag=True, help='Use test settings')
-def runser(port, test):
-    print(test)
-    if test:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                              'Server.Backend.settings_test')
-    else:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                              'Server.Backend.settings_test')
-
-    execute_from_command_line(
-        ['manage.py', 'runserver', f"0.0.0.0:{str(port)}"])
-
-
 if __name__ == '__main__':
     cli()

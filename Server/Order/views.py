@@ -43,7 +43,6 @@ from helper.fileupload import upload_file
 from helper.handle_exceptions import handle_exceptions
 from helper.vaidate import convert_to_bool
 
-from Order.OrderLogic.error.error import OrderCreationError
 
 # cache
 from django.views.decorators.cache import cache_page
@@ -57,11 +56,18 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from Order.drf import DRF
 
+# trading
+from Order.core.trading_system import TradingSystem
+from Order.core.module.error.configuration_error import OrderCreationError
+
+
+# class
+trading = TradingSystem(test=settings.TEST)
+
 
 @handle_exceptions(Order)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-# @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
 @method_decorator(never_cache, name='post')
 class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
@@ -90,20 +96,21 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
     )
     def post(self, request, uid=None):
 
-        order_managment = OrderLogic()
+        # order_managment = OrderLogic()
 
-        order_managment.setTest(test=settings.TEST)
+        # order_managment.setTest(test=settings.TEST)
 
         try:
             # Your order logic here
             try:
-                order_managment.check_order(data=request.data)
+                # order_managment.check_order(data=request.data)
+                trading.setData(data=request.data)
             except OrderCreationError as oce:
                 # Handle the ValueError and return an appropriate response
                 error_message = str(oce)
                 return Response({"error": f"check oredr  in {error_message}", "code": oce.code, "source": oce.error_source}, status=status.HTTP_400_BAD_REQUEST)
 
-            hash_code = order_managment.order()
+            hash_code = trading.execute()
 
             # Assuming the order creation is successful, return the response
             return Response({"message": "Order created successfully", "hash_code": hash_code}, status=status.HTTP_201_CREATED)

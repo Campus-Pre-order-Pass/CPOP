@@ -2,10 +2,14 @@ from django.db import models
 from django.conf import settings
 import datetime
 from datetime import date
+from faker import Faker
 
 
 # BaseStatusModel
 from helper.tool.base_models import BaseStatusModel
+
+
+fake = Faker()
 
 
 class Vendor(models.Model):
@@ -70,6 +74,10 @@ class Vendor(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_vendor(cls, vendor_id: int):
+        return cls.objects.get(id=vendor_id)
 
 
 class DayOfWeek(models.Model):
@@ -191,10 +199,11 @@ class VendorDailyMetrics(BaseStatusModel):
     date = models.DateField(verbose_name="日期")
 
     max_purchase_count = models.PositiveIntegerField(verbose_name="最大購買人數")
+    current_purchase_count = models.PositiveIntegerField(
+        verbose_name="現在購買人數", default=0)  # 預設為0
 
     simultaneous_purchase_limit = models.PositiveIntegerField(
         verbose_name="同時間購買人數限制")
-    # 可以添加其他需要的字段
 
     class Meta:
         unique_together = ['vendor', 'date']  # 确保每个厂商每天只有一条记录
@@ -203,6 +212,21 @@ class VendorDailyMetrics(BaseStatusModel):
 
     def __str__(self):
         return f"{self.vendor.name} - {self.date}"
+
+    def generate_fake_vendor_daily_metrics(vendor_id: int):
+        vendor = Vendor.objects.get(id=vendor_id)
+        date = fake.date_between(start_date="-30d", end_date="today")
+        max_purchase_count = fake.random_int(min=1, max=100)
+        simultaneous_purchase_limit = fake.random_int(min=1, max=50)
+        current_purchase_count = fake.random_int(min=0, max=max_purchase_count)
+
+        return VendorDailyMetrics(
+            vendor=vendor,
+            date=date,
+            max_purchase_count=max_purchase_count,
+            simultaneous_purchase_limit=simultaneous_purchase_limit,
+            current_purchase_count=current_purchase_count
+        )
 
 
 class VendorSetting(models.Model):

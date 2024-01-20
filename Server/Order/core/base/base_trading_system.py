@@ -1,12 +1,14 @@
 # django
 import django
 
-from typing import Self
 from Order.core.module.base import BaseClass
+from Order.core.module.conditions import Conditions
+from Order.core.module.logger import Logger
+from Order.core.module.execution_system import ExecutionSystem
+from Order.core.module.printer import Printer
 
 
 class BaseTradingSystem(BaseClass):
-    Version = "1.0"
 
     def __init__(self, *args, **kwargs):
         super(BaseTradingSystem, self).__init__(*args, **kwargs)
@@ -14,13 +16,30 @@ class BaseTradingSystem(BaseClass):
 
         self.order = None
 
+        # module
+        self.conditions = Conditions(*args, **kwargs)
+
+        self.logger = Logger(*args, **kwargs)
+
+        self.execution_system = ExecutionSystem(*args, **kwargs)
+
+        self.printer = Printer(*args, **kwargs)
+
     def __repr__(self) -> str:
         pass
 
-    def __str__(self) -> str:
-        return super().__str__()
-
     def __getitem__(self, key: str) -> str:
+        """_summary_
+
+        Args:
+            key (str): _description_
+
+        Raises:
+            KeyError: _description_
+
+        Returns:
+            str: _description_
+        """
         if key in self.order:
             return self.order[key]
         else:

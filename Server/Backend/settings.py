@@ -494,3 +494,11 @@ REQUEST_LOGGING = {
     'LOGGING_BACKEND': 'request_logging.backends.database.DatabaseRequestLoggingBackend',
     'LOGGING_DB_TABLE': 'request_log',
 }
+
+
+# Celery Configuration Options
+CELERY_TIMEZONE = 'Asia/Taipei'
+timezone = 'Asia/Taipei'  # 设置为台湾时区
+enable_utc = False
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60

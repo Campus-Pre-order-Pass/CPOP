@@ -136,7 +136,7 @@ class GUI(BaseGUI):
             self.frame4,
             text="rm",
             command=lambda: self.show_messgaebox_with_run_command(
-                "Docker", 'rm`', "移除"),
+                "Docker", 'rm', "移除"),
             bootstyle="danger-outline")
 
         delete_button.grid(row=0, column=4, padx=5)

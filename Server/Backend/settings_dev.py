@@ -31,9 +31,6 @@ CACHE_MIDDLEWARE_SECONDS = 0  # 5 分鐘的示例
 current_db_name = connections['default'].settings_dict['ENGINE']
 
 
-PrinterTool.print_green(f"use db {current_db_name}")
-
-
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -51,3 +48,11 @@ CACHES = {
         }
     }
 }
+
+
+# show
+
+PrinterTool.print_info_line()
+PrinterTool.print_red("use settings_dev")
+PrinterTool.print_green(f"database: {current_db_name}")
+PrinterTool.print_green(f"django_redis: {CACHES['default']['LOCATION']}")

@@ -23,6 +23,8 @@ def main():
     if test:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                               'Backend.settings_dev')
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                              'Backend.settings_test')
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                               'Backend.settings_prod')

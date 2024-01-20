@@ -1,0 +1,70 @@
+{
+    "order":  
+    {
+        "id": 1,
+        "order_time": "2023-12-29T16:15:19.711723",
+        "take_time": "2023-12-29T16:15:19.711729",
+        "total_amount": "425.00",
+        "order_status": "created",
+        "confirmation_hash": "84ecd52d71cfbc1b89aa1e9a364f8c08b07db5d1dcdb5cc5a543b26634096c7f",
+        "vendor": 1,
+        "customer": 1
+    },
+    "items": [
+      {
+        "id": 1,
+        "required_option": [
+          {
+            "id": 1,
+            "name": "無糖",
+            "description": "0%糖",
+            "price": "0.00"
+          },
+          {
+            "id": 2,
+            "name": "微糖",
+            "description": "30%糖",
+            "price": "0.00"
+          }
+        ],
+        "extra_option": [],
+        "quantity": 2,
+        "order": 1,
+        "menuItem": 1
+      },
+      {
+        "id": 2,
+        "required_option": [
+          {
+            "id": 1,
+            "name": "無糖",
+            "description": "0%糖",
+            "price": "0.00"
+          },
+          {
+            "id": 2,
+            "name": "微糖",
+            "description": "30%糖",
+            "price": "0.00"
+          }
+        ],
+        "extra_option": [
+          {
+            "id": 1,
+            "name": "台式麵",
+            "description": "無",
+            "price": "20.00"
+          },
+          {
+            "id": 2,
+            "name": "韓式麵",
+            "description": "無",
+            "price": "35.00"
+          }
+        ],
+        "quantity": 3,
+        "order": 1,
+        "menuItem": 2
+      }
+    ]
+  }

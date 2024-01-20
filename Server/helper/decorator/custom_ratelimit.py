@@ -8,7 +8,7 @@ from django.views import View
 from django_ratelimit.decorators import ratelimit
 
 
-def custom_ratelimit(rate, method, key='ip'):
+def custom_ratelimit(rate, method="GET", key='ip'):
     """Create a custom rate limit"""
     def decorator(view_func):
         def wrapped_view(request, *args, **kwargs):

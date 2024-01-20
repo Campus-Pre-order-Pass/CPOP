@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 
+from django.db import models
 
-def get_model_data(model, vendor, fields, months_within=None):
+
+def get_model_data(model: models.Model, vendor, fields, months_within=None):
     queryset = model.objects.filter(vendor=vendor)
 
     if months_within is not None:

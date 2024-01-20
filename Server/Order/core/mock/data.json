@@ -1,0 +1,32 @@
+{
+    "vendor_id": 1,
+    "customer_id": 1,
+    "take_time": "2022-02-01T12:34:56" ,
+    "order_items": [
+        {
+          "menu_item_id": 36,
+          "required_option_ids": [
+            1,
+            2
+          ],
+          "extra_option_ids": [
+            1,
+            2
+          ],
+          "quantity": 4
+        },
+        {
+          "menu_item_id": 2,
+          "required_option_ids": [
+            3,
+            4
+          ],
+          "extra_option_ids": [
+            3,
+            4
+          ],
+          "quantity": 3
+        }
+    ]
+  }
+  

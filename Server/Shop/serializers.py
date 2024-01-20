@@ -42,3 +42,10 @@ class CurrentStateSerializer(serializers.ModelSerializer):
 #     @swagger_serializer_method(serializer_or_field=VendorSerializer(many=True))
 #     def get_many_other_stuff(self, obj):
 #         return VendorSerializer().data
+
+
+class VendorConditionSerializer(serializers.ModelSerializer):
+    """條件"""
+    class Meta:
+        model = Vendor
+        fields = ["name", "promotions", "preorder_qty"]

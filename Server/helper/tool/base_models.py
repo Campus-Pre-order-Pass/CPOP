@@ -4,7 +4,7 @@ from datetime import date
 
 class BaseStatusModel(models.Model):
     @classmethod
-    def get_today_status(cls, vendor_id: int) -> any:
+    def get_today_status(cls, vendor_id: int) -> models.Model:
         today = date.today()
 
         try:
@@ -16,6 +16,21 @@ class BaseStatusModel(models.Model):
         except Exception as e:
             raise Exception(
                 f"{str(e)} in {cls.__class__.__name__}.get_today_status")
+
+        return status
+
+    @classmethod
+    def base_get_today_status(cls, id: int, related_models: models.Model):
+        today = date.today()
+        try:
+            m = related_models.objects.get(id=id)
+            status = cls.objects.get(related_models=m, date=today)
+        except cls.DoesNotExist as e:
+            raise Exception(
+                f"{str(e)} in {cls.__class__.__name__}.base_get_today_status")
+        except Exception as e:
+            raise Exception(
+                f"{str(e)} in {cls.__class__.__name__}.base_get_today_status")
 
         return status
 

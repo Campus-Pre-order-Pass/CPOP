@@ -69,7 +69,13 @@ class PrinterTool():
 
         PrinterTool.printcolor(color="warning", text=text)
 
+    @staticmethod
     def print_red(text: any) -> None:
         """print red text"""
 
         PrinterTool.printcolor(color="fail", text=text)
+
+    def print_info_line() -> None:
+        print("")
+        print(
+            "="*30)

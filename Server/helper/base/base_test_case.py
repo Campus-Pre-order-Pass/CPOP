@@ -11,6 +11,7 @@ from django.test import Client
 from django.urls import reverse
 from unittest.mock import MagicMock
 from unittest.mock import patch
+from Order.core.module.data_manager import DataManager
 
 from helper.tool.function import PrinterTool
 
@@ -47,6 +48,8 @@ class TestAPIBaseCaseV2(APITestCase):
 
     def setUp(self):
         super().setUp()
+        self.data_manager = DataManager(test=True)
+        self.printer = PrinterTool()
 
         # 创建 StringI/O 对象来捕获输出
         self.stdout_captured = StringIO()

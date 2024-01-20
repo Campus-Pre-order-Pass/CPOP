@@ -20,6 +20,8 @@ DEOCKER_TESTS_DIR = docker/test
 help:
 	@echo "make build -> build proj"
 	@echo
+	@echo "build-test  -> build test docker-compose"
+	@echo
 	@echo "make runser -> run local proj"
 	@echo
 	@echo "make build-test -> run redius gitLab ...tools"
@@ -93,8 +95,8 @@ gui-build:
 
 
 
-stop-rm:
-	docker rm -f $$(docker ps -aq)
+# stop-rm:
+# 	docker rm -f $$(docker ps -aq)
 
 
 # docker run -d -p 8000:8000 --name cpop-server-1 s990093/cpop-server:latest

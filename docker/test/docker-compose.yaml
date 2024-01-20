@@ -18,6 +18,17 @@ services:
     networks:
       - mynetwork
 
+  beat:
+    build:
+      context: ../../Server
+      dockerfile: Dockerfile
+    command: celery -A Backend beat -l info
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - mynetwork
+
   redis:
     image: "redis:alpine"
     ports:
@@ -31,42 +42,27 @@ services:
       RABBITMQ_DEFAULT_USER: celery
       RABBITMQ_DEFAULT_PASS: password123
       RABBITMQ_DEFAULT_VHOST: my_vhost
+      TZ: Asia/Taipei # 设置时区为 "Asia/Taipei"
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - mynetwork
 
-  postgres:
-    container_name: postgres
-    image: postgres
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
-      PGDATA: ./pgdata:/var/lib/postgresql/data/pgdata
-    networks:
-      - mynetwork
-
-  pgadmin:
-    image: dpage/pgadmin4
-    restart: always
-    ports:
-      - "5050:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    networks:
-      - mynetwork
+  # docusaurus:
+  #   build:
+  #     context: ../../cpop-docs
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9001:9001"
+  #   # volumes:
+  #   # - /var/run/docker.sock:/var/run/docker.sock
+  #   restart: always
+  #   networks:
+  #     - mynetwork # 添加这一行
 
 networks:
   mynetwork:
     driver: bridge
-
-volumes:
-  pgadmin_data:
+# volumes:
+#   pgadmin_data:

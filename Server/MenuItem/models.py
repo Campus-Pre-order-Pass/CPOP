@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.conf import settings
 from datetime import date
+from faker import Faker
 
 # models
 from Shop.models import Vendor
@@ -10,6 +11,10 @@ from Shop.models import Vendor
 # helper
 from helper.vaidate import validate_count
 from helper.tool.base_models import BaseStatusModel
+from helper.tool.tool import tool
+
+
+fake = Faker()
 
 
 class MenuItemCategory(models.Model):
@@ -116,6 +121,8 @@ class MenuItem(models.Model):
 class MenuStatus(BaseStatusModel):
     menu_item = models.ForeignKey(
         MenuItem, on_delete=models.CASCADE, verbose_name="菜單")  # 菜單項目關聯
+    preorder_qty = models.IntegerField(
+        blank=True, null=True, verbose_name="預訂數量")
 
     remaining_quantity = models.PositiveIntegerField(
         default=0, verbose_name="剩餘數量")
@@ -133,3 +140,62 @@ class MenuStatus(BaseStatusModel):
 
     def __str__(self):
         return str(self.menu_item)
+
+    @classmethod
+    def get_today_status(cls, menu_id: int):
+        # return cls.base_get_today_status(id=menu_id, related_models=MenuItem)
+        try:
+            m = MenuItem.objects.get(id=menu_id)
+            status = cls.objects.get(
+                menu_item=m, date=tool.get_now_time_taipei())
+
+            return status
+        except cls.DoesNotExist as e:
+            raise Exception(
+                f"{str(e)} in {cls.__class__.__name__}.get_today_status")
+        except Exception as e:
+            raise Exception(
+                f"{str(e)} in {cls.__class__.__name__}.get_today_status")
+
+    @classmethod
+    def create_or_get_today_status(cls, menu_item_id: int, vendor_id: int):
+        vendor = Vendor.get_vendor(vendor_id)
+        menu_item = MenuItem.objects.get(id=menu_item_id)
+
+        # Check if a status record for today and the menu item already exists
+        existing_status = cls.objects.filter(
+            menu_item=menu_item, date__date=tool.get_now_time_taipei()).first()
+        if existing_status:
+            # If it exists, you might want to update it or handle accordingly
+            return existing_status
+
+        # Create a new status record for today and the menu item
+        new_status = cls.objects.create(
+            menu_item=menu_item,
+            remaining_quantity=0,  # Provide the default value as needed
+            preorder_qty=vendor.preorder_qty,
+            is_available=True,  # Provide the default value as needed
+            date=tool.get_now_time_taipei(),  # Provide the default value as needed
+        )
+
+        return new_status
+
+    @classmethod
+    def generate_faker_status(cls, menu_id: int,  vendor_id: int):
+        menu_item = MenuItem.objects.get(id=menu_id)
+        vendor = Vendor.get_vendor(vendor_id)
+
+        # Generate fake data for the MenuStatus fields
+        remaining_quantity = fake.random_int(min=0, max=100)
+        is_available = fake.boolean()
+
+        # Create a new MenuStatus instance with the generated fake data
+        menu_status = cls(
+            menu_item=menu_item,
+            remaining_quantity=remaining_quantity,
+            preorder_qty=vendor.preorder_qty,
+            is_available=is_available,
+            date=tool.get_now_time_taipei(),
+        )
+
+        return menu_status

@@ -6,7 +6,7 @@ from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuStatus, MenuItem
 
 # 设置日志配置
-logging.basicConfig(filename='logs/job.log', level=logging.ERROR)
+logging.basicConfig(filename='logs/job.log', level=logging.INFO)
 
 TODAY = date.today()
 

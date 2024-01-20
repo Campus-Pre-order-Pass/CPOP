@@ -3,15 +3,15 @@ from celery import Celery
 from django.conf import settings
 from celery.schedules import crontab
 
+from helper.tool.function import PrinterTool
+
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Backend.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Backend.settings_prod')
 
 
 app = Celery(
     'Backend',
-    # broker='amqp://celery:password123@0.0.0.0:5672/my_vhost',
-    # broker='amqp://celery:password123@rabbitmq:5672/my_vhost',
-    broker='amqp://celery:password123@rabbitmq:5672/my_vhost',
+    broker='pyamqp://celery:password123@rabbitmq:5672/my_vhost'
 
 )
 
@@ -34,9 +34,6 @@ app.conf.beat_schedule = {
         'task': 'Shop.tasks.test',
         'schedule': crontab(minute='*'),
     },
-}
-
-app.conf.beat_schedule = {
     'execute-daily-menu-status-models-shop': {
         'task': 'Shop.tasks.creat_shop_daily_instance',
         'schedule': crontab(minute=0, hour=0),

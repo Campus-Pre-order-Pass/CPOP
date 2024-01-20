@@ -5,18 +5,29 @@ FROM python:3.10
 #     postgresql-client \
 #     && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && apt-get install -y libgl1-mesa-glx
+# TODO: error code 100
+# RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
 
 WORKDIR /usr/src/app
+
 
 COPY requirements.txt ./
 
 RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
+
+# RUN pip uninstall opencv-python
+RUN pip uninstall -y opencv-python
+RUN pip install opencv-python-headless
+
+
 COPY . .
 
 EXPOSE 8000
+
+# CMD [ "pytho3", "manage.py" ,  "clearsessions"]
 
 CMD ["pytho3", "manage.py", "runserver", "0.0.0.0:8000" , "--settings=backend.settings_prod"]
 
