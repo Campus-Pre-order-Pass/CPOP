@@ -1,11 +1,11 @@
 from django.db import models
-from datetime import date
+from django.utils import timezone
 
 
 class BaseStatusModel(models.Model):
     @classmethod
     def get_today_status(cls, vendor_id: int) -> models.Model:
-        today = date.today()
+        today = timezone.now().date()
 
         try:
             # 尝试获取当天的商店状态记录

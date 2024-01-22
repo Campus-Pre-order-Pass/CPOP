@@ -7,9 +7,8 @@ hostname = socket.gethostname()
 
 flower_url = "http://49.213.238.75:5555"
 rabbitmq_url = "http://49.213.238.75:15672"
-
 # 如果是本地测试环境，修改链接
-if "laihungweideMBP" in hostname:
+if ".local" in hostname:
     flower_url = "http://localhost:5555"
     rabbitmq_url = "http://localhost:15672"
 
@@ -100,17 +99,4 @@ JAZZMIN_SETTINGS = {
     # Whether to show the UI customizer on the sidebar
     "show_ui_builder": False,
 
-}
-
-
-# drf-yasg 配置
-SWAGGER_SETTINGS = {
-    'USE_SESSION_AUTH': False,
-    'api_version': '1.0',
-    'enabled_methods': ['get', 'post', 'put', 'patch', 'delete'],
-    'SECURITY_DEFINITIONS': {
-        'basic': {
-            'type': 'basic',
-        },
-    },
 }

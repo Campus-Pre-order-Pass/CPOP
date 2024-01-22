@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+from django.http import HttpResponse
 from django.test import TestCase, override_settings
 from django.core.management import call_command
 from rest_framework.test import APITestCase
@@ -71,10 +72,14 @@ class TestAPIBaseCaseV2(APITestCase):
         super().tearDown()
 
     @staticmethod
-    def is_available(response, status_code=200):
+    def is_available(response: HttpResponse, status_code=200):
         if response.status_code != status_code:
             PrinterTool.print_green(
                 f"Unexpected response status code: P{response.status_code}")
             print("")
             PrinterTool.print_red(
                 f"Response content: {response.content.decode('utf-8')}")
+
+    def reverse(self, view_name: str | None, *args, **kwargs):
+        # 使用 reverse 函数生成相应的 URL
+        return reverse(view_name, args=args, kwargs=kwargs)

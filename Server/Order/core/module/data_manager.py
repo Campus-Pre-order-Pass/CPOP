@@ -113,14 +113,14 @@ class DataManager():
                 f"VendorConditionSerializerError.{__class__.__name__}"
             )
 
-    @staticmethod
-    def get_menu_items_data(menu_id: int) -> MenuItem:
-        return DataManager.get_model_data(model=MenuItem, id=menu_id)
+    def get_menu_items_data(self, menu_id: int) -> MenuItem:
+        return MenuItem.objects.get(id=menu_id)
 
     def get_menu_items_status_data(self, menu_id: int, vendor_id: int) -> MenuStatus:
         if self.test:
             return MenuStatus.generate_faker_status(menu_id=menu_id, vendor_id=vendor_id)
-        return MenuStatus.get_today_status(menu_id)
+        menu_item = MenuItem.objects.get(id=menu_id)
+        return MenuStatus.get_today_status(menu_item=menu_item)
 
     def get_vendor_data(self, vendor_id: int) -> Vendor:
         self.vednor = Vendor.get_vendor(vendor_id)

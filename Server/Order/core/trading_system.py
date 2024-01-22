@@ -22,7 +22,7 @@ class TradingSystem(BaseTradingSystem):
         if self.order == None:
             raise ValueError("setData must be called before executing.")
 
-        order = Order(
+        o = Order(
             vendor=self.data_manager.get_vendor_data(
                 self.order.validated_data.get('vendor_id')),
             customer=self.data_manager.get_customer_data(
@@ -33,7 +33,7 @@ class TradingSystem(BaseTradingSystem):
             order_status="created",
         )
 
-        order.confirmation_hash = self.tool.hash_data(order)
+        o.confirmation_hash = self.tool.hash_data(o)
 
         # printer
 
@@ -41,11 +41,15 @@ class TradingSystem(BaseTradingSystem):
             self.printer.print()
 
         # TODO: 要改
-        order.order_status = "processing"
-        order.save()
+        o.order_status = "processing"
+        o.save()
         # if self.test:
         #     order.show()
-        self.data_manager.create_order_items(
-            self.order.validated_data.get("order_items"), order)
 
-        return order.confirmation_hash
+        self.data_manager.create_order_items(
+            self.order.validated_data.get("order_items"), o)
+
+        # 減少庫存
+        self.execution_system.change_menu_state(data=self.order)
+
+        return o.confirmation_hash

@@ -1,13 +1,13 @@
 from django.db import models
 from django.conf import settings
-import datetime
 from datetime import date
 from faker import Faker
+from django.utils import timezone
 
 
 # BaseStatusModel
 from helper.tool.base_models import BaseStatusModel
-
+from helper.tool.function import printerTool
 
 fake = Faker()
 
@@ -63,7 +63,7 @@ class Vendor(models.Model):
 
     # 預訂數量
     preorder_qty = models.IntegerField(
-        blank=True, null=True, verbose_name="預訂數量")
+        verbose_name="預訂數量", default=20)
 
     # 創建時間
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
@@ -108,7 +108,7 @@ class DayOfWeek(models.Model):
         verbose_name_plural = "廠商時間"
 
     def __str__(self):
-        return f"{self.get_day_display()} - {self.open_time} to {self.close_time}"
+        return f"{self.vendor} - {self.open_time} to {self.close_time}"
 
 
 SHOPPING_TYPES = [
@@ -141,7 +141,12 @@ class CurrentState(BaseStatusModel):
         verbose_name_plural = "商店狀態"
 
     def __str__(self):
-        return f"Current State for {self.current_number}"
+        return f"vendor : {self.vendor}  current_number : {self.current_number} in {self.date}"
+
+    @classmethod
+    def get_today_status(cls, vendor_id):
+        status = cls.objects.get(vendor__id=vendor_id, date=timezone.now())
+        return status
 
 
 NEW_RELEASE = 'new_release'

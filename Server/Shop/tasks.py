@@ -8,6 +8,11 @@ from Shop.models import CurrentState, Vendor, VendorDailyMetrics
 
 # django
 import django
+from django.db import transaction
+
+# helper
+from helper.tool.function import printerTool
+from helper.task.check import check_taiwan_weekend_decorator
 
 
 logger = logging.getLogger('tasks')  # 创建名为 'tasks' 的日志记录器
@@ -20,6 +25,7 @@ def test():
 
 
 @shared_task(ignore_result=True)
+@check_taiwan_weekend_decorator
 def creat_shop_daily_instance():
     """創建shop狀態與每日指標"""
     try:
@@ -27,29 +33,32 @@ def creat_shop_daily_instance():
         django.setup()
 
         vendors = Vendor.objects.all()
-        for vendor in vendors:
-            # 检查是否已经存在今天的记录，如果存在则跳过
-            if CurrentState.objects.filter(vendor=vendor, date=date.today()).exists():
-                continue
+        with transaction.atomic():
 
-            daily_instance = CurrentState(
-                vendor=vendor,
-                date=date.today(),
-                current_number=0,  # 设置你的默认值
-                wait_number=0,
-                is_start=False,
-                is_delivery_available=False,
-            )
-            daily_instance.save()
+            for vendor in vendors:
+                # 检查是否已经存在今天的记录，如果存在则跳过
+                if CurrentState.objects.filter(vendor=vendor, date=date.today()).exists():
+                    continue
 
-            vendor_daily_metrics = VendorDailyMetrics(
-                vendor=vendor,
-                date=date.today(),
-                max_purchase_count=vendor.max_purchase_count,
-                simultaneous_purchase_limit=vendor.simultaneous_purchase_limit
-            )
+                daily_instance = CurrentState(
+                    vendor=vendor,
+                    date=date.today(),
+                    current_number=0,  # default count
+                    wait_number=0,
+                    is_start=False,
+                    is_delivery_available=False,
+                )
+                # printerTool.print_blue(daily_instance)
+                daily_instance.save()
 
-            vendor_daily_metrics.save()
+                vendor_daily_metrics = VendorDailyMetrics(
+                    vendor=vendor,
+                    date=date.today(),
+                    max_purchase_count=vendor.preorder_qty,
+                    simultaneous_purchase_limit=5
+                )
+
+                vendor_daily_metrics.save()
             logger.info("Successfully created shop daily instance.")
 
     except Exception as e:

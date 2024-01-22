@@ -2,11 +2,14 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 
+# models
+from MenuItem.models import MenuItem, MenuStatus
+
 # TestAPIBaseCase
-from helper.base.base_test_case import TestAPIBaseCase
+from helper.base.base_test_case import TestAPIBaseCase, TestAPIBaseCaseV2
 
-# Create your tests here.
-
+# tasks
+from MenuItem.tasks import create_daily_menu_status_models
 
 vendor_id = 1
 uid = "1"
@@ -46,3 +49,17 @@ class TestAPIView(TestAPIBaseCase):
 
         # 检查响应状态码是否是 200 OK
         self.assertEqual(response.status_code, 200)
+
+
+class TaskTestCase(TestAPIBaseCaseV2):
+
+    def test_create_daily_menu_status_models(self):
+        MenuStatus.objects.all().delete()
+
+        # 调用函数
+        create_daily_menu_status_models()
+
+        # 检查数据库中是否有正确的 MenuStatus 实例
+        menu_status_instances = MenuStatus.objects.all()
+        self.assertEqual(len(menu_status_instances),
+                         162)

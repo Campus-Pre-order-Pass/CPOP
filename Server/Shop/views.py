@@ -92,7 +92,7 @@ def update_image(request, uid):
 
 @handle_exceptions(CurrentState)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
-@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
+# @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
 @method_decorator(never_cache, name='get')
 class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
     # to Swagger
@@ -111,21 +111,21 @@ class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
             CurrentState.get_today_status(vendor_id=int(vendor_id)))
         return Response(serializer.data)
 
-    @swagger_auto_schema(
-        operation_summary=DRF.CurrentStateAPIView["PATCH"]["operation_summary"],
-        operation_description=DRF.CurrentStateAPIView["PATCH"]["operation_description"],
-        manual_parameters=DRF.CurrentStateAPIView["PATCH"]["manual_parameters"],
-        request_body=DRF.CurrentStateAPIView["PATCH"]["request_body"],
-        responses=DRF.CurrentStateAPIView["PATCH"]["responses"],
-    )
-    def patch(self, request, vendor_id: str):
-        c = CurrentState.get_today_status(vendor_id=int(vendor_id))
-        serializer = CurrentStateSerializer(
-            c, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # @swagger_auto_schema(
+    #     operation_summary=DRF.CurrentStateAPIView["PATCH"]["operation_summary"],
+    #     operation_description=DRF.CurrentStateAPIView["PATCH"]["operation_description"],
+    #     manual_parameters=DRF.CurrentStateAPIView["PATCH"]["manual_parameters"],
+    #     request_body=DRF.CurrentStateAPIView["PATCH"]["request_body"],
+    #     responses=DRF.CurrentStateAPIView["PATCH"]["responses"],
+    # )
+    # def patch(self, request, vendor_id: str):
+    #     c = CurrentState.get_today_status(vendor_id=int(vendor_id))
+    #     serializer = CurrentStateSerializer(
+    #         c, data=request.data, partial=True)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # @swagger_auto_schema(

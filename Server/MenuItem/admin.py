@@ -9,6 +9,7 @@ from Shop.models import Vendor
 
 # =================================================================
 
+
 @admin.register(MenuItemCategory)
 class MenuItemCategoryAdmin(BaseVendorKeyAdmin):
     list_display = ('vendor', 'name')
@@ -26,7 +27,7 @@ class MenuItemCategoryAdmin(BaseVendorKeyAdmin):
 
 @admin.register(MenuStatus)
 class MenuStatusAdmin(BaseMenuItemAdmin):
-    list_display = ('menu_item', 'remaining_quantity', 'is_available')
+    list_display = ('menu_item', 'remaining_quantity', "preorder_qty", "date")
     list_filter = ('menu_item__vendor__name',)  # 使用外键关联的供应商进行过滤
     search_fields = ('menu_item__vendor__name',)  # 允许通过供应商名称搜索
 

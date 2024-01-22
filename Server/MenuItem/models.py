@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 import uuid
 from django.db import models
@@ -100,9 +102,6 @@ class MenuItem(models.Model):
         max_length=100, blank=True, null=True, verbose_name="促銷信息")
     daily_max_orders = models.IntegerField(default=20, verbose_name="訂購數量")
 
-    remaining_quantity = models.PositiveIntegerField(
-        default=20, verbose_name="剩餘數量")
-
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="創建時間")
 
     class Meta:
@@ -141,14 +140,16 @@ class MenuStatus(BaseStatusModel):
     def __str__(self):
         return str(self.menu_item)
 
+    # @classmethod
+    # def get_today_status(cls, menu_item: MenuItem):
+    #     status = cls.get_status_for_today(menu_item)
+    #     return status
     @classmethod
-    def get_today_status(cls, menu_id: int):
+    def get_today_status(cls, menu_item: MenuItem):
         # return cls.base_get_today_status(id=menu_id, related_models=MenuItem)
         try:
-            m = MenuItem.objects.get(id=menu_id)
             status = cls.objects.get(
-                menu_item=m, date=tool.get_now_time_taipei())
-
+                menu_item=menu_item, date=date.today())
             return status
         except cls.DoesNotExist as e:
             raise Exception(
@@ -195,7 +196,7 @@ class MenuStatus(BaseStatusModel):
             remaining_quantity=remaining_quantity,
             preorder_qty=vendor.preorder_qty,
             is_available=is_available,
-            date=tool.get_now_time_taipei(),
+            date=timezone.now(),
         )
 
         return menu_status

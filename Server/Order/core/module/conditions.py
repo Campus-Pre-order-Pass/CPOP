@@ -55,6 +55,9 @@ class Conditions(BaseClass):
             ),
             lambda: self.order_valid.check_user_purchase_limit(
                 self.order.validated_data.get("customer_id")),
+            lambda: self.order_valid.check_customer_take_time(
+                self.order.validated_data.get("take_time"))
+
         ]
 
         [validation() for validation in validations]

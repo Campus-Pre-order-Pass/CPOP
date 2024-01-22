@@ -61,21 +61,24 @@ class PrinterTool():
     def print_green(text: any) -> None:
         """print green text"""
 
-        PrinterTool.printcolor(text=text)
+        return PrinterTool.printcolor(text=text)
 
     @staticmethod
     def print_warning(text: any) -> None:
         """print red text"""
 
-        PrinterTool.printcolor(color="warning", text=text)
+        return PrinterTool.printcolor(color="warning", text=text)
 
     @staticmethod
     def print_red(text: any) -> None:
         """print red text"""
 
-        PrinterTool.printcolor(color="fail", text=text)
+        return PrinterTool.printcolor(color="fail", text=text)
 
     def print_info_line() -> None:
         print("")
         print(
             "="*30)
+
+
+printerTool = PrinterTool()

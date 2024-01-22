@@ -72,7 +72,8 @@ class OrderVaild(BaseClass):
             item.get("menu_item_id"), vendor_id)
 
         if status.remaining_quantity - 1 < 0:
-            raise ValueError(f"{status.menu_item} is out of stock")
+            raise ValueError(
+                f"{status.menu_item} , {status.remaining_quantity} is out of stock")
 
         return True
 
@@ -93,6 +94,22 @@ class OrderVaild(BaseClass):
         if order_count_today > SettingsManager.MAX_USER_PURCHASE_LIMIT:
             raise ValueError(
                 "Exceeded the maximum user purchase limit.")
+
+        return True
+
+    def check_customer_take_time(self, taken_time) -> bool:
+        # vendor = Vendor.get_vendor(vendor_id)
+
+        # 获取今天的日期
+        today_date = self.tool.get_now_time_taipei()
+
+        # 将 taken_time 转换为日期对象
+        taken_date = taken_time.date()
+
+        # 比较 taken_date 是否为今天
+        if taken_date != today_date:
+            raise ValueError(
+                "error take time")
 
         return True
 

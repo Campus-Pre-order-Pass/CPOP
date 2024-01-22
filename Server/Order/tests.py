@@ -23,12 +23,24 @@ from helper.base.base_test_case import TestAPIBaseCase, TestAPIBaseCaseV2
 
 from Order.core.trading_system import TradingSystem
 from Order.core.module.module import *
+from django.utils import timezone
+
+
+# tasks
+from Shop.tasks import creat_shop_daily_instance
+from MenuItem.tasks import create_daily_menu_status_models
 
 
 class ModuleTestCase(TestAPIBaseCaseV2):
+    def setUp(self):
+        super(ModuleTestCase, self).setUp()
+        # tasks
+        # creat_shop_daily_instance()
+        # create_daily_menu_status_models()
+
     def test_class(self):
         t = TradingSystem(test=True)
-        t.setData(data=self.data_manager.get_json_order_data())
+        t.setData(self.data_manager.get_json_order_data())
         t.execute()
 
 

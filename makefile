@@ -30,6 +30,8 @@ help:
 
 runser: venv-check  check_and_kill run_server
 
+build-server: venv-check check_and_kill build_server
+
 VENV_NAME := .venv
 
 test:

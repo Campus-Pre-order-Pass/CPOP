@@ -10,12 +10,15 @@ import logging
 # django
 import django
 
+from helper.task.check import check_taiwan_weekend_decorator
+
 
 logger = logging.getLogger('tasks')
 logger.setLevel(logging.DEBUG)
 
 
 @shared_task(ignore_result=True)
+@check_taiwan_weekend_decorator
 def create_daily_menu_status_models():
     """Create daily menu status models"""
     try:
@@ -25,15 +28,20 @@ def create_daily_menu_status_models():
             # run
 
             menu_items = MenuItem.objects.all()
+
             menu_statuses = [
                 MenuStatus(
                     menu_item=item,
-                    remaining_quantity=item.remaining_quantity,
+                    preorder_qty=item.daily_max_orders,
+                    remaining_quantity=0,
                     date=date.today()
                 ) for item in menu_items
             ]
 
             MenuStatus.objects.bulk_create(menu_statuses)
+
+            # print(
+            #     f"Successfully created {len(menu_statuses)} menu status instances for today.")
 
             logger.info(
                 f"Successfully created {len(menu_statuses)} menu status instances for today.")
