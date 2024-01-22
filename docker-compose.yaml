@@ -14,38 +14,19 @@ services:
   #   networks:
   #     - mynetwork # 添加这一行
 
-  cpop_web:
-    image: shiraoyuki/cpop_ui:latest
-    ports:
-      - "3000:3000"
-    networks:
-      - mynetwork
-
-  celery:
-    build:
-      context: ../../Server
-      dockerfile: Dockerfile
-    command: celery -A Backend worker -l info
-    networks:
-      - mynetwork
-
   flower:
     build:
-      context: ../../Server
+      context: ./Server
     command: celery -A Backend flower -l info --basic_auth=twtrubiks:password123
     ports:
       - "5555:5555"
     networks:
-      - mynetwork
+      - mynetwork # 添加这一行
 
-  beat:
-    build:
-      context: ../../Server
-      dockerfile: Dockerfile
-    command: celery -A Backend beat -l info
-    restart: always
-    depends_on:
-      - rabbitmq
+  cpop_web:
+    image: shiraoyuki/cpop_ui:latest
+    ports:
+      - "3000:3000"
     networks:
       - mynetwork
 
@@ -54,7 +35,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - mynetwork
+      - mynetwork # 添加这一行
 
   rabbitmq:
     image: rabbitmq:3.12.6-management
@@ -62,12 +43,12 @@ services:
       RABBITMQ_DEFAULT_USER: celery
       RABBITMQ_DEFAULT_PASS: password123
       RABBITMQ_DEFAULT_VHOST: my_vhost
-      TZ: Asia/Taipei # 设置时区为 "Asia/Taipei"
     ports:
       - "5672:5672"
       - "15672:15672"
     networks:
       - mynetwork
+
   portainer:
     image: portainer/portainer
     ports:
