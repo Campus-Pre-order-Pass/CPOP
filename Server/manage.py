@@ -14,7 +14,7 @@ from helper.script.check_redis import Check
 #     raise RuntimeError('This application must be run under Python 3.4 '
 #                        'or later.')
 
-test = True
+test = False
 
 
 def main():
