@@ -37,6 +37,7 @@ CACHES = {
         # TODO: 需要改
 
         "LOCATION": "redis://redis:6379/1",  # 主机名为服务名 "redis" for windows dev
+        "LOCATION": "redis://127.0.0.1:6379/1",  # 主机名为服务名 "redis" for windows dev
         # "LOCATION": "redis://0.0.0.0:6379/1",  # 主机名为服务名 "redis"
         "OPTIONS": {
             "SOCKET_CONNECT_TIMEOUT": 5,  # 連接超時（秒為單位）
