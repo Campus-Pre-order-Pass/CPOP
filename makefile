@@ -103,5 +103,8 @@ gui-build:
 
 # docker run -d -p 8000:8000 --name cpop-server-1 s990093/cpop-server:latest
 
+re-docker:
+	net start docker
+
 
 .PHONY: give_execute_permission build
