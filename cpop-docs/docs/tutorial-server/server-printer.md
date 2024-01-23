@@ -19,16 +19,15 @@ sidebar_position: 2
 
 ### Returns
 
-- **bool**: Returns a boolean indicating whether there is a connection between the provided `Order` and `OrderItem`.
+- **bool**: 回傳是否可以連線 如果不行就用 raise
 
 ### Raises
 
 需要繼承`BaseError`來做 raise，在`server/order/core/modue/error/error.py`裡面
 
-- **CustomException**: 需要寫 conf
-- **寫車子**: 需要寫 conf
+- **CustomException**: 需要寫 conf and erro code 定義，在`cpop-docs/docs/tutorial-server/server-printer.md`裡面
 
-### Example Usage
+### abstractmethod
 
 ````python
 

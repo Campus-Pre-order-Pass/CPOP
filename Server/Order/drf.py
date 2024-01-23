@@ -15,7 +15,44 @@ from helper.base.drf_yasg_base import BaseAPIViewDRFConfig
 from Order.serializers import OrderItemSerializer, OrderRequestBodySerializer, OrderSerializer
 from rest_framework.views import APIView
 
+description = """
+# 错误代码（Error Code）
 
+以下是一些错误代码及其相应的解释。
+
+## OK
+- `SUCESS_CODE` (Success Code): 200
+
+## 格式错误
+- `FORMAT_ERROR`: 303
+
+## 模型错误
+- `MODELS_ERROR`: 307
+- `MODELS_NOT_FOUND`: 308
+
+## 新增与订单验证相关的错误码
+- `VAILD_ERROR` (Validation Error): 399
+- `BUSINESS_HOURS_ERROR`: 400
+- `INVENTORY_ERROR`: 401
+- `USER_PURCHASE_LIMIT_ERROR`: 402
+- `DAILY_PURCHASE_LIMIT_ERROR`: 403
+
+## 厂商条件错误
+- `VENDOR_VAILD_ERROR`: 606
+
+## 一般错误
+- `ERROR_CODE`: 500
+
+## 用户设置
+- `MAX_USER_PURCHASE_LIMIT`: 2
+
+## 其他设置
+- `NOT_POSIT_ERROR`: 501
+
+## 打印错误
+- `PRINTER_ERROR`: 502
+
+"""
 uid_param = openapi.Parameter(
     name="uid",
     in_=openapi.IN_PATH,
@@ -84,6 +121,7 @@ class DRF(APIView):
                 type=openapi.TYPE_OBJECT,
                 properties={
                     'vendor_id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1, description="供應商 `ID`"),
+                    'take_time': openapi.Schema(type=openapi.TYPE_STRING, example="2022-02-01T12:34:56", description="取貨時間`"),
                     'customer_id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1, description="顧客 `ID`"),
                     'order_items': openapi.Schema(
                         type=openapi.TYPE_ARRAY,
@@ -100,6 +138,7 @@ class DRF(APIView):
                         example={
                             "vendor_id": 1,
                             "customer_id": 1,
+                            "take_time": "2022-02-01T12:34:56",
                             "order_items": [
                                 {
                                     "menu_item_id": 36,
@@ -127,7 +166,6 @@ class DRF(APIView):
                                 }
                             ]
                         }
-
                     ),
                 },
                 description="訂單請求的 `JSON` 格式",
@@ -144,6 +182,22 @@ class DRF(APIView):
 
                     ),
                 ),
+
+                status.HTTP_400_BAD_REQUEST: openapi.Response(
+                    description=description,
+                    schema=openapi.Schema(
+                        type=openapi.TYPE_OBJECT,
+                        properties={
+                            'code': openapi.Schema(type=openapi.TYPE_INTEGER, description="回傳錯誤代碼", example=999),
+                            'message': openapi.Schema(type=openapi.TYPE_STRING, description="回傳錯誤訊息", example="this is a error message"),
+                            'source': openapi.Schema(type=openapi.TYPE_STRING, description="回傳錯誤", example="on Order.trad.example()..."),
+                        }
+
+                    ),
+                ),
+
+
+
             }
         }
 

@@ -1,5 +1,3 @@
-import logging
-from logging.handlers import RotatingFileHandler
 
 
 # settings.py
@@ -135,6 +133,8 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+
+
 
     },
 }
