@@ -63,4 +63,5 @@ def creat_shop_daily_instance():
 
     except Exception as e:
         # 如果有任何异常，记录错误日志
+        print(f"Error creating shop daily instance: {e}")
         logger.error(f"Error creating shop daily instance: {e}", exc_info=True)

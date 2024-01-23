@@ -40,12 +40,10 @@ def create_daily_menu_status_models():
 
             MenuStatus.objects.bulk_create(menu_statuses)
 
-            # print(
-            #     f"Successfully created {len(menu_statuses)} menu status instances for today.")
-
             logger.info(
                 f"Successfully created {len(menu_statuses)} menu status instances for today.")
 
     except Exception as e:
         # If there is any exception, record an error log
+        print(e)
         logger.error(f"Error creating shop daily instance: {e}", exc_info=True)

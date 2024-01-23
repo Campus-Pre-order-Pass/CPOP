@@ -37,17 +37,18 @@ class TradingSystem(BaseTradingSystem):
 
         # printer
 
-        if self.printer.is_connected(self.order):
-            self.printer.print()
-
         # TODO: 要改
         o.order_status = "processing"
         o.save()
+
         # if self.test:
         #     order.show()
 
-        self.data_manager.create_order_items(
+        order_items = self.data_manager.create_order_items(
             self.order.validated_data.get("order_items"), o)
+
+        if self.printer.is_connected(o, order_items):
+            self.printer.print()
 
         # 減少庫存
         self.execution_system.change_menu_state(data=self.order)

@@ -1,11 +1,13 @@
 from Order.core.abstract.printer import PrinterABC
 from Order.serializers import OrderRequestBodySerializer
+from Order.models import *
 
 
 class Printer(PrinterABC):
     def __init__(self, *args, **kwargs):
         self.test = kwargs.pop('test', False)
         self.order = None
+        self.order_items = None
 
     def is_valid(self) -> bool:
         """先判斷是否資料格式正確，需要做`raise報錯`
@@ -15,14 +17,18 @@ class Printer(PrinterABC):
         """
         return True
 
-    def is_connected(self, order: OrderRequestBodySerializer) -> bool:
+    def is_connected(self, order: Order, order_items: OrderItem) -> bool:
         """先判斷是否印單機有連線,需要做`raise報錯`
-
         Returns:
             bool: _description_
         """
 
         self.order = order
+        self.order_items = order_items
+        # ex 獲取 extra_option
+        # for order_item in order_items:
+        #     print(order_item.extra_option.all())
+        #     print(order_item.required_option.all())
         return True
 
     def print(self) -> bool:

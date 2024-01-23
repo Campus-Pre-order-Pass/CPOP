@@ -36,7 +36,7 @@ CACHES = {
         'BACKEND': 'django_redis.cache.RedisCache',
         # TODO: 需要改
 
-        "LOCATION": "redis://redis:6379/1",  # 主机名为服务名 "redis" for windows dev
+        # "LOCATION": "redis://redis:6379/1",  # 主机名为服务名 "redis" for windows dev
         "LOCATION": "redis://127.0.0.1:6379/1",  # 主机名为服务名 "redis" for windows dev
         # "LOCATION": "redis://0.0.0.0:6379/1",  # 主机名为服务名 "redis"
         "OPTIONS": {

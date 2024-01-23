@@ -41,6 +41,7 @@ class TestAPIView(TestAPIBaseCaseV2):
         self.assertEqual(response.status_code, 200)
 
     def test_CurrentStateAPIView(self):
+        # creat_shop_daily_instance()
         tomorrow = timezone.now().date() + timezone.timedelta(days=1)
 
         CurrentState.objects.create(

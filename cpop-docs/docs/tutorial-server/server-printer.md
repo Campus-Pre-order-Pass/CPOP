@@ -7,28 +7,28 @@ sidebar_position: 2
 
 ## 規格
 
-# input
+# is_connected Method
 
-```json
-{
-  "vendor_id": 1,
-  "customer_id": 1,
-  "order_items": [
-    {
-      "menu_item_id": 36,
-      "required_option_ids": [1, 2],
-      "extra_option_ids": [1, 2],
-      "quantity": 4
-    },
-    {
-      "menu_item_id": 2,
-      "required_option_ids": [3, 4],
-      "extra_option_ids": [3, 4],
-      "quantity": 3
-    }
-  ]
-}
-```
+# 位置:`server/order/core/modue/printer.py`
+
+### Parameters
+
+- **self**: The instance of the class containing this method.
+- **order (Order)**: An instance of the `Order` class used for checking the connection.
+- **order_items (OrderItem)**: An instance of the `OrderItem` class used for checking the connection.
+
+### Returns
+
+- **bool**: Returns a boolean indicating whether there is a connection between the provided `Order` and `OrderItem`.
+
+### Raises
+
+需要繼承`BaseError`來做 raise，在`server/order/core/modue/error/error.py`裡面
+
+- **CustomException**: 需要寫 conf
+- **寫車子**: 需要寫 conf
+
+### Example Usage
 
 ````python
 
