@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 # from django.views.decorators.csrf import csrf_exempt
 import cv2
 import numpy as np
@@ -29,6 +28,7 @@ from Shop.models import CurrentState, Vendor
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .drf import DRF
+
 
 BASE_URL = "https://cpop.api.iside.shop/"
 PUT_URL = BASE_URL + "/v0/api/s/current/"

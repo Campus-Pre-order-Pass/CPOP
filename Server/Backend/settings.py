@@ -424,6 +424,7 @@ CSP = {
 #     'script-src': ["'self'"],
 #     'style-src': ["'self'"],
 # }
+
 CSP_REPORT_ONLY = config('CSP_REPORT_ONLY', default=False, cast=bool)
 CSP_REPORT_URI = '/csp-report-endpoint/'
 

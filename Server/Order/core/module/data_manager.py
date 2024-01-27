@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model, QuerySet
 from rest_framework.exceptions import ValidationError
 
-
+# models
 from MenuItem.models import *
 from Order.models import *
 from Shop.models import *
@@ -19,6 +19,7 @@ from Order.core.module.configuration import Configuration
 # mdoels
 from Shop.models import *
 from Shop.serializers import *
+from serializers import *
 
 
 class DataManager():
@@ -137,3 +138,11 @@ class DataManager():
         except model.DoesNotExist:
             raise Vendor.DoesNotExist(
                 f"{model.__class__.__name__} with id {id} does not exist")
+
+    def get_printer_request_data(self):
+        o = Order.objects.get(id=1)
+        s = OrderRequestBodySerializer(data=Order)
+
+        print(s)
+
+        return s, s

@@ -1,6 +1,7 @@
 from Order.core.abstract.printer import PrinterABC
 from Order.serializers import OrderRequestBodySerializer
 from Order.models import *
+from Order.core.module.data_manager import DataManager
 
 
 class Printer(PrinterABC):
@@ -8,6 +9,8 @@ class Printer(PrinterABC):
         self.test = kwargs.pop('test', False)
         self.order = None
         self.order_items = None
+
+        self.data_manager = DataManager(self.test, *args, **kwargs)
 
     def is_valid(self) -> bool:
         """先判斷是否資料格式正確，需要做`raise報錯`

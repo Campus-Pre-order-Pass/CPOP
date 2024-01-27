@@ -16,14 +16,14 @@ class PrinterABC(ABC):
     def __init__(self, *args, **kwargs):
         self.test = kwargs.pop('test', False)
 
-    @abstractmethod
-    def is_valid(self) -> bool:
-        """先判斷是否資料格式正確，需要做`raise報錯`
+    # @abstractmethod
+    # def is_valid(self) -> bool:
+    #     """先判斷是否資料格式正確，需要做`raise報錯`
 
-        Returns:
-            bool: _description_
-        """
-        pass
+    #     Returns:
+    #         bool: _description_
+    #     """
+    #     pass
 
     @abstractmethod
     def is_connected(self) -> bool:

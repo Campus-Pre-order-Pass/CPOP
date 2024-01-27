@@ -16,6 +16,7 @@ from Printer.main import OrderInvoiceGenerator
 from Order.OrderLogic.order_logic import OrderLogic
 from Order.OrderLogic.test.mark import MarkData
 from Order.views import PayOrderAPIView
+from Order.core.module.printer import Printer
 
 # TestAPIBaseCase
 from helper.base.base_test_case import TestAPIBaseCase, TestAPIBaseCaseV2
@@ -103,3 +104,12 @@ class OrderLoggerTestCase(TestCase):
 
         # 在此之后，你可以记录不同级别的日志消息
         logger.info('This is a debug message for the order logger.')
+
+
+class OrderPrinter(TestAPIBaseCaseV2):
+    # ./manage.py  test Order.tests.OrderPrinter
+    def test_printer(self):
+        p = Printer(test=True)
+        o, i = self.data_manager.get_printer_request_data()
+        # p.is_connected(order=o, order_items=i)
+        # p.print()
