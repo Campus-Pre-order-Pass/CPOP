@@ -77,3 +77,15 @@ class Printer(ABC):
 
 
 ````
+
+# 測試環節
+
+位置: `server/order/tests.py`
+
+**注意:** 必須先使用虛擬環境！
+
+執行測試指令：
+
+```bash
+python manage.py test Order.tests.OrderPrinter.test_printer
+```
