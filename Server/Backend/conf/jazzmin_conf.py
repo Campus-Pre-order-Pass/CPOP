@@ -57,6 +57,9 @@ JAZZMIN_SETTINGS = {
 
         {"name": "RabbitMQ", "url": rabbitmq_url,
             "permissions": ["廠商組"], "new_window": True},
+
+        {"name": "Docusaurus", "url": "http://49.213.238.75:9001/",
+         "permissions": ["廠商組"], "new_window": True},
     ],
 
 

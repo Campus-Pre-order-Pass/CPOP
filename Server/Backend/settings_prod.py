@@ -33,9 +33,3 @@ CACHES = {
 
 
 # show
-
-PrinterTool.print_info_line()
-PrinterTool.print_red("use settings_prod")
-PrinterTool.print_green(
-    f"database: {connections['default'].settings_dict['ENGINE']}")
-PrinterTool.print_green(f"django_redis: {CACHES['default']['LOCATION']}")

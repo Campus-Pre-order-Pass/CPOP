@@ -44,9 +44,3 @@ CACHES = {
     }
 }
 current_db_name = connections['default'].settings_dict['ENGINE']
-
-
-PrinterTool.print_info_line()
-PrinterTool.print_red("use settings_setting")
-PrinterTool.print_green(f"database: {current_db_name}")
-PrinterTool.print_green(f"django_redis: {CACHES['default']['LOCATION']}")

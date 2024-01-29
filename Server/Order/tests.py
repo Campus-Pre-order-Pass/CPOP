@@ -110,6 +110,11 @@ class OrderPrinter(TestAPIBaseCaseV2):
     # ./manage.py  test Order.tests.OrderPrinter
     def test_printer(self):
         p = Printer(test=True)
-        o, i = self.data_manager.get_printer_request_data()
-        # p.is_connected(order=o, order_items=i)
-        # p.print()
+        o, order_items = self.data_manager.get_printer_request_data()
+        # priner result
+        # o.show()
+        # for item in order_items:
+        #     print(item.show_order()
+        #           )
+        p.is_connected(order=o, order_items=order_items)
+        p.print()

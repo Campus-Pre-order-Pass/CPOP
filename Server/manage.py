@@ -3,6 +3,8 @@
 import os
 import sys
 
+from django.db import connections
+from django.conf import settings
 # check
 from helper.script.check_redis import Check
 
@@ -28,6 +30,12 @@ def main():
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                               'Backend.settings_test')
+
+        from helper.tool.function import PrinterTool
+
+        PrinterTool.print_info(f"use { os.environ['DJANGO_SETTINGS_MODULE']}",
+                               connections['default'].settings_dict['ENGINE'],
+                               settings.CACHES['default'].get('LOCATION'))
 
     try:
         from django.core.management import execute_from_command_line

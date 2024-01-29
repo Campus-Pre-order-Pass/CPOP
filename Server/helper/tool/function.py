@@ -80,5 +80,21 @@ class PrinterTool():
         print(
             "="*30)
 
+    @staticmethod
+    def print_info(setting: str, db: str, cache: str) -> None:
+        """_summary_
+
+        Args:
+            setting (str): _description_
+            db (str): _description_
+            cache (str): _description_
+        """
+        PrinterTool.print_info_line()
+        PrinterTool.print_red(setting)
+        PrinterTool.print_green(
+            f"database: {db}")
+        PrinterTool.print_green(
+            f"django_redis: {cache}")
+
 
 printerTool = PrinterTool()

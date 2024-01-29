@@ -15,11 +15,12 @@ from Order.OrderLogic.error.error import *
 
 # Configuration
 from Order.core.module.configuration import Configuration
+from Order.core.helper.tool import Tool
 
 # mdoels
 from Shop.models import *
 from Shop.serializers import *
-from serializers import *
+from Order.core.module.serializers import *
 
 
 class DataManager():
@@ -140,9 +141,18 @@ class DataManager():
                 f"{model.__class__.__name__} with id {id} does not exist")
 
     def get_printer_request_data(self):
+        """只能在 test case 使用！"""
         o = Order.objects.get(id=1)
-        s = OrderRequestBodySerializer(data=Order)
 
-        print(s)
+        serializer = OrderRequestBodySerializer(
+            data=self.get_json_order_data())
+        serializer.is_valid(raise_exception=True)
 
-        return s, s
+        o.confirmation_hash = Tool.hash_data(o)
+
+        o.save()
+
+        order_items = self.create_order_items(
+            serializer.validated_data.get("order_items"), o)
+
+        return o, order_items
