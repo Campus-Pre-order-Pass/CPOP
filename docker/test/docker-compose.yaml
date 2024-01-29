@@ -59,6 +59,18 @@ services:
     networks:
       - mynetwork
 
+  docusaurus:
+    build:
+      context: ./../cpop-docs
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    # volumes:
+    # - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    networks:
+      - mynetwork # 添加这一行
+
   # cpop_web:
   #   image: shiraoyuki/cpop_ui:latest
   #   ports:
