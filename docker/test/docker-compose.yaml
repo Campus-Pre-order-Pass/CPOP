@@ -3,7 +3,7 @@ version: "3"
 services:
   celery:
     build:
-      context: ./Server
+      context: ./../../Server
       dockerfile: Dockerfile
     command: celery -A Backend worker -l info
     networks:
@@ -11,7 +11,7 @@ services:
 
   flower:
     build:
-      context: ./Server
+      context: ./../../Server
     command: celery -A Backend flower -l info --basic_auth=twtrubiks:password123
     ports:
       - "5555:5555"
@@ -20,7 +20,7 @@ services:
 
   beat:
     build:
-      context: ./Server
+      context: ./../../Server
       dockerfile: Dockerfile
     command: celery -A Backend beat -l info
     restart: always
@@ -63,11 +63,11 @@ services:
     build:
       context: ./../../cpop-docs
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "9001:9001"
     # volumes:
     # - /var/run/docker.sock:/var/run/docker.sock
-    restart: always
     networks:
       - mynetwork # 添加这一行
 

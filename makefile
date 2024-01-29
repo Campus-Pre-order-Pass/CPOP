@@ -54,8 +54,7 @@ build:
 
 
 build-test:
-	cd ./docker/test && docker-compose up -d
-
+    cd ./docker/test && docker-compose up --build -d
 
 
 test-re-build: docker-rm docker-build
