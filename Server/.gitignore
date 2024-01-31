@@ -32,6 +32,11 @@ dist-ssr
 *.sln
 *.sw?
 
+
+# django 
+db.sqlite3
+
+
 # edit files
 .venv
 .vscode/*
