@@ -128,8 +128,8 @@ class DataManager():
         self.vednor = Vendor.get_vendor(vendor_id)
         return self.vednor
 
-    def get_customer_data(self, customer_id: int) -> Customer:
-        self.customer = Customer.objects.get(id=customer_id)
+    def get_customer_data(self, uid: str) -> Customer:
+        self.customer = Customer.objects.get(uid=uid)
         return self.customer
 
     @staticmethod

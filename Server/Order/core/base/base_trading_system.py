@@ -12,6 +12,7 @@ class BaseTradingSystem(BaseClass):
 
     def __init__(self, *args, **kwargs):
         super(BaseTradingSystem, self).__init__(*args, **kwargs)
+
         django.setup()
 
         self.order = None

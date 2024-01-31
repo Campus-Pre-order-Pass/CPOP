@@ -54,7 +54,7 @@ class Conditions(BaseClass):
                 vendor_id=self.order.validated_data.get('vendor_id')
             ),
             lambda: self.order_valid.check_user_purchase_limit(
-                self.order.validated_data.get("customer_id")),
+                self.order.validated_data.get("uid")),
             lambda: self.order_valid.check_customer_take_time(
                 self.order.validated_data.get("take_time"))
 

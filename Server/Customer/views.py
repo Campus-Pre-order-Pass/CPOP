@@ -89,7 +89,7 @@ class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
         request_body=DRF.CustomerAPIView["POST"]["request_body"],
         responses=DRF.CustomerAPIView["POST"]["responses"],
     )
-    def post(self, request, uid: str):
+    def post(self, request, uid: str, *args, **kwargs):
         serializer = CustomerSerializerSerializer(data=request.data)
 
         # 检查数据是否有效

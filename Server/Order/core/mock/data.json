@@ -1,6 +1,6 @@
 {
     "vendor_id": 1,
-    "customer_id": 1,
+    "uid": "test",
     "take_time": "2022-02-01T12:34:56" ,
     "order_items": [
         {

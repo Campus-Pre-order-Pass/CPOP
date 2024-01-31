@@ -34,6 +34,6 @@ class OrderItemSerializer(serializers.Serializer):
 
 class OrderRequestBodySerializer(serializers.Serializer):
     vendor_id = serializers.IntegerField()
-    customer_id = serializers.IntegerField()
+    uid = serializers.CharField()
     take_time = serializers.DateTimeField()
     order_items = OrderItemSerializer(many=True)

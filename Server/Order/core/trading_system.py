@@ -10,9 +10,9 @@ class TradingSystem(BaseTradingSystem):
 
     def setData(self, data: dict):
         # check conditions
-        self.conditions.check_system_condition()
-
         self.order = self.conditions.check_data_format_condition(data=data)
+
+        self.conditions.check_system_condition()
 
         self.conditions.check_vendor_condition()
 
@@ -26,7 +26,7 @@ class TradingSystem(BaseTradingSystem):
             vendor=self.data_manager.get_vendor_data(
                 self.order.validated_data.get('vendor_id')),
             customer=self.data_manager.get_customer_data(
-                self.order.validated_data.get("customer_id")),
+                self.order.validated_data.get("uid")),
             # order_time=self.tool.get_now_time_taipei(),
             take_time=self.order.validated_data.get("take_time"),
             total_amount=self.execution_system.calculate(data=self.order),

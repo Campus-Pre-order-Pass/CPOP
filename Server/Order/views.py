@@ -77,7 +77,7 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         manual_parameters=DRF.PayOrderAPIView["GET"]["manual_parameters"],
         responses=DRF.PayOrderAPIView["GET"]["responses"],
     )
-    def get(self, request, uid: str):
+    def get(self, request, uid: str, *args, **kwargs):
         """獲取訂單資訊"""
 
         c = Customer.objects.get(uid=uid)
@@ -94,7 +94,7 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         request_body=DRF.PayOrderAPIView["POST"]["request_body"],
         responses=DRF.PayOrderAPIView["POST"]["responses"],
     )
-    def post(self, request, uid=None):
+    def post(self, request, uid=None, *args, **kwargs):
 
         # order_managment = OrderLogic()
 

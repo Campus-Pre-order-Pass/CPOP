@@ -9,8 +9,8 @@ class Logger(BaseClass):
     def __init__(self, *args, **kwargs):
         super(Logger, self).__init__(*args, **kwargs)
 
-    def make_logger(self, customer_id: int, action: str, details: str = None, *args, **kwargs):
-        c = Customer.objects.get(id=customer_id)
+    def make_logger(self, uid: str, action: str, details: str = None, *args, **kwargs):
+        c = Customer.objects.get(uid=uid)
         TransactionLog.objects.create(
             customer=c,
             action=action,

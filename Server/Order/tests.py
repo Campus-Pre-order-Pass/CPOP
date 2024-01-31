@@ -114,7 +114,7 @@ class OrderPrinter(TestAPIBaseCaseV2):
 
         # Printer result
         self.print_section_header("Printer Result:")
-        o.show()
+        # o.show()
 
         self.print_section_header("Order Items:")
         for item in order_items:

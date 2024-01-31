@@ -122,7 +122,7 @@ class DRF(APIView):
                 properties={
                     'vendor_id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1, description="供應商 `ID`"),
                     'take_time': openapi.Schema(type=openapi.TYPE_STRING, example="2022-02-01T12:34:56", description="取貨時間`"),
-                    'customer_id': openapi.Schema(type=openapi.TYPE_INTEGER, example=1, description="顧客 `ID`"),
+                    'uid': openapi.Schema(type=openapi.TYPE_STRING, example="test", description="顧客 `ID`"),
                     'order_items': openapi.Schema(
                         type=openapi.TYPE_ARRAY,
                         items=openapi.Items(
@@ -137,7 +137,7 @@ class DRF(APIView):
                         ),
                         example={
                             "vendor_id": 1,
-                            "customer_id": 1,
+                            "uid": "test",
                             "take_time": "2022-02-01T12:34:56",
                             "order_items": [
                                 {
