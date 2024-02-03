@@ -14,7 +14,7 @@ class Printer(PrinterABC):
 
     def is_valid(self) -> bool:
         """先判斷是否資料格式正確，需要做`raise報錯`
-    
+
         Returns:
             bool: _description_
         """
@@ -24,6 +24,7 @@ class Printer(PrinterABC):
         """先判斷是否印單機有連線,需要做`raise報錯`
         
         ping...特定 port
+        
         """
         return True
 
