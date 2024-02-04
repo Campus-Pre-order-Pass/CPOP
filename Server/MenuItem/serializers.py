@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from MenuItem.models import ExtraOption, MenuItem, RequiredOption
+from MenuItem.models import ExtraOption, MenuItem, RequiredOption, MenuStatus
 
 # models
 
@@ -9,6 +9,12 @@ class RequiredOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequiredOption
         exclude = ["vendor"]
+
+
+class MenuStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuStatus
+        exclude = ["id", "menu_item", "date"]
 
 
 class ExtraOptionSerializer(serializers.ModelSerializer):

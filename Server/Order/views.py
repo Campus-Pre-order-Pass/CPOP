@@ -1,59 +1,12 @@
-# django
-from django.shortcuts import render
-from django.conf import settings
-from django.test import TestCase
-from django.utils.decorators import method_decorator
-from django.core.files.storage import FileSystemStorage
-import os
-import uuid
-
-# rest_framework
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-# rate
-from django_ratelimit.decorators import ratelimit
-from helper.decorator.custom_ratelimit import custom_ratelimit
-
-# authentication
-from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
-from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
+from helper.base.base_import_view import *
 
 # models
 from Order.models import Order, OrderItem
-from Order.OrderLogic.test.mark import MarkData
-from Shop.models import CurrentState, Vendor
-from MenuItem.models import MenuItem
 from Customer.models import Customer
 
-# order
-from Order.OrderLogic.order_logic import OrderLogic
-
 # serializers
-from Order.serializers import OrderItemSerializer, OrderSerializer
+from Order.serializers import *
 
-# helpers
-from helper.fileupload import upload_file
-
-# handle_exceptions
-from helper.handle_exceptions import handle_exceptions
-from helper.vaidate import convert_to_bool
-
-
-# cache
-from django.views.decorators.cache import cache_page
-from django.core.cache import cache
-from django.views.decorators.cache import cache_control
-from django.views.decorators.cache import never_cache
-
-
-# swagger
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 from Order.drf import DRF
 
 # trading
@@ -134,7 +87,7 @@ class PayStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
     )
     def get(self, request, order_id: int, *args, **kwargs):
         "該訂單目前狀態"
-        order = Order.objects.get(id=order_id)
+        order = get_object_or_404(Order, id=order)
         return Response({"status": order.order_status})
 
 
@@ -155,7 +108,7 @@ class OrderAPIView(BaseAPIViewWithFirebaseAuthentication):
             1. 獲取該訂單的細節
             2. 會有 token
         """
-        order = Order.objects.get(id=order_id)
+        order = get_object_or_404(Order, id=order)
         items = OrderItem.objects.filter(order=order)
         s = OrderItemSerializer(data=items, many=True)
         s.is_valid()

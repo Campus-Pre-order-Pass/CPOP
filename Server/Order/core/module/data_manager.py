@@ -1,9 +1,9 @@
-
-
 # models
 import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Model, QuerySet
+
+# rest_framework
 from rest_framework.exceptions import ValidationError
 
 # models
@@ -11,11 +11,11 @@ from MenuItem.models import *
 from Order.models import *
 from Shop.models import *
 
-from Order.OrderLogic.error.error import *
 
 # Configuration
 from Order.core.module.configuration import Configuration
 from Order.core.helper.tool import Tool
+from Order.OrderLogic.error.error import *
 
 # mdoels
 from Shop.models import *
@@ -25,10 +25,12 @@ from Order.core.module.serializers import *
 
 class DataManager():
     def __init__(self, test: bool = False, *args, **kwargs):
+        self.test =  kwargs.pop('test', False)
         self.test = test
         self.vednor = None
         self.customer = None
-
+        self.order = None
+        
     def creat_model_instance(self, model_class: Model, id: int) -> QuerySet:
         try:
             # 使用 objects.get() 获取模型实例
@@ -129,7 +131,7 @@ class DataManager():
         return self.vednor
 
     def get_customer_data(self, uid: str) -> Customer:
-        self.customer = Customer.objects.get(uid=uid)
+        self.customer =get_object_or_404(Customer ,uid=uid)
         return self.customer
 
     @staticmethod
@@ -142,7 +144,8 @@ class DataManager():
 
     def get_printer_request_data(self):
         """只能在 test case 使用！"""
-        o = Order.objects.get(id=1)
+
+        o = get_object_or_404(Order, id=1)
 
         serializer = OrderRequestBodySerializer(
             data=self.get_json_order_data())

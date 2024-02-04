@@ -96,7 +96,7 @@ class TestAPIBaseCaseV2(APITestCase):
                 f"Response content: {response.content.decode('utf-8')}")
 
     def reverse(self, view_name: str | None, *args, **kwargs):
-        # 使用 reverse 函数生成相应的 URL
+        """使用 reverse 函数生成相应的 URL"""
         return reverse(view_name, args=args, kwargs=kwargs)
 
     def print_section_header(self, header_text: str) -> None:

@@ -7,13 +7,13 @@ from rest_framework import status
 
 # MarkData
 from Order.OrderLogic.test.mark import MarkData
-from MenuItem.serializers import MenuItemExtraOptionSerializer, MenuItemRequiredOptionSerializer, MenuItemSerializer
 
 # BaseAPIViewDRFConfig
 from helper.base.drf_yasg_base import BaseAPIViewDRFConfig
 
 # serializers
-from Order.serializers import OrderItemSerializer, OrderRequestBodySerializer, OrderSerializer
+from Order.serializers import *
+from MenuItem.serializers import *
 from rest_framework.views import APIView
 
 menu_id = openapi.Parameter(
@@ -181,5 +181,39 @@ class DRF(APIView):
 
                 )
             }
+        }
+    }
+    MenuStatusAPIView = {
+        "GET": {
+            "operation_summary": "獲取該菜單品項狀態",
+            "operation_description": "像是 水餃店的水餃品項只剩下5份`",
+            'manual_parameters': [
+                BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
+                openapi.Parameter(
+                    name="menu_item_id",
+                    in_=openapi.IN_PATH,
+                    type=openapi.TYPE_INTEGER,
+                    description="該菜單的`ID`",
+                    required=True,
+                    example=1,
+                ),
+            ],
+            "responses": {
+                status.HTTP_200_OK: openapi.Response(
+                    description="回傳該 status",
+                    schema=MenuStatusSerializer(),
+                    examples={
+                        "application/json": {
+                                "preorder_qty": 1,
+                            "remaining_quantity": 2,
+                            "is_available": True
+
+                        },
+
+
+                    }
+                )
+            }
+
         }
     }

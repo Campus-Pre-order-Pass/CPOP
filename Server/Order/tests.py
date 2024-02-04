@@ -123,3 +123,20 @@ class OrderPrinter(TestAPIBaseCaseV2):
         # Check printer connection and print
         p.is_connected(order=o, order_items=order_items)
         p.print()
+
+
+class TestAllOrderPayiew(TestAPIBaseCaseV2):
+    def test_order_http_200_status_request(self):
+        pass
+
+    def test_order_http_500_status_request(self):
+        pass
+
+    def test_order_http_404_status_request(self):
+        pass
+
+    def test_OrderAPIView_http_500_status_request(self):
+        pass
+
+    def test_OrderAPIView_http_400_status_request(self):
+        pass

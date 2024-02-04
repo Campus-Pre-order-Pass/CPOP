@@ -1,60 +1,18 @@
-# django
-from django.shortcuts import render
-from django.conf import settings
-from django.utils.decorators import method_decorator
-from django.core.files.storage import FileSystemStorage
-import os
-import uuid
+# base import
+from helper.base.base_import_view import *
 
-# rest_framework
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-# rate
-from django_ratelimit.decorators import ratelimit
-from helper.decorator.custom_ratelimit import custom_ratelimit
-
-# DRF
-from Shop.drf import DRF
-
-# authentication
-from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
-from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
+# models
 from Shop.models import CurrentState, Vendor
 from MenuItem.models import MenuItem
 
 # serializers
 from Shop.serializers import CurrentStateSerializer, VendorSerializer
-from MenuItem.serializers import MenuItemSerializer
 
-# helpers
-from helper.fileupload import upload_file
-
-# handle_exceptions
-from helper.handle_exceptions import handle_exceptions
-from helper.vaidate import convert_to_bool
-
-
-# cache
-from django.views.decorators.cache import cache_page
-from django.core.cache import cache
-from django.views.decorators.cache import cache_control
-from django.views.decorators.cache import never_cache
-
-# swagger
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-
-
-# other packages
-from rest_framework.generics import GenericAPIView
-
+# DRF
+from Shop.drf import DRF
 
 # shop =================================================================
+
 
 @handle_exceptions(Vendor)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
@@ -83,7 +41,6 @@ def update_image(request, uid):
     try:
         cleaned_product_id = uid.replace("-", "")
         menuItem = MenuItem.objects.get(product_id=cleaned_product_id)
-
         upload_file(request=request, vendor_id=uid, filename=f"{uid}.jpg")
         return Response(status=status.HTTP_200_OK)
     except Exception as e:

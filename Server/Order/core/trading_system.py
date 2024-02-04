@@ -6,19 +6,36 @@ from Order.models import Order
 
 class TradingSystem(BaseTradingSystem):
     def __init__(self,  *args, **kwargs):
+        """_summary_
+        """
         super(TradingSystem, self).__init__(*args, **kwargs)
 
-    def setData(self, data: dict):
-        # check conditions
-        self.order = self.conditions.check_data_format_condition(data=data)
+    def setData(self, data: dict)->bool:
+        """_summary_
 
+        Args:
+            data (dict): _description_
+        """
+        # check conditions
         self.conditions.check_system_condition()
+        
+        self.order = self.conditions.check_data_format_condition(data=data)
 
         self.conditions.check_vendor_condition()
 
         self.conditions.check_menu_items_condition()
+        
+        return True
 
     def execute(self) -> str:
+        """_summary_
+
+        Raises:
+            ValueError: _description_
+
+        Returns:
+            str: `hash_code`
+        """
         if self.order == None:
             raise ValueError("setData must be called before executing.")
 
@@ -27,7 +44,7 @@ class TradingSystem(BaseTradingSystem):
                 self.order.validated_data.get('vendor_id')),
             customer=self.data_manager.get_customer_data(
                 self.order.validated_data.get("uid")),
-            # order_time=self.tool.get_now_time_taipei(),
+            order_time=self.tool.get_now_time_taipei(),
             take_time=self.order.validated_data.get("take_time"),
             total_amount=self.execution_system.calculate(data=self.order),
             order_status="created",

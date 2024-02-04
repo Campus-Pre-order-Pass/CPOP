@@ -2,7 +2,7 @@ from Order.core.abstract.printer import PrinterABC
 from Order.serializers import OrderRequestBodySerializer
 from Order.models import *
 from server.printer import OrderInvoiceGenerator
-from Order.core.module.error import BaseError , PrinterError
+from Order.core.module.error import BaseError, PrinterError
 
 
 class Printer(PrinterABC):
@@ -17,14 +17,14 @@ class Printer(PrinterABC):
             # ...
 
             # 如果發生 printer 錯誤，拋出 PrinterError
-            raise PrinterError("Printer error message", error_code=456, error_source="specific_printer")
+            raise PrinterError("Printer error message",
+                               error_code=456, error_source="specific_printer")
         except PrinterError as e:
             # 處理 printer 錯誤
-            print(f"Printer Error: {e}")    
+            print(f"Printer Error: {e}")
             print(f"Error Code: {e.code}")
             print(f"Error Source: {e.error_source}")
         return True
-
 
     def is_connected(self, order: Order, order_items: OrderItem) -> bool:
         """先判斷是否印單機有連線,需要做`raise報錯`
@@ -41,9 +41,10 @@ class Printer(PrinterABC):
 
     def print(self, order: Order) -> bool:
         invoice_generator = OrderInvoiceGenerator(IP="10.0.0.11")
-        success = invoice_generator.generate_invoice(shop="A", order_details=Order, print_invoice=True, show_invoice=False)
+        success = invoice_generator.generate_invoice(
+            shop="A", order_details=Order, print_invoice=True, show_invoice=False)
         if not success:
             # 如果 success 的值為 False，拋出一個自訂的錯誤
-            raise PrinterError("Failed to generate/print the invoice", error_code=789, error_source="specific_printer")
+            raise PrinterError("Failed to generate/print the invoice",
+                               error_code=789, error_source="specific_printer")
         return success
-

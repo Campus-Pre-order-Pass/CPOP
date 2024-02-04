@@ -71,6 +71,7 @@ class Order(models.Model):
         print(f"Total Amount: {self.total_amount}")
 
         print("")
+        
 
         return "OK"
 

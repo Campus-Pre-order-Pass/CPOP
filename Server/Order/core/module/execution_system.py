@@ -15,8 +15,13 @@ class ExecutionSystem(BaseClass):
         super(ExecutionSystem, self).__init__(*args, **kwargs)
 
     def change_menu_state(self, data: OrderRequestBodySerializer):
-        order_items = data.validated_data["order_items"]
-        vendor_id = data.validated_data["vendor_id"]
+        """_summary_
+
+        Args:
+            data (OrderRequestBodySerializer): _description_
+        """
+        order_items = data.validated_data.get('order_items')
+        vendor_id = data.validated_data.get('vendor_id')
 
         for order_item_data in order_items:
             menu_item_id = order_item_data.get("menu_item_id")
@@ -27,9 +32,22 @@ class ExecutionSystem(BaseClass):
             menu_item.save()
 
     def calculate(self, data: OrderRequestBodySerializer) -> float:
+        """_summary_
+
+        Args:
+            data (OrderRequestBodySerializer): _description_
+
+        Raises:
+            OrderCreationError: _description_
+            OrderCreationError: _description_
+            OrderCreationError: _description_
+
+        Returns:
+            float: _description_
+        """
         try:
             total = Decimal('0.0')
-            order_items = data.validated_data["order_items"]
+            order_items = data.validated_data.get("order_items")
 
             for order_item in order_items:
                 required_option_total = Decimal('0.0')
@@ -38,7 +56,11 @@ class ExecutionSystem(BaseClass):
                 quantity = order_item.get('quantity')
                 menuItem = MenuItem.objects.get(
                     id=order_item.get('menu_item_id'))
-                required_option_ids = order_item.get('required_option_ids', [])
+                
+                
+                # 可以接受空 arry !!! extra_option_ids
+                
+                required_option_ids = order_item.get('required_option_ids')
                 extra_option_ids = order_item.get('extra_option_ids', [])
 
                 if not self.tool.is_positive_integer(quantity):

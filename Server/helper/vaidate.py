@@ -1,10 +1,9 @@
-from django.forms import ValidationError
 from django.core import exceptions
 
 
 def validate_count(value):
     if value < 0:
-        raise ValidationError('价格不能为负数')
+        raise exceptions.ValidationError('价格不能为负数')
 
 
 def convert_to_bool(value):

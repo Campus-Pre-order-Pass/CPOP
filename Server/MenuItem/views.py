@@ -1,54 +1,13 @@
-# django
-from django.shortcuts import render
-from django.conf import settings
-from django.utils.decorators import method_decorator
-from django.core.files.storage import FileSystemStorage
-import os
-import uuid
-
-# rest_framework
-from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.renderers import JSONRenderer
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-
-# rate
-from django_ratelimit.decorators import ratelimit
-
-# authentication
-from Auth.Authentication.authentication import FirebaseAuthentication, FirebaseTokenAuthentication
+# base import
+from helper.base.base_import_view import *
 
 # models
-from MenuItem.models import MenuItem, MenuStatus, ExtraOption, RequiredOption
-from helper.base.base_api_view import BaseAPIViewWithFirebaseAuthentication
+from MenuItem.models import *
 from Shop.models import Vendor
 
-
-# TestAPIBaseCase
-from helper.base.base_test_case import TestAPIBaseCase
-
 # serializers
-from MenuItem.serializers import MenuItemExtraOptionSerializer, MenuItemRequiredOptionSerializer, MenuItemSerializer, ExtraOptionSerializer, RequiredOptionSerializer
+from MenuItem.serializers import *
 
-# helpers
-from helper.fileupload import upload_file
-
-# handle_exceptions
-from helper.handle_exceptions import handle_exceptions
-from helper.vaidate import convert_to_bool
-
-
-# cache
-from django.views.decorators.cache import cache_page
-from django.views.decorators.cache import cache_control
-from django.views.decorators.cache import never_cache
-
-
-# swagger
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 from .drf import DRF
 
 
@@ -68,7 +27,7 @@ class MenuItemAPIView(BaseAPIViewWithFirebaseAuthentication):
     )
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, vendor_id: int):
-        vendor = Vendor.objects.get(id=vendor_id)
+        vendor = get_object_or_404(Vendor, id=vendor_id)
 
         menuItem = MenuItem.objects.filter(vendor=vendor)
 
@@ -121,14 +80,23 @@ class MenuItemAPIView(BaseAPIViewWithFirebaseAuthentication):
 
 
 @handle_exceptions(MenuStatus)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
 class MenuStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
-    def get(slef, request):
-        MenuStatus.get_today_status(vendor_id=1)
-        pass
+    @swagger_auto_schema(
+        operation_summary=DRF.MenuStatusAPIView["GET"]["operation_summary"],
+        operation_description=DRF.MenuStatusAPIView["GET"]["operation_description"],
+        manual_parameters=DRF.MenuStatusAPIView["GET"]["manual_parameters"],
+        responses=DRF.MenuStatusAPIView["GET"]["responses"],
+    )
+    def get(slef, request, menu_item_id: int):
+        menu_item = get_object_or_404(MenuItem, id=menu_item_id)
+        serializer = MenuStatusSerializer(
+            data=MenuStatus.get_today_status(menu_item=menu_item))
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data)
 
 
 # @handle_exceptions(ExtraOption)
@@ -150,7 +118,7 @@ class MenuStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
 #         return Response(serializer.data)
 
 @handle_exceptions(MenuItem)
-# @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 class OptionPIView(BaseAPIViewWithFirebaseAuthentication):
@@ -163,7 +131,7 @@ class OptionPIView(BaseAPIViewWithFirebaseAuthentication):
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     def get(self, request, menu_id: int):
         """改 int str統一口徑"""
-        menuItem = MenuItem.objects.get(id=menu_id)
+        menuItem = get_object_or_404(MenuItem, id=menu_id)
 
         data = {
             "extra": (MenuItemExtraOptionSerializer(menuItem).data),

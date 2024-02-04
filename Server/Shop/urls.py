@@ -17,5 +17,6 @@ urlpatterns = [
     # shop
     path('<int:vendor_id>', views.ShopAPIView.as_view(), name="shop"),
 
+    # shop_list
     path('', views.ShopListAPIView.as_view(), name="shop_list"),
 ]
