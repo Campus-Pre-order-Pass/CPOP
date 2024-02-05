@@ -98,9 +98,22 @@ class TestAPIBaseCaseV2(APITestCase):
     def reverse(self, view_name: str | None, *args, **kwargs):
         """使用 reverse 函数生成相应的 URL"""
         return reverse(view_name, args=args, kwargs=kwargs)
+    
+    def __is_get_token(self):
+        """_summary_
+        """
+        hasattr(self, 'reverse') 
+        pass
 
     def print_section_header(self, header_text: str) -> None:
+        """_summary_
+
+        Args:
+            header_text (str): _description_
+        """
         # Print a formatted section header
         print(f"\n{'=' * 40}")
         print(f"{header_text.center(40)}")
         print(f"{'=' * 40}\n")
+        
+    

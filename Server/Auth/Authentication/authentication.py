@@ -66,7 +66,11 @@ class FirebaseTokenAuthentication(authentication.BaseAuthentication):
                 decoded_token = auth.verify_id_token(token)
                 uid = decoded_token["uid"]
                 email = decoded_token["email"]
-
+                
+                # TODO: test auth
+                request.uid = uid
+                
+            
                 # 返回驗證成功的用戶
                 return (uid, None)
             except Exception as e:

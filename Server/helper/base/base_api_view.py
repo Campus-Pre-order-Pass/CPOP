@@ -32,3 +32,4 @@ class BaseAPIViewWithFirebaseAuthentication(APIView):
         # TODO:  settings.TEST need to change to DEBUG
         if not settings.TEST:
             self.authentication_classes = [FirebaseTokenAuthentication]
+ 

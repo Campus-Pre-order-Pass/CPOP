@@ -49,6 +49,7 @@ class DRF(APIView):
             "operation_description": "新增顧客`",
             'manual_parameters': [
                 BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
+                BaseAPIViewDRFConfig.X_CSRF_TOKEN_BASE_HEADER,
                 uid_param
             ],
             "request_body": CustomerSerializerSerializer(),

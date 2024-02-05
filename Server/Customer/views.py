@@ -61,12 +61,9 @@ from .drf import DRF
 @handle_exceptions(Customer)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
-@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
-@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
-@method_decorator(never_cache, name='get')
-@method_decorator(never_cache, name='post')
-@method_decorator(never_cache, name='patch')
-@method_decorator(never_cache, name='delete')
+# @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='dispatch')
+@method_decorator(never_cache, name='dispatch')
 class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
     """有關顧客的api view"""
 
@@ -118,13 +115,13 @@ class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary=DRF.CustomerAPIView["DELETE"]["operation_summary"],
-        operation_description=DRF.CustomerAPIView["DELETE"]["operation_description"],
-        manual_parameters=DRF.CustomerAPIView["DELETE"]["manual_parameters"],
-        responses=DRF.CustomerAPIView["DELETE"]["responses"],
-    )
-    def delete(self, request, uid: str):
-        c = Customer.objects.get(uid=uid)
-        c.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # @swagger_auto_schema(
+    #     operation_summary=DRF.CustomerAPIView["DELETE"]["operation_summary"],
+    #     operation_description=DRF.CustomerAPIView["DELETE"]["operation_description"],
+    #     manual_parameters=DRF.CustomerAPIView["DELETE"]["manual_parameters"],
+    #     responses=DRF.CustomerAPIView["DELETE"]["responses"],
+    # )
+    # def delete(self, request, uid: str):
+    #     c = Customer.objects.get(uid=uid)
+    #     c.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)

@@ -2,14 +2,15 @@ from Order.core.abstract.printer import PrinterABC
 from Order.serializers import OrderRequestBodySerializer
 from Order.models import *
 from Order.core.module.data_manager import DataManager
-from printer import OrderInvoiceGenerator
+
+from Printer.main import OrderInvoiceGenerator
 
 class Printer(PrinterABC):
     def __init__(self, *args, **kwargs):
         self.test = kwargs.pop('test', False)
         self.order = None
         self.order_items = None
-
+    
         self.data_manager = DataManager(self.test, *args, **kwargs)
 
     def is_valid(self) -> bool:

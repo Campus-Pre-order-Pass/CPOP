@@ -6,8 +6,5 @@ app_name = "Auth"
 
 
 urlpatterns = [
-
-    # customer
-    path('customer/<str:uid>', views.CustomerAPIView.as_view(),
-         name="CustomerAPIView"),
+    path('get-token/', views.GetTokenAPIView.as_view(), name='get_token'),
 ]

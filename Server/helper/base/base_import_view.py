@@ -5,8 +5,10 @@ from django.shortcuts import render
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.core.files.storage import FileSystemStorage
-import os
+from django.contrib.auth.decorators import user_passes_test , permission_required
+
 import uuid
+import os
 
 # rest_framework
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -50,3 +52,5 @@ from helper.fileupload import upload_file
 
 # custom_ratelimit
 from helper.decorator.custom_ratelimit import custom_ratelimit
+from helper.decorator.base import *
+from helper.auth.group import *

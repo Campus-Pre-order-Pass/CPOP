@@ -1,4 +1,10 @@
+# base import 
 from helper.base.base_import_view import *
+
+# django 
+from django.db import transaction
+from django.middleware import csrf
+from django.contrib.auth.decorators import login_required
 
 # models
 from Order.models import Order, OrderItem
@@ -14,6 +20,8 @@ from Order.core.trading_system import TradingSystem
 from Order.core.module.error.configuration_error import OrderCreationError
 
 
+
+
 # class
 trading = TradingSystem(test=settings.TEST)
 
@@ -23,6 +31,8 @@ trading = TradingSystem(test=settings.TEST)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 @method_decorator(never_cache, name='get')
 @method_decorator(never_cache, name='post')
+@method_decorator(base_protection_decorators_v0 , name='post')
+# @method_decorator(user_passes_test_404(is_whitelisted) , name='dispatch')
 class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.PayOrderAPIView["GET"]["operation_summary"],
@@ -47,6 +57,9 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         request_body=DRF.PayOrderAPIView["POST"]["request_body"],
         responses=DRF.PayOrderAPIView["POST"]["responses"],
     )
+    # @transaction.atomic   # 滾回資料
+    # @csrf_protect         # CSRF保護
+    # @ensure_csrf_cookie   # 這個裝飾器確保 CSRF 標記（token）包含在 HTTP 響應的 cookie 中。
     def post(self, request, uid=None, *args, **kwargs):
 
         # order_managment = OrderLogic()
@@ -114,3 +127,7 @@ class OrderAPIView(BaseAPIViewWithFirebaseAuthentication):
         s.is_valid()
 
         return Response({"itmes": s.data})
+
+
+
+

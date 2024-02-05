@@ -64,7 +64,7 @@ config.encodeing = 'utf-8'
 
 # test
 DEBUG = True
-TEST = True
+TEST = DEBUG
 
 
 ALLOWED_HOSTS = ['*', ]
@@ -95,7 +95,7 @@ CORS_ORIGIN_WHITELIST = [
 CSRF_TRUSTED_ORIGINS = [
     # 'https://cpop.iside.shop',
     'https://cpop.api.iside.shop',
-    'http://127.0.0.1',
+    # 'http://127.0.0.1',
 ]
 
 
@@ -131,14 +131,13 @@ MIDDLEWARE = [
     # axes
     # 'axes.middleware.AxesMiddleware',
     # cache
-    'django.middleware.common.CommonMiddleware',
 
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
     # application
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -147,6 +146,10 @@ MIDDLEWARE = [
     # core
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    
+    
+    # CSRF
+    'django.middleware.csrf.CsrfViewMiddleware',
 
 
     # DebugToolbarMiddleware
@@ -503,3 +506,7 @@ timezone = 'Asia/Taipei'  # 设置为台湾时区
 enable_utc = False
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True

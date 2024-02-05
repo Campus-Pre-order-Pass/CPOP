@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # _mock
-from Sandbox.mock.restaurant import get_mock_r, get_mock_menu
 from Sandbox.mock.user import get_user_mack
 
 

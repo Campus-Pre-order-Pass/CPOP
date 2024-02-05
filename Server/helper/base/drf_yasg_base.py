@@ -15,7 +15,14 @@ class BaseAPIViewDRFConfig:
         type=openapi.TYPE_STRING,
         required=False,
     )
-
+    # CSRF_BASE_HEADER use in post request ,creat request
+    X_CSRF_TOKEN_BASE_HEADER = openapi.Parameter(
+        'X-CSRFToken',
+        openapi.IN_HEADER,
+        description="CSRFToken ID Token. 需要先去 /v0/api/auth/get-token 獲取.....",
+        type=openapi.TYPE_STRING,
+        required=False,
+    )
     TEST_TOKEN_HEADER = openapi.Parameter(
         'test_token',
         openapi.IN_HEADER,

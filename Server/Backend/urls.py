@@ -77,7 +77,7 @@ urlpatterns = [
 
 
     # # auth
-    # path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
+    path('v0/api/auth/', include('Auth.urls', namespace='Auth')),
 
     # customer
     path(f'{V}/api/customer/',

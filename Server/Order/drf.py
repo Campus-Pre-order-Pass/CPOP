@@ -115,7 +115,8 @@ class DRF(APIView):
             'operation_description': '**重要** 透過此api完成`訂單動作`',
             'manual_parameters': [
                 BaseAPIViewDRFConfig.FIRE_BASE_HEADER,
-                uid_param
+                BaseAPIViewDRFConfig.X_CSRF_TOKEN_BASE_HEADER,
+                uid_param,
             ],
             "request_body": openapi.Schema(
                 type=openapi.TYPE_OBJECT,
