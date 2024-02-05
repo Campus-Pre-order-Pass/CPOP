@@ -16,6 +16,7 @@ from Shop.drf import DRF
 
 @handle_exceptions(Vendor)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class ShopAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.ShopAPIView["GET"]["operation_summary"],
@@ -51,6 +52,7 @@ def update_image(request, uid):
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
 @method_decorator(never_cache, name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
     # to Swagger
     # serializer_class = DRF.CurrentStateAPIView["serializer_class"]
@@ -98,6 +100,7 @@ class CurrentStateAPIView(BaseAPIViewWithFirebaseAuthentication):
 
 @handle_exceptions(Vendor)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class ShopListAPIView(BaseAPIViewWithFirebaseAuthentication):
     @method_decorator(cache_page(settings.CACHE_TIMEOUT_LONG))
     @swagger_auto_schema(

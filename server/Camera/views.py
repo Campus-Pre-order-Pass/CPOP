@@ -7,6 +7,7 @@ import django
 import sys
 from django.conf import settings
 from django.utils.decorators import method_decorator
+from django.db import transaction
 
 
 # handle_exceptions
@@ -337,6 +338,7 @@ def save_model(vendor_id, current_number):
 @handle_exceptions(CurrentState)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='patch')
 @method_decorator(never_cache, name='patch')
+@method_decorator(transaction.atomic , name="dispatch")
 class UploadImageAPIView(APIView):
     @swagger_auto_schema(
         operation_summary=DRF.upload_image["PATCH"]["operation_summary"],

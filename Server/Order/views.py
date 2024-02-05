@@ -31,7 +31,7 @@ trading = TradingSystem(test=settings.TEST)
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 @method_decorator(never_cache, name='get')
 @method_decorator(never_cache, name='post')
-@method_decorator(base_protection_decorators_v0 , name='post')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 # @method_decorator(user_passes_test_404(is_whitelisted) , name='dispatch')
 class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
@@ -92,6 +92,7 @@ class PayOrderAPIView(BaseAPIViewWithFirebaseAuthentication):
 # @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class PayStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.PayStatusAPIView["GET"]["operation_summary"],
@@ -109,6 +110,7 @@ class PayStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class OrderAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.OrderAPIView["GET"]["operation_summary"],

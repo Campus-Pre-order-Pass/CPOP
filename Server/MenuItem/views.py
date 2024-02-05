@@ -84,6 +84,7 @@ class MenuItemAPIView(BaseAPIViewWithFirebaseAuthentication):
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(never_cache, name='get')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class MenuStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.MenuStatusAPIView["GET"]["operation_summary"],
@@ -121,6 +122,7 @@ class MenuStatusAPIView(BaseAPIViewWithFirebaseAuthentication):
 @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='GET'), name='get')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='POST'), name='post')
 # @method_decorator(ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class OptionPIView(BaseAPIViewWithFirebaseAuthentication):
     @swagger_auto_schema(
         operation_summary=DRF.OptionPIView["GET"]["operation_summary"],

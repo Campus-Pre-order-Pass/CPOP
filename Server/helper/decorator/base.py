@@ -5,23 +5,34 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from django.db import transaction
 
 from django.http import HttpResponseForbidden 
 
 def base_protection_decorators_v0(view_func):
+    """`V0` 
+        1. transaction   
+        2. ensure_csrf_cookie 
+        3. csrf_protect 
+
+    Args:
+        view_func (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     if settings.DEBUG:
         # 如果處於 DEBUG 模式，不應用 CSRF 保護和登錄裝飾器
-        return view_func
+        return transaction.atomic(view_func)
 
     # 否則，應用 CSRF 保護和登錄裝飾器
-    
-    # method_decorator(login_required, name='dispatch')先不用
     decorated_view = method_decorator(csrf_protect, name='dispatch')(
         method_decorator(ensure_csrf_cookie, name='dispatch')(
-            (view_func)
+            transaction.atomic(login_required(view_func))
         )
     )
     return decorated_view
+
 
 
 def user_passes_test_404(test_func):

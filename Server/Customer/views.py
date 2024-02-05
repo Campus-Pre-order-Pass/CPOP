@@ -48,6 +48,7 @@ from django.views.decorators.cache import never_cache
 
 
 from helper.decorator.custom_ratelimit import custom_ratelimit
+from helper.decorator.base import base_protection_decorators_v0
 
 
 # swagger
@@ -64,6 +65,7 @@ from .drf import DRF
 # @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='DELETE'), name='delete')
 @method_decorator(custom_ratelimit(key='ip', rate=settings.RATELIMITS_USER, method='PATCH'), name='dispatch')
 @method_decorator(never_cache, name='dispatch')
+@method_decorator(base_protection_decorators_v0 , name='dispatch')
 class CustomerAPIView(BaseAPIViewWithFirebaseAuthentication):
     """有關顧客的api view"""
 
